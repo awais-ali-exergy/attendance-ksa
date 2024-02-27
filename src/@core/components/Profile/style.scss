@@ -1,0 +1,24 @@
+.user {
+  margin-left: 12px;
+  cursor: context-menu;
+  .user-status {
+    // font-family: 'Poppins';
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 18px;
+    /* identical to box height */
+
+    color: #6e6b7b;
+  }
+  .user-name {
+    // font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    color: #6e6b7b !important;
+    /* identical to box height */
+
+    color: rgba(242, 242, 255, 0.5);
+  }
+}

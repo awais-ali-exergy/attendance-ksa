@@ -1,0 +1,311 @@
+@mixin respond($breakpoint) {
+  @if $breakpoint == xs {
+    @media only screen and (max-width: 36em) {
+      @content;
+    }
+  }
+  @if $breakpoint == sm {
+    @media only screen and (max-width: 48em) {
+      @content;
+    }
+  }
+  @if $breakpoint == md {
+    @media only screen and (max-width: 62em) {
+      @content;
+    }
+  }
+  @if $breakpoint == lg {
+    @media only screen and (max-width: 75em) {
+      @content;
+    }
+  }
+  @if $breakpoint == xl {
+    @media only screen and (max-width: 87.5em) {
+      @content;
+    }
+  }
+  @if $breakpoint == xxl {
+    @media only screen and (min-width: 112.5em) {
+      @content;
+    }
+  }
+}
+
+//auth
+
+.authLayout {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background-image: url("./assets/signInBG.svg") !important;
+  background-position: 100% 100%;
+  background-size: cover;
+  position: relative;
+  background-repeat: no-repeat;
+  padding: 2% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .headercontent {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 50px;
+
+    @media (max-width: 1024px) {
+      justify-content: center;
+    }
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: normal;
+  }
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 !important;
+    // z-index: 1;
+    @include respond(md) {
+      top: 130px;
+    }
+  }
+  &__logo {
+    min-height: 15vh;
+
+    img {
+      width: 12%;
+      height: auto;
+    }
+
+    @include respond(md) {
+      img {
+        width: 20%;
+      }
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    @include respond(sm) {
+      img {
+        width: 35%;
+      }
+    }
+  }
+
+  &__imageContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+    img {
+      width: 90%;
+      height: auto;
+      // mix-blend-mode: luminosity;
+    }
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+  &__formContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    &__box {
+      width: 100%;
+      &__children {
+        z-index: 9999;
+      }
+    }
+  }
+
+  &__footer {
+    align-self: self-end;
+    margin-right: 20px;
+    @media (max-width: 1024px) {
+      align-self: center;
+
+      margin-right: unset;
+    }
+    &--logo {
+      width: 200px;
+    }
+  }
+}
+
+.authLayout__formContainer__box {
+  padding: 80px;
+  background: rgb(26 57 93);
+  // filter: blur(8px);
+
+  @media (max-width: 1024px) {
+    min-width: 700px;
+  }
+  @include respond(md) {
+    padding: 30px;
+    min-width: unset;
+  }
+
+  border-radius: 15px;
+  .login-header {
+    text-align: center;
+    .heading {
+      // font-family: "Sofia Pro";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 64px;
+      line-height: 64px;
+      text-align: center;
+
+      color: #ffffff;
+      @include respond(sm) {
+        font-weight: 300;
+        font-size: 30px;
+      }
+      @include respond(md) {
+        font-weight: 400;
+        font-size: 40px;
+      }
+    }
+    .heading-otherscreeens {
+      font-weight: 400;
+      font-size: 50px;
+      text-align: center;
+      color: white;
+      line-height: 55px;
+
+      @include respond(sm) {
+        font-weight: 300;
+        font-size: 30px;
+      }
+      @include respond(md) {
+        font-weight: 400;
+        font-size: 40px;
+      }
+    }
+    .info {
+      margin-top: 60px;
+      margin-bottom: 60px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 22px;
+      text-align: center;
+
+      color: #ffffff;
+      @include respond(md) {
+        margin-top: 30px;
+        margin-bottom: 40px;
+      }
+    }
+  }
+
+  .loginFields {
+    background-color: #04244a !important;
+    border-radius: 5px;
+    width: 100%;
+    height: 70px;
+    margin-bottom: 20px;
+    border: none !important;
+    color: #ffffff !important;
+  }
+  .remember-me {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 10px 10px;
+    small {
+      color: #31cd82;
+    }
+    label {
+      color: #ffffff;
+      margin-top: 1px;
+    }
+    input {
+      background-color: #959db2;
+    }
+  }
+  .authButton {
+    background-color: #10a945 !important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    border: none;
+    height: 60px;
+    min-height: 30px;
+    padding: 16px;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #ffffff;
+    margin-top: 10px;
+  }
+
+  .login-link {
+    color: #31cd82 !important;
+  }
+}
+
+.check-email-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // margin-top: calc(100vh - 640px);
+  &_box {
+    background: #1a395d;
+    padding: 60px 80px;
+    border-radius: 15px;
+    text-align: center;
+    // position: relative;
+    p {
+      font-weight: 400;
+      font-size: 18px;
+      color: white;
+    }
+    @media (max-width: 515px) {
+      padding: 30px 50px;
+      p {
+        font-weight: 400;
+        font-size: 14px;
+      }
+    }
+  }
+  &-icon {
+    position: relative;
+    figure {
+      position: absolute;
+      left: -195px;
+      top: -27px;
+      @media (max-width: 515px) {
+        left: -141px;
+      }
+    }
+  }
+  &-custombtn {
+    width: 385px;
+    margin-top: 21px;
+    height: 60px;
+    a {
+      background-color: #10a945 !important;
+    }
+    @media (max-width: 515px) {
+      width: 300px;
+    }
+  }
+}
+
+.otpInput {
+  // width: 90px;
+  // height: 300px;
+  // color: white;
+  // margin-left: 10px;
+  // border-radius: 10px;
+  background-color: #04244a !important;
+}

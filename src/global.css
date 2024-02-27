@@ -1,0 +1,222 @@
+body,
+html {
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+._vaccine1 {
+  flex: 1;
+  justify-content: center;
+}
+._vaccine {
+  /* flex: 2; */
+}
+.main_flex {
+  display: flex !important;
+  width: auto;
+}
+.child_flex {
+  display: flex !important;
+}
+.cardHeader {
+  background-color: #04244a !important;
+}
+.cardHeader h1 {
+  color: white;
+  padding-top: 0.8rem;
+  font-weight: 600;
+}
+.heading_bold {
+  font-weight: 700;
+}
+.main_card {
+  padding: 2rem 0rem;
+}
+.add_form {
+  display: flex;
+  background-color: #ffffff;
+  border: 1px solid #efefef;
+
+  border-radius: 5px;
+  width: 90px;
+  height: 40;
+  justify-content: center;
+  align-items: center;
+}
+.css-47z9mc-multiValue {
+  background-color: #10a945 !important;
+}
+.subButton {
+  color: black !important;
+}
+.mainRad {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.btun {
+  border: none !important;
+}
+/* .search_{
+    border: 1px solid black;
+    width: 100px;
+   
+} */
+.ps {
+  /* overflow: scroll !important; */
+}
+.fileView {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-direction: row;
+  padding: 0px 16px;
+  align-items: center;
+  background: #fcfcfd;
+  border: 1px solid #dfdfe6;
+  box-sizing: border-box;
+  border-radius: 12px;
+  margin-top: 1%;
+}
+
+.fileImageBg {
+  background: #ebeff7;
+  padding: 5px !important;
+  border-radius: 50px;
+}
+
+.custom_slide {
+  width: 95%;
+  margin-bottom: 5px !important;
+}
+
+.customWidth {
+  width: 5.3rem !important;
+  height: 2.7rem !important;
+}
+
+.Attachment {
+  border: 1.5px #87898e dashed;
+  padding: 1.5rem;
+  border-radius: 12px !important;
+}
+
+.Attachment-sm {
+  border: 1.5px #87898e dashed;
+  padding: 0.5rem;
+  border-radius: 12px !important;
+  width: 400px;
+}
+.roundImage-sm {
+  background: #ccddff;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+}
+
+.roundImage {
+  background: #ccddff;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+}
+.sidebar_img {
+  position: fixed !important;
+  background-image: url("./assets/wasfaty/navHeader.svg");
+  background-repeat: no-repeat;
+  /* background-size: cover; */
+  height: 90px;
+  /* z-index: -10 !important; */
+  /* height: 80px !important; */
+  /* width: 100%; */
+  /* left: 80px; */
+  /* background-color: #04244a; */
+  /* bottom: 0px; */
+}
+.navigation {
+  overflow-y: auto !important;
+}
+@media (max-width: 991.98px) {
+  .mainRad {
+    flex-direction: row;
+    display: flex;
+    gap: 5px !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .card_body {
+    padding: 1.5rem 1rem !important;
+  }
+  .main_card {
+    padding: 0.5rem 1rem;
+  }
+  .navbar-container {
+    padding: 0.8rem 3px !important;
+  }
+  .add_form {
+    width: 50px;
+  }
+  .mainRepeater {
+    padding-left: 1rem !important;
+  }
+  .mainRad {
+    flex-direction: column;
+    display: flex;
+    gap: 5px !important;
+  }
+  .Nav-title {
+    font-size: 1rem;
+  }
+  .search_ {
+    border: none;
+  }
+}
+.form-switch .form-check-input {
+  width: 5rem !important;
+  height: 30px !important;
+}
+[dir] .form-switch .form-check-input:not(:checked) {
+  background-color: #f58989 !important;
+}
+
+[dir] .form-switch .form-check-input {
+  background-color: #10a945 !important;
+}
+.switch-icon-right {
+  display: flex;
+  color: white !important;
+  width: "100%";
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-left: 5px;
+}
+
+.switch-icon-left {
+  display: flex;
+  color: white !important;
+  width: "100%";
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-left: 5px;
+}
+@media (max-width: 576px) {
+  .card_body {
+    padding: 1.5rem 0rem !important;
+  }
+  .main_card {
+    padding: 2rem 0.5rem;
+  }
+}
+
+.apexcharts-legend-text {
+  margin-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+}

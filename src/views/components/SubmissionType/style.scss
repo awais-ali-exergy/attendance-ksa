@@ -1,0 +1,43 @@
+.prority-ribbon {
+  border-bottom: 1px solid rgba(34, 41, 47, 0.08);
+  margin-bottom: 10px;
+  p {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #000000;
+  }
+}
+.typeWrapper {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  margin: 10px;
+
+  &_dot {
+    width: 14px;
+    height: 14px;
+    margin-right: 2px;
+    border-radius: 100px;
+  }
+
+  p {
+    margin: 0;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #000000;
+  }
+}
+
+.priorityBackground {
+  height: 20px;
+  width: 30px !important;
+  border-radius: 5px;
+  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  font-weight: 600;
+}

@@ -1,0 +1,394 @@
+import React, { Fragment, useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+
+import { Row, Col, Card, CardBody } from "reactstrap";
+import { Spinner } from "reactstrap";
+import { FormattedMessage } from "react-intl";
+import startCase from "lodash/startCase";
+import { File } from "react-feather";
+import Identification from "./Identification";
+import get from "lodash/get";
+import "./style.scss";
+import { observer } from "mobx-react-lite";
+import { %Template%Service, TaskService } from "../../wasfaty/services";
+import SubmissionReview from "../../components/SubmissionReview";
+import { %Template%Model } from "../../wasfaty/Models/%Template%Model";
+import FileUploadModal from "../../wasfaty/Models/FileUploadModel";
+
+function isImage(url) {
+  return /\.(jpg|jpeg|png|webp|avif|gif)$/.test(url?.toLowerCase?.());
+}
+
+function getName(uImage) {
+  return uImage.substr(uImage.length - 9).replaceAll("%", "");
+}
+
+function InspectionDetails({ itemDeails }) {
+  const [item, setItem] = useState(itemDeails);
+  const { id, task_id } = useParams();
+
+  useEffect(() => {
+    if (id && !itemDeails) {
+      %Template%Service.show(id).then((res) => {
+        setItem(new %Template%Model(res.data?.data));
+      });
+    }
+  }, [id]);
+
+  useEffect(async () => {
+    if (!itemDeails && task_id) {
+      let task = await TaskService.show(task_id);
+
+      if (task?.data) {
+        setItem(new %Template%Model(null, task.data.data));
+      }
+    }
+  }, [task_id, itemDeails]);
+
+  const questionPriority = {
+    Critical: "#BB0A1E",
+
+    High: "#FD471F",
+
+    Medium: "#FFA115",
+
+    Low: "#FEDB24",
+  };
+  if (!item) return null;
+
+  const TextView = ({ attribute, title, ranking, index,value }) => {
+    return (
+      <Col md="12" sm="12">
+        <p>
+           {index > -1 && <span>{index + 1}) </span>}
+          {ranking && (
+            <span
+              className="badge-show"
+              style={{
+                backgroundColor: questionPriority[ranking],
+              }}
+            >
+              <FormattedMessage id={ranking} defaultMessage={ranking} />
+            </span>
+          )}{" "}
+          <FormattedMessage id={title} defaultMessage={title} />
+        </p>
+        <h4>
+          <FormattedMessage
+            id={value || item[attribute] || "N/A"}
+            defaultMessage={value || item[attribute] || "N/A"}
+          />
+        </h4>
+      </Col>
+    );
+  };
+
+  const NoOptions = observer(({ attribute }) => {
+    if (item[attribute] !== "No") return null;
+    const isFiles =!! item[attribute + "_file"]?.images?.length;
+
+    const reason = item[attribute + "_other"];
+    const files = item[attribute + "_file"].images;
+
+    return (
+      <Col md="12" sm="12">
+        <h6>
+          <FormattedMessage id={"Reason"} defaultMessage={"Reason"} />
+        </h6>
+        <p>{reason}</p>
+        {isFiles && (
+          <Row>
+            {files.map((uImage, key) => {
+              return (
+                <Col md="6" sm="6" key={key} className="mb-2">
+                  <div>
+                    {isImage(uImage) ? (
+                      <img
+                        src={uImage}
+                        style={{
+                          width: "auto",
+                          height: 100,
+                          marginRight: 50,
+                        }}
+                      />
+                    ) : (
+                      <a href={uImage}>
+                        <File />
+                        {getName(uImage)}
+                      </a>
+                    )}
+                  </div>
+                </Col>
+              );
+            })}
+          </Row>
+        )}
+      </Col>
+    );
+  });
+
+  const Header = () => {
+    return (
+      <nav
+        className="navbar navbar-expand-md mb-1 py-1"
+        style={{ backgroundColor: "#04244A", color: "white" }}
+      >
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="#" style={styles.link}>
+            {itemDeails ? "Review" : "Details"}
+          </Link>
+        </div>
+      </nav>
+    );
+  };
+
+  const isIdentification = item?.formFields?.["identification"];
+  return (
+    <>
+      {!itemDeails && task_id && <SubmissionReview task={item.task} />}
+
+      <Row id="AuditDetails">
+        <Col>
+          {!item && (
+            <div style={styles.loading}>
+              <Spinner color="primary" style={styles.spinner} />
+            </div>
+          )}
+          <Header />
+          {item && (
+            <>
+              {isIdentification && (
+                <>
+                  <Identification item={item} />
+                  <Card style={styles.border}>
+                    <CardBody>
+                      <Row>
+                        <Col md="4" sm="12">
+                          <h2>
+                            <FormattedMessage
+                              id="Location"
+                              defaultMessage={"Location"}
+                            />
+                          </h2>
+                        </Col>
+                        <Col md="4" sm="12">
+                          <div className="_vaccine">
+                            <p>
+                              <FormattedMessage
+                                id="Longitude"
+                                defaultMessage={"Longitude"}
+                              />
+                            </p>
+                            <h3>{item.longitude}</h3>
+                          </div>
+                        </Col>
+                        <Col md="4" sm="12">
+                          <div className="_vaccine">
+                            <p>
+                              <FormattedMessage
+                                id="Latitude"
+                                defaultMessage={"Latitude"}
+                              />
+                            </p>
+                            <h3>{item.latitude}</h3>
+                          </div>
+                        </Col>
+                      </Row>
+                    </CardBody>
+                  </Card>
+                </>
+              )}
+
+              {!!item?.staff_availability?.length && item.isStaffAvailability && (
+                <Card style={{ borderRadius: "0px", marginBottom: "5px" }}>
+                  <h3
+                    style={{
+                      marginTop: "30px",
+                      marginLeft: "20px",
+                      marginRight: "20px",
+                      fontWeight: "800",
+                    }}
+                  >
+                    <FormattedMessage
+                      defaultMessage={"Staff Availability"}
+                      id={"Staff Availability"}
+                    />
+                  </h3>
+                  <CardBody>
+                    {item.staff_availability.map((staff, key) => {
+                      return (
+                        <Row key={key}>
+                          <TextView
+                            index={key}
+                            item={staff}
+                            value={
+                              staff?.department?.value ||
+                              // staff?.department ||
+                              "N/A"
+                            }
+                            attribute={"department"}
+                            title={"Department"}
+                          />
+                          <TextView
+                            item={staff}
+                            value={staff?.staff_number || "N/A"}
+                            title={"Staff number"}
+                          />
+                          <TextView
+                            item={staff}
+                            value={staff?.minimum_staff || "N/A"}
+                            title={"Is the minimum staff amount available?"}
+                          />
+                        </Row>
+                      );
+                    })}
+                  </CardBody>
+                </Card>
+              )}
+
+              {(item.isPharmacyAvailable || !isIdentification) && (
+                <>
+                  <Card style={styles.border}>
+                    <CardBody>
+                      {item.formFields &&
+                        Object.entries(item.formFields).map(
+                          ([key, attributes]) => {
+                            const departmentObj = attributes[0];
+                            const isDepartmentAvailable = item[key] === "Yes" || key !== departmentObj?.attribute;
+
+                            if (key === "identification") return null;
+                            if (key === "staff_availability") return null;
+
+                            return (
+                              <Card style={styles.card} key={key}>
+                                <h3 style={styles.h3}>
+                                  <FormattedMessage
+                                    defaultMessage={startCase(key)}
+                                    id={startCase(key)}
+                                  />
+                                </h3>
+                                <CardBody>
+                                  <Row>
+
+                                    {key === departmentObj?.attribute && (
+                                      <TextView
+                                        attribute={departmentObj?.attribute}
+                                        title={departmentObj.title}
+                                        index={0}
+                                      />
+                                    )}
+
+                                    {attributes.map(
+                                      (
+                                        { title, attribute, type, ranking },
+                                        index
+                                      ) => {
+                                        let component = null;
+                                        let value = get(item, `${attribute}`);
+                                        
+                                        if (
+                                          !isDepartmentAvailable ||
+                                          attribute === key
+                                        ) {
+                                          return null;
+                                        }
+
+                                        switch (type) {
+                                          case "attachment":
+                                           value =
+                                              value instanceof FileUploadModal
+                                                ? value.images
+                                                : value;
+                                            component = !!value?.length && (
+                                              <Col
+                                                md="12"
+                                                sm="12"
+                                                className="mt-1"
+                                                key={index}
+                                              >
+                                                <p>
+                                                  <FormattedMessage
+                                                    id={title}
+                                                    defaultMessage={title}
+                                                  />
+                                                </p>
+                                                {value.map((item, index) => (
+                                                  <h4 key={index}>
+                                                    <a href={item}>{item}</a>
+                                                  </h4>
+                                                ))}
+                                              </Col>
+                                            );
+                                            break;
+
+                                          default:
+                                            component = (
+                                              <TextView
+                                                attribute={attribute}
+                                                title={title}
+                                                ranking={ranking}
+                                                index={index}
+                                              />
+                                            );
+                                        }
+
+                                        return (
+                                          <Fragment key={index + attribute}>
+                                            {component}
+                                            <NoOptions attribute={attribute} />
+                                          </Fragment>
+                                        );
+                                      }
+                                    )}
+                                  </Row>
+                                </CardBody>
+                              </Card>
+                            );
+                          }
+                        )}
+                    </CardBody>
+                  </Card>
+                </>
+              )}
+            </>
+          )}
+        </Col>
+      </Row>
+    </>
+  );
+}
+
+export default observer(InspectionDetails);
+
+const styles = {
+  loading: {
+    position: "absolute",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 10,
+    width: "100%",
+  },
+  spinner: {
+    height: 50,
+    width: 50,
+  },
+  link: {
+    color: "white",
+    fontWeight: "500",
+  },
+  card: {
+    borderRadius: "0px",
+    marginBottom: "5px",
+  },
+  h3: {
+    marginTop: "30px",
+    marginLeft: "20px",
+    marginRight: "20px",
+    fontWeight: "800",
+  },
+  border: {
+    borderRadius: "0px",
+    marginBottom: "5px",
+  },
+};

@@ -1,0 +1,32 @@
+.button-green {
+  background-color: #10a945 !important;
+  padding: 8px 13px;
+  border-radius: 5px;
+  margin: 0px 2px !important;
+  .icon {
+    margin-right: 5px;
+  }
+  &:active,
+  &:focus {
+    border: #10a945 1px solid !important;
+    background-color: white !important;
+    color: #10a945 !important;
+  }
+}
+
+.button-green-outline {
+  background-color: white !important;
+  margin: 0px 2px !important;
+  border: #10a945 1px solid !important;
+  color: #10a945 !important;
+  padding: 8px 13px;
+  border-radius: 5px;
+  .icon {
+    margin-right: 5px;
+  }
+  &:active,
+  &:focus {
+    background-color: #10a945 !important;
+    color: white !important;
+  }
+}
