@@ -27,7 +27,7 @@ const Breadcrumbs = () => {
         .filter((item) => item.pathname !== "/")
         .map(({ name, route, clickable }, index) => (
           <React.Fragment key={index}>
-            {index !== 0 && <span className="breadcrumb-separator">/</span>}
+            {index !== 0 && <span className="breadcrumb-separator"></span>}
             {/* <BreadcrumbItem>
               <Link
                 to={route}
