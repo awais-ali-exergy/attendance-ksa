@@ -4,31 +4,31 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
-import Flatpickr from 'react-flatpickr'
+import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
-
 
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 const AddEmployee = () => {
-
-    let parms = useParams();
-    let id = parseInt(parms.id);
-    if (isNaN(id)) id = 0;
-    const { t } = useTranslation();
-    const [userByFrim, setUserByFrim] = useState([]);
-    const [attTypes, setAttTypes] = useState([]);
+  const navigate = useNavigate();
+  let parms = useParams();
+  let id = parseInt(parms.id);
+  if (isNaN(id)) id = 0;
+  const { t } = useTranslation();
+  const [userByFrim, setUserByFrim] = useState([]);
+  const [attTypes, setAttTypes] = useState([]);
 
   const [picker, setPicker] = useState(new Date());
-  console.log('data is')
-const datecheck =(date)=>{
-    date => setPicker(date);
+  console.log("data is");
+  const datecheck = (date) => {
+    (date) => setPicker(date);
     console.log(picker);
-}
+  };
   const [userId, setUserId] = useState("");
-//   const [userTime, setUserTime] = React.useState(dayjs(new Date()));
-//   const [userDate, setUserDate] = React.useState(dayjs(new Date()));
+  //   const [userTime, setUserTime] = React.useState(dayjs(new Date()));
+  //   const [userDate, setUserDate] = React.useState(dayjs(new Date()));
 
   const [state, setState] = useState({
     userdate: "",
@@ -67,7 +67,7 @@ const datecheck =(date)=>{
             setAttTypes(data);
           }
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
@@ -117,7 +117,7 @@ const datecheck =(date)=>{
         // );
       });
   };
-  const saveAtt = async() => {
+  const saveAtt = async () => {
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -129,7 +129,6 @@ const datecheck =(date)=>{
     formdata.append("userId", userId);
     formdata.append("id", id);
 
-
     console.log(formdata);
 
     var requestOptions = {
@@ -139,16 +138,16 @@ const datecheck =(date)=>{
       redirect: "follow",
     };
 
-   await fetch(
+    await fetch(
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/SaveManual`,
       requestOptions
     )
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
@@ -162,7 +161,7 @@ const datecheck =(date)=>{
   const getattendanceById = async (id) => {
     // setIsLoading(true);
     if (id === 0) {
-    //   setIsLoading(false);
+      //   setIsLoading(false);
       return;
     }
     var myHeaders = new Headers();
@@ -195,14 +194,13 @@ const datecheck =(date)=>{
               userdate: data.createdOnDateByUser,
               usertime: data.createdOnTimeByUser,
               attendanceTypeId: data.attendanceTypeId,
-              
             });
             // setUserTime(dayjs(new Date(data.createdOnDateByUser)));
             // setUserDate(dayjs(new Date(data.createdOnTimeByUser)));
             setUserId(data.userId);
           }
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
@@ -221,117 +219,130 @@ const datecheck =(date)=>{
     getAttTypes();
   }, []);
 
+  const handleNavigation = () => {
+    navigate("/ViewAllAttendanceData");
+  };
 
-  return  (
+  const handleDateFormat = (selectedDates) => {
+    const selectedDate = selectedDates[0];
+    const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
 
-<Fragment>
-<Form id="attForm" onSubmit={() => saveAtt()}>
- 
-  <Row>
-  <Col md="6" className="mb-1">
-      <Label className="form-label" >
-        {t("Select Employee")}
-      </Label>
-      <Input
-        type="select"
-        id="userId"
-        name="userId"
-        value={state.userId}
-        onChange={handleChange}
-        placeholder="Select Employee"
-        
-      >
-        <option></option>
-         {userByFrim && userByFrim.length > 0
-                        ? userByFrim.map((obj, index) => (
-                            <option value={obj.id} key={obj.id}>{obj.label}</option>
-                          ))
-                        : null}
-                        
-      </Input>
-    </Col>
-  <Col md="6" className="mb-1">
-      <Label className="form-label" >
-        {t("Attendance Type")}
-      </Label>
-      <Input
-        type="select"
-        name="attendanceTypeId"
-        id="attendanceTypeId"
-        placeholder="Attendance Type"
-        value={state.attendanceTypeId}
-        onChange={handleChange}
-      >
-        <option></option>
-      {attTypes && attTypes.length > 0
-        ? attTypes.map((obj, index) => (
-            <option value={obj.id} key={obj.id}>{obj.label}</option>
-          ))
-        : null}
-      </Input>
-    </Col>
-    
-    
-    
-  </Row>
-  <Row>
-  <Col md="6" className="mb-1">
-  <Label className='form-label' for='date-time-picker'>
-  Attendance Date
-      </Label>
-      <Flatpickr
-        value={picker}
-        // altInput= {true}
-//   dateFormat= "YYYY-MM-DD"
-//   altFormat= "DD-MM-YYYY"
-//   allowInput= {true}
-dateFormat="Y-m-d"
-        id='date-time-picker'
-        className='form-control'
-        onChange={date => datecheck(date)}
-      />
-    </Col>
-    <Col md="6" className="mb-1">
-    <Label className='form-label' for='date-time-picker'>
-        Attendance Time
-      </Label>
-      <Flatpickr
-        value={picker}
-        // altInput= {true}
-//   dateFormat= "YYYY-MM-DD"
-//   altFormat= "DD-MM-YYYY"
-//   allowInput= {true}
-        id='date-time-picker'
-        className='form-control'
-        // onChange={date => setPicker(date)}
-      />
-    </Col>
-   
-    
-  </Row>
+    console.log(formattedDate);
+  };
 
+  const handleTimeFormat = (event) => {
+    const selectedDate = event.target.value;
+    const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
+    setPicker(selectedDate);
+    console.log(formattedTime);
+  };
 
+  return (
+    <Fragment>
+      <Form id="attForm" onSubmit={() => saveAtt()}>
+        <Row>
+          <Col md="6" className="mb-1">
+            <Label className="form-label">{t("Select Employee")}</Label>
+            <Input
+              type="select"
+              id="userId"
+              name="userId"
+              value={state.userId}
+              onChange={handleChange}
+              placeholder="Select Employee"
+            >
+              <option></option>
+              {userByFrim && userByFrim.length > 0
+                ? userByFrim.map((obj, index) => (
+                    <option value={obj.id} key={obj.id}>
+                      {obj.label}
+                    </option>
+                  ))
+                : null}
+            </Input>
+          </Col>
+          <Col md="6" className="mb-1">
+            <Label className="form-label">{t("Attendance Type")}</Label>
+            <Input
+              type="select"
+              name="attendanceTypeId"
+              id="attendanceTypeId"
+              placeholder="Attendance Type"
+              value={state.attendanceTypeId}
+              onChange={handleChange}
+            >
+              <option></option>
+              {attTypes && attTypes.length > 0
+                ? attTypes.map((obj, index) => (
+                    <option value={obj.id} key={obj.id}>
+                      {obj.label}
+                    </option>
+                  ))
+                : null}
+            </Input>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="6" className="mb-1">
+            <Label className="form-label" for="date-time-picker">
+              Attendance Date
+            </Label>
+            <Flatpickr
+              value={picker}
+              // altInput= {true}
+              //   dateFormat= "YYYY-MM-DD"
+              //   altFormat= "DD-MM-YYYY"
+              //   allowInput= {true}
+              dateFormat="Y-m-d"
+              id="date-time-picker"
+              className="form-control"
+              onChange={(event) => handleDateFormat(event)}
+            />
+          </Col>
+          <Col md="6" className="mb-1">
+            <Label className="form-label" for="date-time-picker">
+              Attendance Time
+            </Label>
+            {/* <Flatpickr
+              value={picker}
+              // altInput= {true}
+              //   dateFormat= "YYYY-MM-DD"
+              //   altFormat= "DD-MM-YYYY"
+              //   allowInput= {true}
+              id="date-time-picker"
+              className="form-control"
+              // onChange={date => setPicker(date)}
+            /> */}
+            <Input
+              value={picker}
+              type="time" // Set type to "time"
+              id="time-picker" // Unique identifier
+              className="form-control"
+              onChange={(event) => handleTimeFormat(event)}
+            />
+          </Col>
+        </Row>
 
-  <div className="d-flex justify-content-between">
-    <Button color="secondary" className="btn-prev" outline >
-     
-      <span className="align-middle d-sm-inline-block d-none">
-       View
-      </span>
-    </Button>
-    <Button
-    type="submit"
-      color="primary"
-      className="btn-next"
-    //   onClick={}
-    >
-      <span className="align-middle d-sm-inline-block d-none">Save</span>
-     
-    </Button>
-  </div>
-</Form>
-</Fragment>
-
+        <div className="d-flex justify-content-between">
+          <Button
+            color="secondary"
+            className="btn-prev"
+            outline
+            onClick={() => handleNavigation()}
+          >
+            <span className="align-middle d-sm-inline-block d-none">View</span>
+          </Button>
+          <Button
+            type="submit"
+            color="primary"
+            className="btn-next"
+            //   onClick={}
+          >
+            <span className="align-middle d-sm-inline-block d-none">Save</span>
+          </Button>
+        </div>
+      </Form>
+    </Fragment>
   );
 };
 export default AddEmployee;
