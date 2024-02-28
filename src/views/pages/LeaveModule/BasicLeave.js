@@ -1,83 +1,40 @@
 // ** React Imports
-import { useState, useEffect, useRef, Fragment } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState,useEffect, useRef, Fragment } from "react";
+import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
-
 import Flatpickr from 'react-flatpickr'
 import { useParams } from "react-router-dom";
 
-
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
-const AddEmployee = () => {
 
+const AddEmployee = () => {
     let parms = useParams();
     let id = parseInt(parms.id);
     if (isNaN(id)) id = 0;
     const { t } = useTranslation();
     const [userByFrim, setUserByFrim] = useState([]);
-    const [attTypes, setAttTypes] = useState([]);
+  const [leaveTypes, setLeaveTypes] = useState([]);
+
 
   const [picker, setPicker] = useState(new Date());
-  console.log('data is')
-const datecheck =(date)=>{
-    date => setPicker(date);
-    console.log(picker);
-}
+  // console.log('data is')
+
   const [userId, setUserId] = useState("");
 //   const [userTime, setUserTime] = React.useState(dayjs(new Date()));
 //   const [userDate, setUserDate] = React.useState(dayjs(new Date()));
-
   const [state, setState] = useState({
-    userdate: "",
-    usertime: "",
-    attendanceTypeId: "",
-    userId: "",
+    userdate:"",
+    usertime:"",
+    attendanceTypeId:"",
+    userId:"",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const getAttTypes = async () => {
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-    );
-
-    var formdata = new FormData();
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetAttendanceTypesDropdown`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.SUCCESS === 1) {
-          let data = result.DATA;
-          if (data) {
-            setAttTypes(data);
-          }
-        } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
-      });
-  };
+ 
   const getUsers = async () => {
     var myHeaders = new Headers();
     myHeaders.append(
@@ -98,55 +55,13 @@ const datecheck =(date)=>{
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetUsersDropdownByFirm`,
       requestOptions
     )
-      .then((response) => response.json())
+      .then((response) =>response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
           let data = result.DATA;
           if (data) {
             setUserByFrim(data);
           }
-        } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
-      });
-  };
-  const saveAtt = async() => {
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-    );
-
-    var formdata = new FormData(document.getElementById("attForm"));
-
-    formdata.append("userId", userId);
-    formdata.append("id", id);
-
-
-    console.log(formdata);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-   await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/SaveManual`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.SUCCESS === 1) {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
         } else {
         //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
@@ -159,10 +74,91 @@ const datecheck =(date)=>{
         // );
       });
   };
-  const getattendanceById = async (id) => {
+  const saveLeave = async() => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
+
+    var formdata = new FormData(document.getElementById("leaveForm"));
+
+    formdata.append("userId", userId);
+    formdata.append("id", id);
+
+    console.log(formdata);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+   await fetch(
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Leaves/Save`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.SUCCESS === 1) {
+          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+        } else {
+          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        // handleOpenSnackbar(
+        //   "Failed to fetch ! Please try Again later.",
+        //   "error"
+        // );
+      });
+  };
+  const getLeaveTypes = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
+
+    var formdata = new FormData();
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    await fetch(
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Leaves/GetLeaveTypesDropdown`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.SUCCESS === 1) {
+          let data = result.DATA;
+          if (data) {
+            setLeaveTypes(data);
+          }
+        } else {
+          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        // handleOpenSnackbar(
+        //   "Failed to fetch ! Please try Again later.",
+        //   "error"
+        // );
+      });
+  };
+ 
+  const getLeaveById = async (id) => {
     // setIsLoading(true);
     if (id === 0) {
-    //   setIsLoading(false);
+      // setIsLoading(false);
       return;
     }
     var myHeaders = new Headers();
@@ -182,7 +178,7 @@ const datecheck =(date)=>{
     };
 
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetManualByIdAndFirm`,
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Leaves/GetByIdAndFirm`,
       requestOptions
     )
       .then((response) => response.json())
@@ -192,17 +188,17 @@ const datecheck =(date)=>{
           let data = result.DATA;
           if (data) {
             setState({
-              userdate: data.createdOnDateByUser,
+              leaveReason: data.leaveReason,
               usertime: data.createdOnTimeByUser,
-              attendanceTypeId: data.attendanceTypeId,
+              leaveTypeId: data.leaveTypeId,
               
             });
-            // setUserTime(dayjs(new Date(data.createdOnDateByUser)));
-            // setUserDate(dayjs(new Date(data.createdOnTimeByUser)));
+            // setStartOnDate(dayjs(new Date(data.startOnDate)));
+            // setEndOnDate(dayjs(new Date(data.endOnDate)));
             setUserId(data.userId);
           }
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
@@ -214,18 +210,16 @@ const datecheck =(date)=>{
       });
     // setIsLoading(false);
   };
-
   useEffect(() => {
-    getattendanceById(id);
+    getLeaveById(id);
+    getLeaveTypes();
     getUsers();
-    getAttTypes();
   }, []);
-
 
   return  (
 
 <Fragment>
-<Form id="attForm" onSubmit={() => saveAtt()}>
+<Form id="employeedata" onSubmit={() => saveLeave()}>
  
   <Row>
   <Col md="6" className="mb-1">
@@ -252,19 +246,19 @@ const datecheck =(date)=>{
     </Col>
   <Col md="6" className="mb-1">
       <Label className="form-label" >
-        {t("Attendance Type")}
+        {t("Leave Type")}
       </Label>
       <Input
         type="select"
-        name="attendanceTypeId"
-        id="attendanceTypeId"
-        placeholder="Attendance Type"
+        name="leaveTypeId"
+        id="leaveTypeId"
+        placeholder="Leave Type"
         value={state.attendanceTypeId}
         onChange={handleChange}
       >
         <option></option>
-      {attTypes && attTypes.length > 0
-        ? attTypes.map((obj, index) => (
+      {leaveTypes && leaveTypes.length > 0
+        ? leaveTypes.map((obj, index) => (
             <option value={obj.id} key={obj.id}>{obj.label}</option>
           ))
         : null}
@@ -277,7 +271,7 @@ const datecheck =(date)=>{
   <Row>
   <Col md="6" className="mb-1">
   <Label className='form-label' for='date-time-picker'>
-  Attendance Date
+  Leave Date
       </Label>
       <Flatpickr
         value={picker}
@@ -285,15 +279,14 @@ const datecheck =(date)=>{
 //   dateFormat= "YYYY-MM-DD"
 //   altFormat= "DD-MM-YYYY"
 //   allowInput= {true}
-dateFormat="Y-m-d"
         id='date-time-picker'
         className='form-control'
-        onChange={date => datecheck(date)}
+        // onChange={date => setPicker(date)}
       />
     </Col>
     <Col md="6" className="mb-1">
     <Label className='form-label' for='date-time-picker'>
-        Attendance Time
+        Leave Time
       </Label>
       <Flatpickr
         value={picker}
@@ -308,6 +301,23 @@ dateFormat="Y-m-d"
     </Col>
    
     
+  </Row>
+  <Row>
+    
+  <Col md="12" className="mb-1">
+      <Label className="form-label" >
+        {t("Leave Reason")}
+      </Label>
+      <Input
+        id="leaveReason"
+        name="leaveReason"
+        autoComplete="family-name"
+        value={state.lastName}
+        onChange={handleChange}
+        
+        placeholder="Leave Reason"
+      />
+    </Col>
   </Row>
 
 
@@ -331,7 +341,6 @@ dateFormat="Y-m-d"
   </div>
 </Form>
 </Fragment>
-
   );
 };
 export default AddEmployee;

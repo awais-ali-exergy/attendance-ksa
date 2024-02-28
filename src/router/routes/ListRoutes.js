@@ -13,15 +13,12 @@ const CreditSlip = lazy(() =>
   import("../../views/pages/discountsAndPromo/CreditSlip")
 );
 // Administrator
-const NewOutletRequest = lazy(() =>
-  import("../../views/pages/administrator/NewOutletRequest")
-);
-const AddEmployee = lazy(() =>
-  import("../../views/pages/Employee/AddEmployee/AddEmployee")
-);
-const AdminManualAttendance = lazy(() =>
-  import("../../views/pages/ManualAttendance/AdminManualAttendance")
-);
+
+const NewOutletRequest = lazy(() => import("../../views/pages/administrator/NewOutletRequest"));
+const AddEmployee = lazy(() => import("../../views/pages/Employee/AddEmployee/AddEmployee"));
+const AdminManualAttendance = lazy(() => import("../../views/pages/ManualAttendance/AdminManualAttendance"));
+const BasicLeave = lazy(() => import("../../views/pages/LeaveModule/BasicLeave"));
+
 const ViewAllEmployeesData = lazy(() =>
   import("../../views/pages/Employee/ViewAllEmployees/ViewAllEmployeesData")
 );
@@ -30,6 +27,7 @@ const ViewAllAttendanceData = lazy(() =>
     "../../views/pages/ManualAttendance/ViewAttendanceData/ViewAttendanceData"
   )
 );
+
 const Page404 = lazy(() => import("../../views/pages/Other/Page404"));
 
 const ListRoutes = [
@@ -134,11 +132,19 @@ const ListRoutes = [
     title: "AddEmployee",
   },
   {
+    element: <BasicLeave />,
+    path: "/MainDashboard/BasicLeave",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
     element: <ViewAllAttendanceData />,
     path: "/view-all-attendance-data",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
+
   },
   // {
   //   element: <Page404 />,
