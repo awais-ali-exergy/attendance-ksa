@@ -144,7 +144,9 @@ var navigationLinks = [
     title: "Employee Module",
     icon: () => Users,
     navLink: "/new_outlet_request",
-    navLink: "/Module/" + 102,
+
+    navLink: "/Module/"+102,
+
   },
   {
     id: "targets",

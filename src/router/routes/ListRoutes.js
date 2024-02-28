@@ -12,6 +12,8 @@ const Slip = lazy(() => import("../../views/pages/discountsAndPromo/Slip"));
 const CreditSlip = lazy(() => import("../../views/pages/discountsAndPromo/CreditSlip"));
 // Administrator
 const NewOutletRequest = lazy(() => import("../../views/pages/administrator/NewOutletRequest"));
+const AddEmployee = lazy(() => import("../../views/pages/Employee/AddEmployee/AddEmployee"));
+const AdminManualAttendance = lazy(() => import("../../views/pages/ManualAttendance/AdminManualAttendance"));
 const Page404 = lazy(() => import("../../views/pages/Other/Page404"));
 
 const ListRoutes = [
@@ -51,6 +53,7 @@ const ListRoutes = [
     slug: "production",
     title: "production",
   },
+  
   {
     element: <Production />,
     path: "/grn",
@@ -92,6 +95,20 @@ const ListRoutes = [
     route: "new_outlet_request",
     slug: "new_outlet_request",
     title: "new_outlet_request",
+  },
+  {
+    element: <AddEmployee />,
+    path: "/MainDashboard/AddEmployee",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
+    element: <AdminManualAttendance />,
+    path: "/MainDashboard/AdminManualAttendance",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
   },
   // {
   //   element: <Page404 />,

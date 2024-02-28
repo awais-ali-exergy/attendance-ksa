@@ -73,7 +73,7 @@ const Production = () => {
   }, [groupId]);
 
   const dispatch = useDispatch();
-
+const href = window.location.href
   return true ? (
     <>
       <div
@@ -94,7 +94,7 @@ const Production = () => {
           <>
         <Col md="6" xl="4" xs="6" key={obj.featureId}>
           <Card className="bg-transparent border-primary cursor-pointer">
-            <Link to={`/new_outlet_request`}>
+            <Link to={`${obj.featureUrl}`}>
               <CardBody>
                 <CardTitle tag="h4"> {obj.featureLabel}</CardTitle>
                 <CardText>

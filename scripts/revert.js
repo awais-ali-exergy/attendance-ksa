@@ -12,6 +12,10 @@ fs.unlinkSync(`../src/views/pages/List/${moduleName}.js`);
 fs.unlinkSync(`../src/views/pages/Show/${moduleName}.js`);
 fs.rmdirSync(`../src/views/pages/Add/${moduleName}`, { recursive: true });
 
+
+
+
+
 // Remove the changes made to other files
 const pagesFilePath = "../src/navigation/vertical/pages.js";
 const pagesFileContent = fs.readFileSync(pagesFilePath, "utf8");

@@ -113,14 +113,14 @@ const Wizard = forwardRef((props, ref) => {
         "wizard-modern": type === "modern-horizontal",
       })}
     >
-      <div
+      {/* <div
         style={{ paddingLeft: 10, paddingRight: 10}}
         className={classnames("bs-stepper-header", {
           [headerClassName]: headerClassName,
         })}
       >
         {renderHeader()}
-      </div>
+      </div> */}
       <div
         className={classnames("bs-stepper-content", {
           [contentWrapperClassName]: contentWrapperClassName,
