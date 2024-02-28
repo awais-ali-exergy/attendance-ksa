@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-
 const styles = {
   bgHeading: {
     background: "#10a945",
@@ -27,13 +26,13 @@ const styles = {
     textAlign: "center",
   },
 };
-const ViewAllEmployeesData = () => {
-  const [attendance, setAttendance] = useState([]);
-  const getAllAtt = async () => {
+const BasicLeaveDataList = () => {
+  const [leaves, setLeaves] = useState([]);
+  const getAllLeave = async () => {
     // setIsLoading(true);
 
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetAllManualByFirm`,
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Leaves/GetAllByFirm`,
       {
         method: "POST",
         headers: {
@@ -45,32 +44,31 @@ const ViewAllEmployeesData = () => {
     )
       .then((response) => {
         if (response.status === 401) {
-          <Logout />;
+          //   <Logout />;
         }
         return response.json();
       })
       .then((result) => {
         console.log(result);
         if (result.SUCCESS === 1) {
-          setAttendance(result.DATA);
+          setLeaves(result.DATA);
         } else {
-          handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenSnackbar(
-          "Failed to fetch ! Please try Again later.",
-          "error"
-        );
+        // handleOpenSnackbar(
+        //   "Failed to fetch ! Please try Again later.",
+        //   "error"
+        // );
       });
     // setIsLoading(false);
   };
-
-  const editBranch = (id) => {
-    window.location.replace("#/MainDashboard/AdminManualAttendance/" + id);
-  };
-  const delAttendance = async (id) => {
+  //   const editLeave = (id) => {
+  //     window.location.replace("/MainDashboard/BasicLeave/" + id);
+  //   };
+  const deleteLeave = async (id) => {
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -88,7 +86,7 @@ const ViewAllEmployeesData = () => {
     };
 
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/DeleteByIdAndFirm`,
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Leaves/DeleteByIdAndFirm`,
       requestOptions
     )
       .then((response) => {
@@ -99,25 +97,24 @@ const ViewAllEmployeesData = () => {
       })
       .then((result) => {
         if (result.SUCCESS === 1) {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
-          // window.location.reload();
+          handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+
+          window.location.reload();
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenSnackbar(
+          "Failed to fetch ! Please try Again later.",
+          "error"
+        );
       });
   };
-
   useEffect(() => {
-    getAllAtt();
+    getAllLeave();
   }, []);
-
   return (
     <div className="table-responsive">
       <table className="table table-striped">
@@ -127,13 +124,16 @@ const ViewAllEmployeesData = () => {
               Employee Name
             </th>
             <th scope="col" style={styles.bgHeading}>
-              Attendance Type
+              Leave Type
             </th>
             <th scope="col" style={styles.bgHeading}>
-              Date
+              Start Date
             </th>
             <th scope="col" style={styles.bgHeading}>
-              Time
+              End Date
+            </th>
+            <th scope="col" style={styles.bgHeading}>
+              Leave Reason
             </th>
             <th scope="col" style={styles.bgHeading}>
               Action
@@ -141,27 +141,24 @@ const ViewAllEmployeesData = () => {
           </tr>
         </thead>
         <tbody>
-          {attendance.length !== 0 &&
-            attendance.map((item) => (
+          {leaves.length !== 0 &&
+            leaves?.map((item) => (
               <tr key={item.id}>
                 <td style={styles.pad_Col}>{item.userLabel}</td>
                 <td style={styles.pad_Col}>{item.attendanceTypeLabel}</td>
-                <td style={styles.pad_Col}>
-                  {item.createdOnByUserDateDisplay}
-                </td>
-                <td style={styles.pad_Col}>
-                  {item.createdOnByUserTimeDisplay}
-                </td>
+                <td style={styles.pad_Col}>{item.startOnDateDisplay}</td>
+                <td style={styles.pad_Col}>{item.endOnDateDisplay}</td>
+                <td style={styles.pad_Col}>{item.leaveReason}</td>
                 <td style={styles.btnSpacing}>
                   <button
                     style={styles.btnStyle}
-                    onClick={() => editBranch(row.id)}
+                    onClick={() => editBranch(item.id)}
                   >
                     <MdModeEdit size={25} />
                   </button>
                   <button
                     style={styles.btnStyle}
-                    onClick={() => delAttendance(row.id)}
+                    onClick={() => deleteLeave(item.id)}
                   >
                     <MdDelete size={25} />
                   </button>
@@ -174,4 +171,4 @@ const ViewAllEmployeesData = () => {
   );
 };
 
-export default ViewAllEmployeesData;
+export default BasicLeaveDataList;
