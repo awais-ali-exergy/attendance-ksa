@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 const AddEmployee = () => {
-
+    const navigate = useNavigate()
     let parms = useParams();
     let id = parseInt(parms.id);
     if (isNaN(id)) id = 0;
@@ -221,6 +221,10 @@ const datecheck =(date)=>{
     getAttTypes();
   }, []);
 
+  const handleNavigation = () => {
+    navigate("/view-all-attendance-data")
+  }
+
 
   return  (
 
@@ -313,7 +317,7 @@ dateFormat="Y-m-d"
 
 
   <div className="d-flex justify-content-between">
-    <Button color="secondary" className="btn-prev" outline >
+    <Button color="secondary" className="btn-prev" outline onClick={() => handleNavigation()}>
      
       <span className="align-middle d-sm-inline-block d-none">
        View

@@ -22,7 +22,7 @@ import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 const AddEmployee = () => {
   const { t } = useTranslation();
   const [designation, setDesignation] = useState([]);
-
+  const [manager, setManager] = useState(null);
   const [department, setDepartment] = useState([]);
   const [braches, setBraches] = useState([]);
   const [picker, setPicker] = useState(new Date());
@@ -288,6 +288,9 @@ const AddEmployee = () => {
     //       </div>
     //     </Alert>
     <Fragment>
+        <Row>
+            <Col md="11" className="mb-1"></Col>
+        </Row>
       <Form id="employeedata" onSubmit={() => saveEmployee()}>
         <Row>
           <Col md="4" className="mb-1">
