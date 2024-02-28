@@ -62,7 +62,6 @@ const Sidebar = (props) => {
   };
   let type = user?.type?.toLowerCase();
 
-
   return (
     <Fragment>
       <div

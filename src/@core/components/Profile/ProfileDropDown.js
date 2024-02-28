@@ -12,7 +12,7 @@ import "./style.scss";
 import { getRoleLabel } from "../../../views/wasfaty/services/AuthService";
 const UserDropdown = ({ logOut, profile }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const userData =JSON.parse(localStorage.getItem("AtouBeatXData"));
+  const userData = JSON.parse(localStorage.getItem("AtouBeatXData"));
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
