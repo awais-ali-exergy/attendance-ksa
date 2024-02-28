@@ -1,16 +1,18 @@
 // ** React Imports
-import { useState,useEffect, useRef, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef, Fragment } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
+
 import Flatpickr from 'react-flatpickr'
 import { useParams } from "react-router-dom";
 
+
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
-
 const AddEmployee = () => {
+
     let parms = useParams();
     let id = parseInt(parms.id);
     if (isNaN(id)) id = 0;
@@ -27,11 +29,12 @@ const datecheck =(date)=>{
   const [userId, setUserId] = useState("");
 //   const [userTime, setUserTime] = React.useState(dayjs(new Date()));
 //   const [userDate, setUserDate] = React.useState(dayjs(new Date()));
+
   const [state, setState] = useState({
-    userdate:"",
-    usertime:"",
-    attendanceTypeId:"",
-    userId:"",
+    userdate: "",
+    usertime: "",
+    attendanceTypeId: "",
+    userId: "",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -56,7 +59,7 @@ const datecheck =(date)=>{
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetAttendanceTypesDropdown`,
       requestOptions
     )
-      .then((response) =>  response.json())
+      .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
           let data = result.DATA;
@@ -95,7 +98,7 @@ const datecheck =(date)=>{
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetUsersDropdownByFirm`,
       requestOptions
     )
-      .then((response) =>response.json())
+      .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
           let data = result.DATA;
@@ -103,7 +106,7 @@ const datecheck =(date)=>{
             setUserByFrim(data);
           }
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
@@ -125,6 +128,7 @@ const datecheck =(date)=>{
 
     formdata.append("userId", userId);
     formdata.append("id", id);
+
 
     console.log(formdata);
 
@@ -210,11 +214,13 @@ const datecheck =(date)=>{
       });
     // setIsLoading(false);
   };
+
   useEffect(() => {
     getattendanceById(id);
     getUsers();
     getAttTypes();
   }, []);
+
 
   return  (
 
@@ -325,6 +331,7 @@ dateFormat="Y-m-d"
   </div>
 </Form>
 </Fragment>
+
   );
 };
 export default AddEmployee;
