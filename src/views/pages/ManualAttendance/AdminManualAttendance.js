@@ -12,13 +12,15 @@ import { useParams } from "react-router-dom";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 const AddEmployee = () => {
-  const navigate = useNavigate();
-  let parms = useParams();
-  let id = parseInt(parms.id);
-  if (isNaN(id)) id = 0;
-  const { t } = useTranslation();
-  const [userByFrim, setUserByFrim] = useState([]);
-  const [attTypes, setAttTypes] = useState([]);
+
+    const navigate = useNavigate()
+    let parms = useParams();
+    let id = parseInt(parms.id);
+    if (isNaN(id)) id = 0;
+    const { t } = useTranslation();
+    const [userByFrim, setUserByFrim] = useState([]);
+    const [attTypes, setAttTypes] = useState([]);
+
 
   const [picker, setPicker] = useState(new Date());
   console.log("data is");
@@ -220,8 +222,10 @@ const AddEmployee = () => {
   }, []);
 
   const handleNavigation = () => {
+
     navigate("/ViewAllAttendanceData");
   };
+
 
   const handleDateFormat = (selectedDates) => {
     const selectedDate = selectedDates[0];
@@ -236,6 +240,7 @@ const AddEmployee = () => {
     setPicker(selectedDate);
     console.log(formattedTime);
   };
+
 
   return (
     <Fragment>

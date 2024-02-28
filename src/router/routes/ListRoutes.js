@@ -35,6 +35,16 @@ const ViewAllAttendanceData = lazy(() =>
     "../../views/pages/ManualAttendance/ViewAttendanceData/ViewAttendanceData"
   )
 );
+const FirmManagement = lazy(() =>
+  import(
+    "../../views/pages/FirmManagment/FirmManagement"
+  )
+);
+const AddStoreLocation = lazy(() =>
+  import(
+    "../../views/pages/AddStoreLocation/AddStoreLocation"
+  )
+);
 
 const ViewAllLeavesData = lazy(() =>
   import("../../views/pages/LeaveModule/BasicLeaveData/BasicLeaveDataList")
@@ -195,6 +205,22 @@ const ListRoutes = [
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
+  },
+  {
+    element: <FirmManagement />,
+    path: "/MainDashboard/AddCompanies",
+    route: "ViewAllAttendance",
+    slug: "ViewAllAttendance",
+    title: "ViewAllAttendance",
+
+  },
+  {
+    element: <AddStoreLocation />,
+    path: "/MainDashboard/AddStoreLocation",
+    route: "ViewAllAttendance",
+    slug: "ViewAllAttendance",
+    title: "ViewAllAttendance",
+
   },
   // {
   //   element: <Page404 />,
