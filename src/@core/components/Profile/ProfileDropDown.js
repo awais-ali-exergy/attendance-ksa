@@ -30,7 +30,7 @@ const UserDropdown = ({ logOut, profile }) => {
           <div className="d-flex ">
             <Avatar img={avatarImg} imgHeight="45" imgWidth="43" />
             <div className="user">
-              <h4 className="m-0 user-name">{userData.DATA.firstName+" "+userData.DATA.lastName}</h4>
+              {/* <h4 className="m-0 user-name">{userData.DATA.firstName+" "+userData.DATA.lastName}</h4> */}
               <small className="user-status">
                 N/A
                 {/* Sr. React Developer */}
