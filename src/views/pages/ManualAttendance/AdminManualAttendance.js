@@ -23,6 +23,8 @@ const AddEmployee = () => {
 
 
   const [picker, setPicker] = useState(new Date());
+  const [userTime, setUserTime] = useState(new Date());
+  const [userDate, setUserDate] = useState(new Date());
   console.log("data is");
   const datecheck = (date) => {
     (date) => setPicker(date);
@@ -127,9 +129,9 @@ const AddEmployee = () => {
     );
 
     var formdata = new FormData(document.getElementById("attForm"));
-
-    formdata.append("userId", userId);
     formdata.append("id", id);
+    formdata.append("createdOnDateByUser",state.userdate );
+    formdata.append("createdOnTimeByUser",state.usertime );
 
     console.log(formdata);
 
@@ -161,6 +163,7 @@ const AddEmployee = () => {
       });
   };
   const getattendanceById = async (id) => {
+   
     // setIsLoading(true);
     if (id === 0) {
       //   setIsLoading(false);
@@ -192,14 +195,18 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           let data = result.DATA;
           if (data) {
+            console.log(data);
             setState({
               userdate: data.createdOnDateByUser,
               usertime: data.createdOnTimeByUser,
               attendanceTypeId: data.attendanceTypeId,
+              userId: data.userId
             });
-            // setUserTime(dayjs(new Date(data.createdOnDateByUser)));
-            // setUserDate(dayjs(new Date(data.createdOnTimeByUser)));
-            setUserId(data.userId);
+           
+            setUserTime(moment(data.createdOnByUserTimeDisplay, 'hh:mm a').format('HH:mm'));
+            setUserDate(new Date(data.createdOnDateByUser));
+
+            
           }
         } else {
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
@@ -229,16 +236,29 @@ const AddEmployee = () => {
 
   const handleDateFormat = (selectedDates) => {
     const selectedDate = selectedDates[0];
+    setUserDate(selectedDate)
     const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
-
+    setState({
+        ...state,
+        userdate: formattedDate
+    })
     console.log(formattedDate);
   };
 
   const handleTimeFormat = (event) => {
+
     const selectedDate = event.target.value;
-    const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
+    setUserTime(selectedDate)
+  
     setPicker(selectedDate);
-    console.log(formattedTime);
+
+    const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
+   
+    setState({
+        ...state,
+        usertime: formattedTime
+    })
+ 
   };
 
 
@@ -293,7 +313,7 @@ const AddEmployee = () => {
               Attendance Date
             </Label>
             <Flatpickr
-              value={picker}
+              value={userDate}
               // altInput= {true}
               //   dateFormat= "YYYY-MM-DD"
               //   altFormat= "DD-MM-YYYY"
@@ -308,18 +328,9 @@ const AddEmployee = () => {
             <Label className="form-label" for="date-time-picker">
               Attendance Time
             </Label>
-            {/* <Flatpickr
-              value={picker}
-              // altInput= {true}
-              //   dateFormat= "YYYY-MM-DD"
-              //   altFormat= "DD-MM-YYYY"
-              //   allowInput= {true}
-              id="date-time-picker"
-              className="form-control"
-              // onChange={date => setPicker(date)}
-            /> */}
+           
             <Input
-              value={picker}
+              value={userTime}
               type="time" // Set type to "time"
               id="time-picker" // Unique identifier
               className="form-control"
@@ -343,7 +354,7 @@ const AddEmployee = () => {
             className="btn-next"
             //   onClick={}
           >
-            <span className="align-middle d-sm-inline-block d-none">Save</span>
+            <span className="align-middle d-sm-inline-block d-none">{id!==0?"Update":"Save"}</span>
           </Button>
         </div>
       </Form>
