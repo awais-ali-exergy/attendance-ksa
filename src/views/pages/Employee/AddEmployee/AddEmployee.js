@@ -22,7 +22,7 @@ import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 const AddEmployee = () => {
   const { t } = useTranslation();
   const [designation, setDesignation] = useState([]);
-  const [manager, setManager] = useState(null);
+  const [employees, setEmployees] = useState([]);
   const [department, setDepartment] = useState([]);
   const [braches, setBraches] = useState([]);
   const [picker, setPicker] = useState(new Date());
@@ -65,6 +65,7 @@ const AddEmployee = () => {
     bankAccountNo: "",
     typeId: 0,
     reportingToUserId: "",
+    editEmployeeId:"",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -176,6 +177,108 @@ const AddEmployee = () => {
         // );
       });
   };
+  const getemployeeData = () => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
+
+    var formdata = new FormData();
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Users/GetUsersDropDownByFirm`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.SUCCESS === 1) {
+          setEmployees(result.DATA);
+        } else {
+        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        // handleOpenSnackbar(
+        //   "Failed to fetch ! Please try Again later.",
+        //   "error"
+        // );
+      });
+  };
+  const getEmployeeDataBySelect = async (empid) => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
+
+    var formdata = new FormData();
+    formdata.append("id", empid);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    await fetch(
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Users/GetWithCustomFieldsById`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.SUCCESS === 1) {
+          let data = result.DATA;
+          console.log(result.DATA);
+          if (data) {
+            // debugger;
+            setState({
+              userId: data.id,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email,
+              firmId: data.firmId,
+              departmentId: data.departmentId,
+              designationId: data.designationId,
+              contactNo: data.contactNo,
+              branchId: data.branchId,
+              cnicNo: data.cnicNo,
+              bankAccountNo: data.bankAccountNo,
+              isAccountNonLocked: data.isAccountNonLocked,
+              typeId: data.typeId,
+              reportingToUserId:data.reportingToUserId,
+            });
+            // if(data.reportingToUserId!=null && data.reportingToUserId!=0){
+            //   var managerObj = employees.find(obj => { return obj.id == data.reportingToUserId });
+            //   if(managerObj){
+            //     setManager(managerObj);
+            //   } else {
+            //     setManager(null);
+            //   }
+            // }
+            setCustomFields([...data.customFields]);
+          }
+        } else {
+        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        // handleOpenSnackbar(
+        //   "Failed to fetch ! Please try Again later.",
+        //   "error"
+        // );
+      });
+  };
   const saveEmployee = async () => {
     var pass = document.getElementById("password").value;
     var confirmpass = document.getElementById("confirmPassword").value;
@@ -254,7 +357,7 @@ const AddEmployee = () => {
     }
   };
   useEffect(() => {
-    // getemployeeData();
+    getemployeeData();
     getBranches();
     getDesignation();
     getDepartments();
@@ -266,30 +369,38 @@ const AddEmployee = () => {
   };
 
   return (
-    //     <div className="vertical-wizard">
-    //       <Wizard
-    //         type="vertical"
-    //         ref={ref}
-    //         steps={steps}
-    //         options={{
-    //           linear: false,
-    //         }}
-    //         instance={(el) => {
-    //           setStepper(el);
-    //         }}
-    //       />
-    //     </div>
-    //   ) : (
-    //     <Alert color="danger">
-    //       <h4 className="alert-heading">User not found</h4>
-    //       <div className="alert-body">
-    //         User doesn't exist. Check list of all Users:{" "}
-    //         <Link to="/apps/user/list">Users List</Link>
-    //       </div>
-    //     </Alert>
+   
     <Fragment>
         <Row>
-            <Col md="11" className="mb-1"></Col>
+            <Col md="11" className="mb-1">
+            <Label className="form-label">{t("Select Employee")}</Label>
+            <Input
+              type="select"
+              id="editEmployeeId"
+              name="editEmployeeId"
+              value={state.editEmployeeId}
+              onChange={handleChange}
+              placeholder="Select Employee"
+            >
+                <option></option>
+              {employees && employees.length > 0
+                ? employees.map((obj, index) => (
+                    <option value={obj.id} key={obj.id}>
+                      {obj.label}
+                    </option>
+                  ))
+                : null}
+            </Input>
+            </Col>
+            <Col md="1" className="my-2 ">
+            <Button
+            color="primary"
+            className="btn-next"
+            onClick={() => getEmployeeDataBySelect(state.editEmployeeId)}
+          >
+            <span className="align-middle d-sm-inline-block d-none">Edit</span>
+          </Button>
+          </Col>
         </Row>
       <Form id="employeedata" onSubmit={() => saveEmployee()}>
         <Row>
@@ -371,6 +482,7 @@ const AddEmployee = () => {
               value={state.departmentId}
               onChange={handleChange}
             >
+                <option></option>
               {department && department.length > 0
                 ? department.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
@@ -391,6 +503,7 @@ const AddEmployee = () => {
               onChange={handleChange}
               placeholder="Designation"
             >
+                <option></option>
               {designation && designation.length > 0
                 ? designation.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
@@ -411,6 +524,7 @@ const AddEmployee = () => {
               label="Branch"
               placeholder="Branch"
             >
+                <option></option>
               {braches && braches.length > 0
                 ? braches.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
@@ -454,61 +568,32 @@ const AddEmployee = () => {
               onChange={handleChange}
               placeholder="Repoting To"
             >
-              <option></option>
-              <option>456</option>
+                <option></option>
+              {employees && employees.length > 0
+                ? employees.map((obj, index) => (
+                    <option value={obj.id} key={obj.id}>
+                      {obj.label}
+                    </option>
+                  ))
+                : null}
             </Input>
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label">{t("User Status")}</Label>
             <Input
               type="select"
-              name="typeId"
-              id="typeId"
-              value={state.typeId}
+              name="isAccountNonLocked"
+              id="isAccountNonLocked"
+              value={state.isAccountNonLocked}
               onChange={handleChange}
               placeholder="User Status"
             >
-              <option></option>
-              <option>789</option>
+              <option value={0}>block</option>
+              <option value={1}>Active</option>
             </Input>
           </Col>
         </Row>
-        {/* <Row>
-    <Col md="4" className="mb-1">
-      <Label className="form-label" >
-        {t("New Outlet Request")}
-      </Label>
-      <Input
-        type="text"
-        
 
-        name="twitter"
-        placeholder="New Outlet Request"
-      />
-    </Col>
-    <Col md="4" className="mb-1">
-      <Label className="form-label" >
-        {t("Agency ID")}
-      </Label>
-      <Input
-        type="text"
-        
-        name="facebook"
-        placeholder="Agency ID"
-      />
-    </Col>
-    <Col md="4" className="mb-1">
-      <Label className="form-label">
-        {t("Agency Name")}
-      </Label>
-      <Input
-        type="text"
-        
-        name="facebook"
-        placeholder="Agency Name"
-      />
-    </Col>
-  </Row> */}
 
         <div className="d-flex justify-content-between">
           <Button

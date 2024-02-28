@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {  useNavigate } from "react-router-dom";
 import { MdModeEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
@@ -29,6 +30,10 @@ const styles = {
 };
 const ViewAllEmployeesData = () => {
   const [attendance, setAttendance] = useState([]);
+  const navigate = useNavigate();
+  const handleNavigation = (id) => {
+    navigate("/MainDashboard/AdminManualAttendance/"+id);
+  };
   const getAllAtt = async () => {
     // setIsLoading(true);
 
@@ -91,12 +96,7 @@ const ViewAllEmployeesData = () => {
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/DeleteByIdAndFirm`,
       requestOptions
     )
-      .then((response) => {
-        if (response.status === 401) {
-          <Logout />;
-        }
-        return response.json();
-      })
+      .then((response) =>  response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
           // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
@@ -155,7 +155,7 @@ const ViewAllEmployeesData = () => {
                 <td style={styles.btnSpacing}>
                   <button
                     style={styles.btnStyle}
-                    onClick={() => editBranch(row.id)}
+                    onClick={() => handleNavigation(item.id)}
                   >
                     <MdModeEdit size={25} />
                   </button>

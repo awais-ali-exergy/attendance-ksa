@@ -179,6 +179,13 @@ const ListRoutes = [
     title: "AddEmployee",
   },
   {
+    element: <AdminManualAttendance />,
+    path: "/MainDashboard/AdminManualAttendance/:id",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
     element: <ViewAllEmployeeReportData />,
     path: "/MainDashboard/EmployeeReport",
     route: "EmployeeReport",
