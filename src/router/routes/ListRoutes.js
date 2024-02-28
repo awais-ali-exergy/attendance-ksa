@@ -14,10 +14,18 @@ const CreditSlip = lazy(() =>
 );
 // Administrator
 
-const NewOutletRequest = lazy(() => import("../../views/pages/administrator/NewOutletRequest"));
-const AddEmployee = lazy(() => import("../../views/pages/Employee/AddEmployee/AddEmployee"));
-const AdminManualAttendance = lazy(() => import("../../views/pages/ManualAttendance/AdminManualAttendance"));
-const BasicLeave = lazy(() => import("../../views/pages/LeaveModule/BasicLeave"));
+const NewOutletRequest = lazy(() =>
+  import("../../views/pages/administrator/NewOutletRequest")
+);
+const AddEmployee = lazy(() =>
+  import("../../views/pages/Employee/AddEmployee/AddEmployee")
+);
+const AdminManualAttendance = lazy(() =>
+  import("../../views/pages/ManualAttendance/AdminManualAttendance")
+);
+const BasicLeave = lazy(() =>
+  import("../../views/pages/LeaveModule/BasicLeave")
+);
 
 const ViewAllEmployeesData = lazy(() =>
   import("../../views/pages/Employee/ViewAllEmployees/ViewAllEmployeesData")
@@ -38,6 +46,21 @@ const AddStoreLocation = lazy(() =>
   )
 );
 
+const ViewAllLeavesData = lazy(() =>
+  import("../../views/pages/LeaveModule/BasicLeaveData/BasicLeaveDataList")
+);
+
+const ViewAllEmployeeReportData = lazy(() =>
+  import("../../views/pages/EmployeeReport/EmployeeReport")
+);
+
+const AttendanceReport = lazy(() =>
+  import("../../views/pages/AttendanceReport/AttendanceReport")
+);
+
+const LeaveReport = lazy(() =>
+  import("../../views/pages/LeaveReport/LeaveReport")
+);
 const Page404 = lazy(() => import("../../views/pages/Other/Page404"));
 
 const ListRoutes = [
@@ -129,10 +152,24 @@ const ListRoutes = [
   },
   {
     element: <ViewAllEmployeesData />,
-    path: "/view-all-employee-data",
+    path: "/ViewAllEmployeeData",
     route: "ViewAllEmployees",
     slug: "ViewAllEmployees",
     title: "ViewAllEmployees",
+  },
+  {
+    element: <LeaveReport />,
+    path: "/MainDashboard/LeaveReport",
+    route: "LeaveReport",
+    slug: "LeaveReport",
+    title: "LeaveReport",
+  },
+  {
+    element: <ViewAllLeavesData />,
+    path: "/ViewAllLeavesData",
+    route: "ViewAllLeavesData",
+    slug: "ViewAllLeavesData",
+    title: "ViewAllLeavesData",
   },
   {
     element: <AdminManualAttendance />,
@@ -140,6 +177,20 @@ const ListRoutes = [
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
+  },
+  {
+    element: <ViewAllEmployeeReportData />,
+    path: "/MainDashboard/EmployeeReport",
+    route: "EmployeeReport",
+    slug: "EmployeeReport",
+    title: "EmployeeReport",
+  },
+  {
+    element: <AttendanceReport />,
+    path: "/MainDashboard/AttendanceReport",
+    route: "AttendanceReport",
+    slug: "AttendanceReport",
+    title: "AttendanceReport",
   },
   {
     element: <BasicLeave />,
@@ -150,11 +201,10 @@ const ListRoutes = [
   },
   {
     element: <ViewAllAttendanceData />,
-    path: "/view-all-attendance-data",
+    path: "/ViewAllAttendanceData",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
-
   },
   {
     element: <FirmManagement />,

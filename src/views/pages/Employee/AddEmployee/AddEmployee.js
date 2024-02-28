@@ -262,7 +262,7 @@ const AddEmployee = () => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate("/view-all-employee-data");
+    navigate("/ViewAllEmployeeData");
   };
 
   return (
