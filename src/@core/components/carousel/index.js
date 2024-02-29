@@ -8,19 +8,19 @@ import {
 
 const items = [
   {
-    src: require(`@src/assets/images/pages/banner-1.png`).default,
+    src: require(`@src/assets/images/pages/log.png`).default,
     altText: "Slide 1",
     caption: "Slide 1",
     key: 1,
   },
   {
-    src: require(`@src/assets/images/pages/banner-3.jpeg`).default,
+    src: require(`@src/assets/images/pages/Login-bg.jpg`).default,
     altText: "Slide 2",
     caption: "Slide 2",
     key: 2,
   },
   {
-    src: require(`@src/assets/images/pages/banner-1.png`).default,
+    src: require(`@src/assets/images/pages/serg.jpg`).default,
     altText: "Slide 3",
     caption: "Slide 3",
     key: 3,
@@ -34,6 +34,8 @@ function Example(props) {
     width: window.innerWidth,
     height: window.innerHeight,
   });
+
+  console.log("data is coming", props);
 
   const next = () => {
     if (animating) return;
@@ -77,7 +79,11 @@ function Example(props) {
     >
       <img
         src={item.src}
-        style={{ borderRadius: props?.isMobile ? 15 : 0 }}
+        style={{
+          borderRadius: props?.isMobile ? 15 : 0,
+          width: "100%",
+          height: "100%",
+        }}
         alt={item.altText}
       />
     </CarouselItem>

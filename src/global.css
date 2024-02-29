@@ -220,3 +220,13 @@ html {
   margin-left: 0.5rem !important;
   margin-right: 0.5rem !important;
 }
+
+
+[dir] .ag-row{
+  height: 50px !important;
+}
+
+[dir=ltr] .ag-ltr .ag-cell{
+  display: flex;
+  align-items: center;
+}

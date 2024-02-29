@@ -88,7 +88,6 @@ const Singup = () => {
   };
 
   const onEmailSubmit = async (e) => {
-    
     e.preventDefault();
     if (state.firstName.length > 2) {
     } else {
@@ -138,7 +137,7 @@ const Singup = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const url = `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Users/Signup`;
-     fetch(url, {
+    fetch(url, {
       method: "POST",
       body: raw,
       headers: myHeaders,
@@ -246,7 +245,7 @@ const Singup = () => {
       .catch((error) => {
         // setError("Someting Went Wrong");
         console.log("error", error);
-        handleOpenAlert("Failed to fetch ! Please try Again later.","danger");
+        handleOpenAlert("Failed to fetch ! Please try Again later.", "danger");
       });
   };
 
@@ -365,26 +364,28 @@ const Singup = () => {
                 </div>
                 {vCodeBool === true ? (
                   <>
-                <Button
-                  type="submit"
-                  onClick={(e) => onEmailSubmit(e)}
-                  color="primary"
-                  block
-                >
-                 
-                  Get Verification Link
-                </Button>
-                </>
+                    <Button
+                      type="submit"
+                      onClick={(e) => onEmailSubmit(e)}
+                      color="primary"
+                      block
+                    >
+                      Get Verification Link
+                    </Button>
+                  </>
                 ) : (
-                  <><Button
-                  // type="submit"
-                  // disabled={codeBool}
-                  onClick={(e) => onVCodeSubmit(e)}
-                  color="primary"
-                  block
-                >
-                 Verify
-                </Button></>)}
+                  <>
+                    <Button
+                      // type="submit"
+                      // disabled={codeBool}
+                      onClick={(e) => onVCodeSubmit(e)}
+                      color="primary"
+                      block
+                    >
+                      Verify
+                    </Button>
+                  </>
+                )}
                 <Link to="/login">
                   <small>Already Have Account/Sing In</small>
                 </Link>
@@ -417,7 +418,7 @@ const Singup = () => {
                     Powered By{" "}
                     <span style={{ color: "#1E90FF", textAlign: "center" }}>
                       {" "}
-                      Kale Labs
+                      AutoBeatX
                     </span>
                   </h5>
                 </div>

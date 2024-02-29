@@ -23,40 +23,60 @@ const Login = () => {
 
   const items = [
     {
-      src: require(`@src/assets/images/pages/banner-1.png`).default,
+      src: require(`@src/assets/images/pages/log.png`),
       altText: "Slide 1",
       caption: "Slide 1",
       key: 1,
     },
     {
-      src: require(`@src/assets/images/pages/banner-3.jpeg`).default,
+      src: require(`@src/assets/images/pages/Login-bg.jpg`).default,
       altText: "Slide 2",
       caption: "Slide 2",
       key: 2,
     },
     {
-      src: require(`@src/assets/images/pages/banner-1.png`).default,
+      src: require(`@src/assets/images/pages/serg.jpg`).default,
       altText: "Slide 3",
       caption: "Slide 3",
       key: 3,
     },
   ];
 
-  const itemsMob = [
+  const newItems = [
     {
-      src: require(`@src/assets/images/pages/banner-s-1.png`).default,
+      src: require(`@src/assets/images/pages/log.png`).default,
       altText: "Slide 1",
       caption: "Slide 1",
       key: 1,
     },
     {
-      src: require(`@src/assets/images/pages/banner-s-3.jpeg`).default,
+      src: require(`@src/assets/images/pages/Login-bg.jpg`).default,
       altText: "Slide 2",
       caption: "Slide 2",
       key: 2,
     },
     {
-      src: require(`@src/assets/images/pages/banner-s-2.jpg`).default,
+      src: require(`@src/assets/images/pages/serg.jpg`).default,
+      altText: "Slide 3",
+      caption: "Slide 3",
+      key: 3,
+    },
+  ];
+  const itemsMob = [
+    {
+      src: require(`@src/assets/images/pages/log.png`).default,
+      altText: "Slide 1",
+      caption: "Slide 1",
+      key: 1,
+    },
+    {
+      src: require(`@src/assets/images/pages/Login-bg.jpg`).default,
+      altText: "Slide 2",
+      caption: "Slide 2",
+      key: 2,
+    },
+    {
+      src: require(`@src/assets/images/pages/serg.jpg`).default,
       altText: "Slide 3",
       caption: "Slide 3",
       key: 3,
@@ -73,7 +93,7 @@ const Login = () => {
     <div className="auth-wrapper auth-cover">
       <Row className="auth-inner m-0">
         <Col className="d-none d-lg-flex align-items-center p-0" lg="8" sm="12">
-          <Carousel items={items} isMobile={false} />
+          <Carousel items={newItems} isMobile={false} />
         </Col>
         <Col
           className="d-flex align-items-center auth-bg px-2 p-lg-5"
@@ -140,7 +160,7 @@ const Login = () => {
               >
                 <h5 style={{ textAlign: "center" }}>
                   Powered By{" "}
-                  <span style={{ color: "#1E90FF" }}> Kale Labsasd</span>
+                  <span style={{ color: "#1E90FF" }}> AutoBeatX</span>
                 </h5>
               </div>
               <div
@@ -157,7 +177,7 @@ const Login = () => {
                   Powered By{" "}
                   <span style={{ color: "#1E90FF", textAlign: "center" }}>
                     {" "}
-                    Kale Labs
+                    AutoBeatX
                   </span>
                 </h5>
               </div>
