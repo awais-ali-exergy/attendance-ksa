@@ -12,15 +12,13 @@ import { useParams } from "react-router-dom";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 const AddEmployee = () => {
-
-    const navigate = useNavigate()
-    let parms = useParams();
-    let id = parseInt(parms.id);
-    if (isNaN(id)) id = 0;
-    const { t } = useTranslation();
-    const [userByFrim, setUserByFrim] = useState([]);
-    const [attTypes, setAttTypes] = useState([]);
-
+  const navigate = useNavigate();
+  let parms = useParams();
+  let id = parseInt(parms.id);
+  if (isNaN(id)) id = 0;
+  const { t } = useTranslation();
+  const [userByFrim, setUserByFrim] = useState([]);
+  const [attTypes, setAttTypes] = useState([]);
 
   const [picker, setPicker] = useState(new Date());
   const [userTime, setUserTime] = useState(new Date());
@@ -130,8 +128,8 @@ const AddEmployee = () => {
 
     var formdata = new FormData(document.getElementById("attForm"));
     formdata.append("id", id);
-    formdata.append("createdOnDateByUser",state.userdate );
-    formdata.append("createdOnTimeByUser",state.usertime );
+    formdata.append("createdOnDateByUser", state.userdate);
+    formdata.append("createdOnTimeByUser", state.usertime);
 
     console.log(formdata);
 
@@ -163,7 +161,6 @@ const AddEmployee = () => {
       });
   };
   const getattendanceById = async (id) => {
-   
     // setIsLoading(true);
     if (id === 0) {
       //   setIsLoading(false);
@@ -200,13 +197,13 @@ const AddEmployee = () => {
               userdate: data.createdOnDateByUser,
               usertime: data.createdOnTimeByUser,
               attendanceTypeId: data.attendanceTypeId,
-              userId: data.userId
+              userId: data.userId,
             });
-           
-            setUserTime(moment(data.createdOnByUserTimeDisplay, 'hh:mm a').format('HH:mm'));
-            setUserDate(new Date(data.createdOnDateByUser));
 
-            
+            setUserTime(
+              moment(data.createdOnByUserTimeDisplay, "hh:mm a").format("HH:mm")
+            );
+            setUserDate(new Date(data.createdOnDateByUser));
           }
         } else {
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
@@ -229,38 +226,30 @@ const AddEmployee = () => {
   }, []);
 
   const handleNavigation = () => {
-
     navigate("/ViewAllAttendanceData");
   };
 
-
   const handleDateFormat = (selectedDates) => {
     const selectedDate = selectedDates[0];
-    setUserDate(selectedDate)
+    setUserDate(selectedDate);
     const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
     setState({
-        ...state,
-        userdate: formattedDate
-    })
+      ...state,
+      userdate: formattedDate,
+    });
     console.log(formattedDate);
   };
 
   const handleTimeFormat = (event) => {
-
     const selectedDate = event.target.value;
-    setUserTime(selectedDate)
-  
+    setUserTime(selectedDate);
     setPicker(selectedDate);
-
     const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
-   
     setState({
-        ...state,
-        usertime: formattedTime
-    })
- 
+      ...state,
+      usertime: formattedTime,
+    });
   };
-
 
   return (
     <Fragment>
@@ -287,8 +276,22 @@ const AddEmployee = () => {
             </Input>
           </Col>
           <Col md="6" className="mb-1">
-            <Label className="form-label">{t("Attendance Type")}</Label>
-            <Input
+            <Label className="form-label" for="date-time-picker">
+              Attendance Date
+            </Label>
+            <Flatpickr
+              value={userDate}
+              // altInput= {true}
+              //   dateFormat= "YYYY-MM-DD"
+              //   altFormat= "DD-MM-YYYY"
+              //   allowInput= {true}
+              dateFormat="Y-m-d"
+              id="date-time-picker"
+              className="form-control"
+              onChange={(event) => handleDateFormat(event)}
+            />
+            {/* <Label className="form-label">{t("Attendance Type")}</Label> */}
+            {/* <Input
               type="select"
               name="attendanceTypeId"
               id="attendanceTypeId"
@@ -304,31 +307,28 @@ const AddEmployee = () => {
                     </option>
                   ))
                 : null}
-            </Input>
+            </Input> */}
           </Col>
         </Row>
         <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="date-time-picker">
-              Attendance Date
+              Clock In Time
             </Label>
-            <Flatpickr
-              value={userDate}
-              // altInput= {true}
-              //   dateFormat= "YYYY-MM-DD"
-              //   altFormat= "DD-MM-YYYY"
-              //   allowInput= {true}
-              dateFormat="Y-m-d"
-              id="date-time-picker"
+
+            <Input
+              value={userTime}
+              type="time" // Set type to "time"
+              id="time-picker-clockIn" // Unique identifier
               className="form-control"
-              onChange={(event) => handleDateFormat(event)}
+              onChange={(event) => handleTimeFormat(event)}
             />
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="date-time-picker">
-              Attendance Time
+              Clock Out Time
             </Label>
-           
+
             <Input
               value={userTime}
               type="time" // Set type to "time"
@@ -348,13 +348,16 @@ const AddEmployee = () => {
           >
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
+
           <Button
             type="submit"
             color="primary"
             className="btn-next"
             //   onClick={}
           >
-            <span className="align-middle d-sm-inline-block d-none">{id!==0?"Update":"Save"}</span>
+            <span className="align-middle d-sm-inline-block d-none">
+              {id !== 0 ? "Update" : "Save"}
+            </span>
           </Button>
         </div>
       </Form>
