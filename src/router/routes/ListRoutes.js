@@ -23,8 +23,12 @@ const AddEmployee = lazy(() =>
 const AdminManualAttendance = lazy(() =>
   import("../../views/pages/ManualAttendance/AdminManualAttendance")
 );
+
 const BasicLeave = lazy(() =>
   import("../../views/pages/LeaveModule/BasicLeave")
+);
+const HolidayLeave = lazy(() =>
+  import("../../views/pages/Holiday/TakeHolidayForm")
 );
 
 const ViewAllEmployeesData = lazy(() =>

@@ -206,56 +206,6 @@ const BasicLeaveDataList = () => {
           }}
         />
       </div>
-      {/* <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col" style={styles.bgHeading}>
-              Employee Name
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Leave Type
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Start Date
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              End Date
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Leave Reason
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {leaves.length !== 0 &&
-            leaves?.map((item) => (
-              <tr key={item.id}>
-                <td style={styles.pad_Col}>{item.userLabel}</td>
-                <td style={styles.pad_Col}>{item.attendanceTypeLabel}</td>
-                <td style={styles.pad_Col}>{item.startOnDateDisplay}</td>
-                <td style={styles.pad_Col}>{item.endOnDateDisplay}</td>
-                <td style={styles.pad_Col}>{item.leaveReason}</td>
-                <td style={styles.btnSpacing}>
-                  <button
-                    style={styles.btnStyle}
-                    onClick={() => editBranch(item.id)}
-                  >
-                    <MdModeEdit size={25} />
-                  </button>
-                  <button
-                    style={styles.btnStyle}
-                    onClick={() => deleteLeave(item.id)}
-                  >
-                    <MdDelete size={25} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table> */}
     </div>
   );
 };
