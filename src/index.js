@@ -29,8 +29,6 @@ import Spinner from "./@core/components/spinner/Fallback-spinner";
 // ** Ripple Button
 import "./@core/components/ripple-button";
 
-
-
 // ** PrismJS
 import "prismjs";
 import "prismjs/themes/prism-tomorrow.css";

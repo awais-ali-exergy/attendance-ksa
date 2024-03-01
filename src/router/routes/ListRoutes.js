@@ -29,8 +29,12 @@ const AddDesignation = lazy(() =>
 const AdminManualAttendance = lazy(() =>
   import("../../views/pages/ManualAttendance/AdminManualAttendance")
 );
+
 const BasicLeave = lazy(() =>
   import("../../views/pages/LeaveModule/BasicLeave")
+);
+const HolidayLeave = lazy(() =>
+  import("../../views/pages/Holiday/TakeHolidayForm")
 );
 
 const ViewAllEmployeesData = lazy(() =>
@@ -42,14 +46,14 @@ const ViewAllAttendanceData = lazy(() =>
   )
 );
 const FirmManagement = lazy(() =>
-  import(
-    "../../views/pages/FirmManagment/FirmManagement"
-  )
+  import("../../views/pages/FirmManagment/FirmManagement")
 );
 const AddStoreLocation = lazy(() =>
-  import(
-    "../../views/pages/AddStoreLocation/AddStoreLocation"
-  )
+  import("../../views/pages/AddStoreLocation/AddStoreLocation")
+);
+
+const ListOfBranches = lazy(() =>
+  import("../../views/pages/AddStoreLocation/ListOfBranches/ListOfBranches")
 );
 
 const ViewAllLeavesData = lazy(() =>
@@ -239,7 +243,6 @@ const ListRoutes = [
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
-
   },
   {
     element: <AddStoreLocation />,
@@ -247,7 +250,14 @@ const ListRoutes = [
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
+  },
 
+  {
+    element: <ListOfBranches />,
+    path: "/MainDashboard/StoreLocationList",
+    route: "ViewAllAttendance",
+    slug: "ViewAllAttendance",
+    title: "ViewAllAttendance",
   },
   // {
   //   element: <Page404 />,

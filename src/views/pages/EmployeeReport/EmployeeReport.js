@@ -1,112 +1,103 @@
-import React, { useEffect, useState } from "react";
-const styles = {
-  bgHeading: {
-    background: "#10a945",
-    color: "white",
-    padding: "30px",
-    textAlign: "center",
-  },
-  btnStyle: {
-    background: "#10a945",
-    color: "white",
-    padding: "8px",
-    border: "none",
-    marginLeft: "8px",
-  },
-  btnSpacing: {
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: "item",
-  },
-  pad_Col: {
-    padding: "15px",
-    textAlign: "center",
-  },
-};
+import React, { useEffect, useState, useMemo } from "react";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+
 const EmployeeReport = () => {
   const [employees, setEmployees] = useState([]);
-  const getAllEmp = async () => {
-    // setIsLoading(true);
 
-    await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Users/GetAllWithCustomFieldsByUserFirm`,
-      {
-        method: "POST",
-        headers: {
-          Authorization:
-            "Bearer " + window.localStorage.getItem("AtouBeatXToken"),
-        },
-        redirect: "follow",
+  const getAllEmp = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Users/GetAllWithCustomFieldsByUserFirm`,
+        {
+          method: "POST",
+          headers: {
+            Authorization:
+              "Bearer " + window.localStorage.getItem("AtouBeatXToken"),
+          },
+          redirect: "follow",
+        }
+      );
+      if (response.status === 401) {
+        // Handle unauthorized access
       }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          //   <Logout />;
-        }
-        return response.json();
-      })
-      .then((result) => {
-        console.log(result);
-        if (result.SUCCESS === 1) {
-          setEmployees(result.DATA);
-        } else {
-          handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        handleOpenSnackbar(
-          "Failed to fetch ! Please try Again later.",
-          "error"
-        );
-      });
-    // setIsLoading(false);
+      const result = await response.json();
+      if (result.SUCCESS === 1) {
+        setEmployees(result.DATA);
+      } else {
+        // Handle error
+      }
+    } catch (error) {
+      console.error("Failed to fetch:", error);
+      // Handle error
+    }
   };
+
   useEffect(() => {
     getAllEmp();
   }, []);
+
+  const columnDefs = useMemo(
+    () => [
+      {
+        headerName: "First Name",
+        field: "firstName",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "Last Name",
+        field: "lastName",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "National ID",
+        field: "cnicNo",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "Email",
+        field: "email",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "Contact No.",
+        field: "contactNo",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+    ],
+    []
+  );
+
+  const defaultColDef = useMemo(() => {
+    return {
+      filter: "agTextColumnFilter",
+      floatingFilter: true,
+    };
+  }, []);
   return (
-    <div className="table-responsive">
-      <div></div>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col" style={styles.bgHeading}>
-              First Name
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Last Name
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              National ID
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Email
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Contact No.
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.length !== 0 &&
-            employees?.map((item) => (
-              <tr key={item.id}>
-                <td style={styles.pad_Col}>{item.firstName}</td>
-                <td style={styles.pad_Col}>{item.lastName}</td>
-                <td style={styles.pad_Col}>{item.cnicNo}</td>
-                <td style={styles.pad_Col}>{item.email}</td>
-                <td style={styles.pad_Col}>{item.contactNo}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+    <div className="ag-theme-quartz" style={{ height: "700px", width: "85%" }}>
+      <AgGridReact
+        columnDefs={columnDefs}
+        rowData={employees}
+        pagination={true}
+        defaultColDef={defaultColDef}
+        paginationPageSize={19}
+        suppressPaginationPanel={true}
+        animateRows={true}
+      />
     </div>
   );
 };
 
 export default EmployeeReport;
-{
-  ("Data is coming in the Component");
-}
