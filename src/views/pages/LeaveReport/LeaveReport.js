@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { MdModeEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
 const styles = {
   bgHeading: {
     background: "#10a945",
@@ -9,10 +12,10 @@ const styles = {
     textAlign: "center",
   },
   btnStyle: {
+    border: "none",
+    padding: "0px 14px",
     background: "#10a945",
     color: "white",
-    padding: "8px",
-    border: "none",
     borderRadius: "10px",
   },
   btnSpacing: {
@@ -114,58 +117,88 @@ const LeaveReport = () => {
   useEffect(() => {
     getAllLeave();
   }, []);
+
+  const columnDefs = useMemo(
+    () => [
+      {
+        headerName: "Employee Name",
+        field: "userLabel",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "Leave Type",
+        field: "attendanceTypeLabel",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "Start Date",
+        field: "startOnDateDisplay",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "End Date",
+        field: "endOnDateDisplay",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "Leave Reason",
+        field: "leaveReason",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
+        headerName: "Action",
+        cellRenderer: (params) => (
+          <div style={styles.btnSpacing}>
+            <button
+              onClick={() => navigateToEdit(params.data)}
+              className=""
+              style={styles.btnStyle}
+            >
+              <MdModeEdit size={20} />
+            </button>
+            <button
+              style={{ ...styles.btnStyle, marginLeft: "8px" }}
+              onClick={() => deleteLeave(item.id)}
+            >
+              <MdDelete size={25} />
+            </button>
+          </div>
+        ),
+      },
+    ],
+    []
+  );
   return (
     <div className="table-responsive">
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col" style={styles.bgHeading}>
-              Employee Name
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Leave Type
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Start Date
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              End Date
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Leave Reason
-            </th>
-            {/* <th scope="col" style={styles.bgHeading}>
-              Action
-            </th> */}
-          </tr>
-        </thead>
-        <tbody>
-          {leaves.length !== 0 &&
-            leaves?.map((item) => (
-              <tr key={item.id}>
-                <td style={styles.pad_Col}>{item.userLabel}</td>
-                <td style={styles.pad_Col}>{item.attendanceTypeLabel}</td>
-                <td style={styles.pad_Col}>{item.startOnDateDisplay}</td>
-                <td style={styles.pad_Col}>{item.endOnDateDisplay}</td>
-                <td style={styles.pad_Col}>{item.leaveReason}</td>
-                {/* <td style={styles.btnSpacing}>
-                  <button
-                    style={styles.btnStyle}
-                    onClick={() => editleave(item.id)}
-                  >
-                    <MdModeEdit size={25} />
-                  </button>
-                  <button
-                    style={styles.btnStyle}
-                    onClick={() => deleteLeave(item.id)}
-                  >
-                    <MdDelete size={25} />
-                  </button>
-                </td> */}
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div
+        className="ag-theme-quartz"
+        style={{ height: "500px", width: "100%" }}
+      >
+        <AgGridReact
+          columnDefs={columnDefs}
+          rowData={leaves}
+          pagination={true}
+          paginationPageSize={10}
+          paginationAutoPageSize={true}
+          suppressPaginationPanel={true}
+          animateRows={true}
+          defaultColDef={{
+            sortable: true,
+            resizable: true,
+            filter: true,
+          }}
+        />
+      </div>
     </div>
   );
 };
