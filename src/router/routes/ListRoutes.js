@@ -20,6 +20,12 @@ const NewOutletRequest = lazy(() =>
 const AddEmployee = lazy(() =>
   import("../../views/pages/Employee/AddEmployee/AddEmployee")
 );
+const AddDepartment = lazy(() =>
+  import("../../views/pages/HRModule/Department/AddDepartment")
+);
+const AddDesignation = lazy(() =>
+  import("../../views/pages/HRModule/Designation/AddDesignation")
+);
 const AdminManualAttendance = lazy(() =>
   import("../../views/pages/ManualAttendance/AdminManualAttendance")
 );
@@ -150,6 +156,20 @@ const ListRoutes = [
   {
     element: <AddEmployee />,
     path: "/MainDashboard/AddEmployee",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
+    element: <AddDepartment />,
+    path: "/AddDepartment",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
+    element: <AddDesignation />,
+    path: "/AddDesignation",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
