@@ -1,15 +1,21 @@
 // ** React Imports
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
-
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
 import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
+import { MdModeEdit } from "react-icons/md";
+import { FaMinusCircle } from "react-icons/fa";
 
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
+import { Item } from "react-contexify";
+import { data } from "jquery";
 
 const AddEmployee = () => {
   const navigate = useNavigate();
@@ -23,24 +29,28 @@ const AddEmployee = () => {
   const [picker, setPicker] = useState(new Date());
   const [userTime, setUserTime] = useState(new Date());
   const [userDate, setUserDate] = useState(new Date());
-  console.log("data is");
+  const [finalData, setFinalData] = useState({
+    userId: "",
+    data: [],
+  });
   const datecheck = (date) => {
     (date) => setPicker(date);
-    console.log(picker);
   };
   const [userId, setUserId] = useState("");
-  //   const [userTime, setUserTime] = React.useState(dayjs(new Date()));
-  //   const [userDate, setUserDate] = React.useState(dayjs(new Date()));
-
+  const [attendanceDataArray, setAttendanceDataArray] = useState([]);
   const [state, setState] = useState({
     userdate: "",
+    createdOnDateByUser: "",
+    createdOnTimeByUser1: "",
+    createdOnTimeByUser2: "",
     usertime: "",
     attendanceTypeId: "",
     userId: "",
+    userName: "",
   });
-  const handleChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
+  // const handleChange = (e) => {
+  //   setState({ ...state, [e.target.name]: e.target.value });
+  // };
   const getAttTypes = async () => {
     var myHeaders = new Headers();
     myHeaders.append(
@@ -120,16 +130,28 @@ const AddEmployee = () => {
       });
   };
   const saveAtt = async () => {
+    console.log(finalData, "Final Data is coming");
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
       "Bearer " + window.localStorage.getItem("AtouBeatXToken")
     );
 
-    var formdata = new FormData(document.getElementById("attForm"));
-    formdata.append("id", id);
-    formdata.append("createdOnDateByUser", state.userdate);
-    formdata.append("createdOnTimeByUser", state.usertime);
+    // var formdata = new FormData(document.getElementById("attForm"));
+    var formdata = new FormData();
+    formdata.append("userId", finalData.userId);
+    for (let i = 0; i < finalData.data.length; i++) {
+      console.log(finalData.data[i].createdOnDateByUser);
+      formdata.append(
+        "createdOnDateByUser",
+        finalData.data[i].createdOnDateByUser
+      );
+      formdata.append(
+        "createdOnTimeByUser",
+        finalData.data[i].createdOnTimeByUser
+      );
+      formdata.append("attendanceTypeId", finalData.data[i].attendanceTypeId);
+    }
 
     console.log(formdata);
 
@@ -146,8 +168,15 @@ const AddEmployee = () => {
     )
       .then((response) => response.json())
       .then((result) => {
+        console.log(result, "result is coming");
         if (result.SUCCESS === 1) {
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+          setFinalData({
+            userId: "",
+            data: [],
+          });
+          setAttendanceDataArray([]);
+          navigate("/ViewAllAttendanceData");
         } else {
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
@@ -188,11 +217,9 @@ const AddEmployee = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log("getStoreById:", result);
         if (result.SUCCESS === 1) {
           let data = result.DATA;
           if (data) {
-            console.log(data);
             setState({
               userdate: data.createdOnDateByUser,
               usertime: data.createdOnTimeByUser,
@@ -225,6 +252,21 @@ const AddEmployee = () => {
     getAttTypes();
   }, []);
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setState({ ...state, [name]: value });
+    if (name === "userId") {
+      const findName = userByFrim.find(
+        (item) => String(item.id) === String(event.target.value)
+      );
+      setState({
+        ...state,
+        userName: findName.label,
+        [name]: value,
+      });
+    }
+  };
   const handleNavigation = () => {
     navigate("/ViewAllAttendanceData");
   };
@@ -237,17 +279,146 @@ const AddEmployee = () => {
       ...state,
       userdate: formattedDate,
     });
-    console.log(formattedDate);
   };
 
-  const handleTimeFormat = (event) => {
-    const selectedDate = event.target.value;
-    setUserTime(selectedDate);
-    setPicker(selectedDate);
-    const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
+  // const handleTimeFormat = (event) => {
+  //   const selectedDate = event.target.value;
+  //   setUserTime(selectedDate);
+  //   setPicker(selectedDate);
+  //   const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
+  //   setState({
+  //     ...state,
+  //     usertime: formattedTime,
+  //   });
+  // };
+
+  const columnDefs = useMemo(
+    () => [
+      {
+        headerName: "Employee Name",
+        field: "userName",
+        // sortable: true,
+        // filter: true,
+        // floatingFilter: true,
+      },
+      {
+        headerName: "Attendance Date",
+        field: "userdate",
+        // sortable: true,
+        // filter: true,
+        // floatingFilter: true,
+      },
+      {
+        headerName: "Clock In Time",
+        field: "createdOnTimeByUser1",
+        // sortable: true,
+        // filter: true,
+        // floatingFilter: true,
+      },
+      {
+        headerName: "Clock Out Time",
+        field: "createdOnTimeByUser2",
+        // sortable: true,
+        // filter: true,
+        // floatingFilter: true,
+      },
+      // {
+      //   headerName: "Action",
+      //   cellRenderer: (params) => (
+      //     <button
+      //       onClick={() => navigateToEdit(params.data)}
+      //       className=""
+      //       style={{
+      //         border: "none",
+      //         padding: "0px 14px",
+      //         background: "#10a945",
+      //         color: "white",
+      //         borderRadius: "10px",
+      //       }}
+      //     >
+      //       <FaMinusCircle size={20} />
+      //     </button>
+      //   ),
+      // },
+    ],
+    []
+  );
+
+  const handleManageData = () => {
+    const formattedStartTime = moment(
+      state.createdOnTimeByUser1,
+      "HH:mm:ss"
+    ).format("hh:mm a");
+    const formattedEndTime = moment(
+      state.createdOnTimeByUser2,
+      "HH:mm:ss"
+    ).format("hh:mm a");
+
+    let newState = {
+      userdate: state.userdate,
+      createdOnDateByUser: state.createdOnDateByUser,
+      createdOnTimeByUser1: formattedStartTime,
+      createdOnTimeByUser2: formattedEndTime,
+      usertime: state.usertime,
+      attendanceTypeId: state.attendanceTypeId,
+      userId: state.userId,
+      userName: state.userName,
+    };
+    setAttendanceDataArray([...attendanceDataArray, newState]);
+
+    if (state.createdOnTimeByUser1 !== "") {
+      if (state.createdOnTimeByUser2 !== "") {
+        let obj = [
+          {
+            createdOnDateByUser: newState.userdate,
+            attendanceTypeId: 1,
+            createdOnTimeByUser: newState.createdOnTimeByUser1,
+          },
+          {
+            createdOnDateByUser: newState.userdate,
+            attendanceTypeId: 2,
+            createdOnTimeByUser: newState.createdOnTimeByUser2,
+          },
+        ];
+        setFinalData({
+          userId: newState.userId,
+          data: [...finalData.data, ...obj],
+        });
+      } else {
+        let obj = {
+          createdOnDateByUser: newState.userdate,
+          attendanceTypeId: 1,
+          createdOnTimeByUser: newState.createdOnTimeByUser1,
+        };
+        setFinalData({
+          userId: newState.userId,
+          data: [...finalData.data, obj],
+        });
+      }
+    } else {
+      let obj = {
+        createdOnDateByUser: newState.userdate,
+        attendanceTypeId: 2,
+        createdOnTimeByUser: newState.createdOnTimeByUser2,
+      };
+
+      setFinalData({
+        userId: newState.userId,
+        data: [...finalData.data, obj],
+      });
+    }
+
+    console.log(finalData);
+
     setState({
-      ...state,
-      usertime: formattedTime,
+      userdate: "",
+      createdOnDateByUser: "",
+      createdOnTimeByUser1: "",
+      createdOnTimeByUser2: "",
+      usertime: "",
+      attendanceTypeId: "",
+      userId: state.userId,
+      userName: state.userName,
     });
   };
 
@@ -262,6 +433,7 @@ const AddEmployee = () => {
               id="userId"
               name="userId"
               value={state.userId}
+              disabled={state.userId}
               onChange={handleChange}
               placeholder="Select Employee"
             >
@@ -280,34 +452,13 @@ const AddEmployee = () => {
               Attendance Date
             </Label>
             <Flatpickr
-              value={userDate}
-              // altInput= {true}
-              //   dateFormat= "YYYY-MM-DD"
-              //   altFormat= "DD-MM-YYYY"
-              //   allowInput= {true}
+              value={state.createdOnDateByUser}
+              name="createdOnDateByUser"
               dateFormat="Y-m-d"
               id="date-time-picker"
               className="form-control"
               onChange={(event) => handleDateFormat(event)}
             />
-            {/* <Label className="form-label">{t("Attendance Type")}</Label> */}
-            {/* <Input
-              type="select"
-              name="attendanceTypeId"
-              id="attendanceTypeId"
-              placeholder="Attendance Type"
-              value={state.attendanceTypeId}
-              onChange={handleChange}
-            >
-              <option></option>
-              {attTypes && attTypes.length > 0
-                ? attTypes.map((obj, index) => (
-                    <option value={obj.id} key={obj.id}>
-                      {obj.label}
-                    </option>
-                  ))
-                : null}
-            </Input> */}
           </Col>
         </Row>
         <Row>
@@ -317,11 +468,12 @@ const AddEmployee = () => {
             </Label>
 
             <Input
-              value={userTime}
-              type="time" // Set type to "time"
-              id="time-picker-clockIn" // Unique identifier
+              value={state.createdOnTimeByUser1}
+              type="time"
+              name="createdOnTimeByUser1"
+              id="time-picker-clockIn"
               className="form-control"
-              onChange={(event) => handleTimeFormat(event)}
+              onChange={(event) => handleChange(event)}
             />
           </Col>
           <Col md="6" className="mb-1">
@@ -330,11 +482,12 @@ const AddEmployee = () => {
             </Label>
 
             <Input
-              value={userTime}
-              type="time" // Set type to "time"
-              id="time-picker" // Unique identifier
+              value={state.createdOnTimeByUser2}
+              type="time"
+              name="createdOnTimeByUser2"
+              id="time-picker"
               className="form-control"
-              onChange={(event) => handleTimeFormat(event)}
+              onChange={(event) => handleChange(event)}
             />
           </Col>
         </Row>
@@ -350,16 +503,61 @@ const AddEmployee = () => {
           </Button>
 
           <Button
-            type="submit"
+            onClick={() => {
+              handleManageData();
+            }}
             color="primary"
             className="btn-next"
-            //   onClick={}
           >
             <span className="align-middle d-sm-inline-block d-none">
-              {id !== 0 ? "Update" : "Save"}
+              {"Add"}
             </span>
           </Button>
         </div>
+        {attendanceDataArray.length !== 0 ? (
+          <div
+            style={{
+              marginTop: "50px",
+            }}
+          >
+            <div
+              className="ag-theme-quartz"
+              style={{ height: "500px", width: "70%" }}
+            >
+              <AgGridReact
+                columnDefs={columnDefs}
+                rowData={attendanceDataArray}
+                pagination={true}
+                // paginationPageSize={10}
+                // paginationAutoPageSize={true}
+                // suppressPaginationPanel={true}
+                // animateRows={true}
+                // defaultColDef={{
+                //   sortable: true,
+                //   resizable: true,
+                //   filter: true,
+                // }}
+              />
+            </div>
+
+            <div
+              className="d-flex justify-content-end"
+              style={{
+                marginTop: "20px",
+              }}
+            >
+              <Button
+                color="primary"
+                className="btn-next"
+                onClick={() => saveAtt()}
+              >
+                <span className="align-middle d-sm-inline-block d-none">
+                  {id !== 0 ? "Update" : "Save"}
+                </span>
+              </Button>
+            </div>
+          </div>
+        ) : null}
       </Form>
     </Fragment>
   );

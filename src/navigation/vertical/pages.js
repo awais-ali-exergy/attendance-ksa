@@ -148,15 +148,15 @@ var navigationLinks = [
     navLink: "/Module/" + 102,
   },
 
-  {
-    id: "administration",
-    slug: "administration",
-    title: "HR Module",
-    icon: () => HajjComplience,
-    // navLink: "/new_outlet_request",
+  // {
+  //   id: "administration",
+  //   slug: "administration",
+  //   title: "HR Module",
+  //   icon: () => HajjComplience,
+  //   // navLink: "/new_outlet_request",
 
-    navLink: "/Module/" + 102,
-  },
+  //   navLink: "/Module/" + 102,
+  // },
   {
     id: "targets",
     slug: "targets",

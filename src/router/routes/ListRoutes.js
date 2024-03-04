@@ -36,6 +36,9 @@ const BasicLeave = lazy(() =>
 const HolidayLeave = lazy(() =>
   import("../../views/pages/Holiday/TakeHolidayForm")
 );
+const HolidayListView = lazy(() =>
+  import("../../views/pages/Holiday/HolidayListview/HolidayListView")
+);
 
 const ViewAllEmployeesData = lazy(() =>
   import("../../views/pages/Employee/ViewAllEmployees/ViewAllEmployeesData")
@@ -155,7 +158,7 @@ const ListRoutes = [
   },
   {
     element: <AddEmployee />,
-    path: "/MainDashboard/AddEmployee",
+    path: "/AddEmployee",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
@@ -166,6 +169,21 @@ const ListRoutes = [
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
+  },
+  {
+    element: <HolidayLeave />,
+    path: "/Holiday",
+    route: "Holiday",
+    slug: "Holiday",
+    title: "Holiday",
+  },
+
+  {
+    element: <HolidayListView />,
+    path: "/ViewAllHolidayData",
+    route: "ViewAllHolidayData",
+    slug: "ViewAllHolidayData",
+    title: "ViewAllHolidayData",
   },
   {
     element: <AddDesignation />,
@@ -183,7 +201,7 @@ const ListRoutes = [
   },
   {
     element: <LeaveReport />,
-    path: "/MainDashboard/LeaveReport",
+    path: "/LeaveReport",
     route: "LeaveReport",
     slug: "LeaveReport",
     title: "LeaveReport",
@@ -197,35 +215,35 @@ const ListRoutes = [
   },
   {
     element: <AdminManualAttendance />,
-    path: "/MainDashboard/AdminManualAttendance",
+    path: "/AdminManualAttendance",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
   },
   {
     element: <AdminManualAttendance />,
-    path: "/MainDashboard/AdminManualAttendance/:id",
+    path: "/AdminManualAttendance/:id",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
   },
   {
     element: <ViewAllEmployeeReportData />,
-    path: "/MainDashboard/EmployeeReport",
+    path: "/EmployeeReport",
     route: "EmployeeReport",
     slug: "EmployeeReport",
     title: "EmployeeReport",
   },
   {
     element: <AttendanceReport />,
-    path: "/MainDashboard/AttendanceReport",
+    path: "/AttendanceReport",
     route: "AttendanceReport",
     slug: "AttendanceReport",
     title: "AttendanceReport",
   },
   {
     element: <BasicLeave />,
-    path: "/MainDashboard/BasicLeave",
+    path: "/BasicLeave",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
@@ -239,14 +257,14 @@ const ListRoutes = [
   },
   {
     element: <FirmManagement />,
-    path: "/MainDashboard/AddCompanies",
+    path: "/AddCompanies",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
   },
   {
     element: <AddStoreLocation />,
-    path: "/MainDashboard/AddStoreLocation",
+    path: "/AddStoreLocation",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
@@ -254,7 +272,7 @@ const ListRoutes = [
 
   {
     element: <ListOfBranches />,
-    path: "/MainDashboard/StoreLocationList",
+    path: "/StoreLocationList",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
