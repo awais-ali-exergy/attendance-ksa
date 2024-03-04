@@ -36,6 +36,9 @@ const BasicLeave = lazy(() =>
 const Holiday = lazy(() =>
   import("../../views/pages/Holiday/TakeHolidayForm")
 );
+const HolidayListView = lazy(() =>
+  import("../../views/pages/Holiday/HolidayListview/HolidayListView")
+);
 
 const ViewAllEmployeesData = lazy(() =>
   import("../../views/pages/Employee/ViewAllEmployees/ViewAllEmployeesData")
@@ -173,6 +176,21 @@ const ListRoutes = [
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
+  },
+  {
+    element: <HolidayLeave />,
+    path: "/Holiday",
+    route: "Holiday",
+    slug: "Holiday",
+    title: "Holiday",
+  },
+
+  {
+    element: <HolidayListView />,
+    path: "/ViewAllHolidayData",
+    route: "ViewAllHolidayData",
+    slug: "ViewAllHolidayData",
+    title: "ViewAllHolidayData",
   },
   {
     element: <AddDesignation />,

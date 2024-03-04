@@ -18,31 +18,23 @@ const AddEmployee = () => {
   let id = parseInt(parms.id);
   if (isNaN(id)) id = 0;
   const { t } = useTranslation();
-  const [userByFrim, setUserByFrim] = useState([]);
-  const [attTypes, setAttTypes] = useState([]);
 
-  const [picker, setPicker] = useState(new Date());
-  const [userTime, setUserTime] = useState(new Date());
-  const [userDate, setUserDate] = useState(new Date());
-  console.log("data is");
-  const datecheck = (date) => {
-    (date) => setPicker(date);
-    console.log(picker);
-  };
-  const [userId, setUserId] = useState("");
-  //   const [userTime, setUserTime] = useState(dayjs(new Date()));
-  //   const [userDate, setUserDate] = useState(dayjs(new Date()));
+
+  const [userDate, setUserDate] = useState();
 
   const [state, setState] = useState({
-    userdate: "",
-    usertime: "",
-    attendanceTypeId: "",
-    userId: "",
+    label: "",
+    description: "",
+    startOnDate: "",
+    endOnDate: "",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
+    console.log(state);
   };
-  const getAttTypes = async () => {
+
+
+  const saveHoliday = async () => {
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -50,6 +42,10 @@ const AddEmployee = () => {
     );
 
     var formdata = new FormData();
+    formdata.append("label", state.label);
+    formdata.append("description", state.description);
+    formdata.append("startOnDate", state.startOnDate);
+    formdata.append("endOnDate", state.endOnDate);
 
     var requestOptions = {
       method: "POST",
@@ -59,16 +55,26 @@ const AddEmployee = () => {
     };
 
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetAttendanceTypesDropdown`,
+
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Holidays/Save`,
+
       requestOptions
     )
       .then((response) => response.json())
       .then((result) => {
-        if (result.SUCCESS === 1) {
-          let data = result.DATA;
-          if (data) {
-            setAttTypes(data);
-          }
+
+
+        if (result.USER_MESSAGE === "Holiday Saved") {
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+          console.log(state);
+          setState({
+            label: "",
+            description: "",
+            startOnDate: new Date(),
+            endOnDate: new Date(),
+          });
+          setUserDate("");
+
         } else {
           handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
@@ -78,166 +84,27 @@ const AddEmployee = () => {
         handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
-  const getUsers = async () => {
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-    );
 
-    var formdata = new FormData();
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetUsersDropdownByFirm`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.SUCCESS === 1) {
-          let data = result.DATA;
-          if (data) {
-            setUserByFrim(data);
-          }
-        } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-      });
-  };
-  const saveAtt = async () => {
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-    );
-
-    var formdata = new FormData(document.getElementById("attForm"));
-    formdata.append("id", id);
-    formdata.append("createdOnDateByUser", state.userdate);
-    formdata.append("createdOnTimeByUser", state.usertime);
-
-    console.log(formdata);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/SaveManual`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.SUCCESS === 1) {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-        } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-      });
-  };
-  const getattendanceById = async (id) => {
-    // setIsLoading(true);
-    if (id === 0) {
-      //   setIsLoading(false);
-      return;
-    }
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-    );
-
-    var formdata = new FormData();
-    formdata.append("id", id);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetManualByIdAndFirm`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("getStoreById:", result);
-        if (result.SUCCESS === 1) {
-          let data = result.DATA;
-          if (data) {
-            console.log(data);
-            setState({
-              userdate: data.createdOnDateByUser,
-              usertime: data.createdOnTimeByUser,
-              attendanceTypeId: data.attendanceTypeId,
-              userId: data.userId,
-            });
-
-            setUserTime(
-              moment(data.createdOnByUserTimeDisplay, "hh:mm a").format("HH:mm")
-            );
-            setUserDate(new Date(data.createdOnDateByUser));
-          }
-        } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-      });
-    // setIsLoading(false);
-  };
-
-  useEffect(() => {
-    getattendanceById(id);
-    getUsers();
-    getAttTypes();
-  }, []);
 
   const handleNavigation = () => {
-    navigate("/ViewAllAttendanceData");
+    navigate("/ViewAllHolidayData");
   };
 
-  const handleDateFormat = (selectedDates) => {
+  const handleStartDateFormat = (selectedDates) => {
     const selectedDate = selectedDates[0];
-    setUserDate(selectedDate);
     const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
     setState({
       ...state,
-      userdate: formattedDate,
+      startOnDate: formattedDate,
     });
-    console.log(formattedDate);
   };
 
-  const handleTimeFormat = (event) => {
-    const selectedDate = event.target.value;
-    setUserTime(selectedDate);
-    setPicker(selectedDate);
-    const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
+  const handleEndDateFormat = (selectedDates) => {
+    const selectedDate = selectedDates[0];
+    const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
     setState({
       ...state,
-      usertime: formattedTime,
+      endOnDate: formattedDate,
     });
   };
 
@@ -248,11 +115,11 @@ const AddEmployee = () => {
           <Col md="6" className="mb-1">
             <Label className="form-label">{t("Holiday Label")}</Label>
             <Input
-              id="bankAccountNo"
-              name="bankAccountNo"
-              //   value={state.bankAccountNo}
-              //   onChange={handleChange}
-              placeholder="Bank Account"
+              id="label"
+              name="label"
+              onChange={handleChange}
+              placeholder="Label"
+              value={state.label}
             />
           </Col>
           <Col md="6" className="mb-1">
@@ -266,9 +133,10 @@ const AddEmployee = () => {
               //   altFormat= "DD-MM-YYYY"
               //   allowInput= {true}
               dateFormat="Y-m-d"
-              id="date-time-picker"
+              id="startOnDate"
+              name="startOnDate"
               className="form-control"
-              onChange={(event) => handleDateFormat(event)}
+              onChange={(event) => handleStartDateFormat(event)}
             />
 
             {/* <Label className="form-label">{t("Attendance Type")}</Label> */}
@@ -305,9 +173,10 @@ const AddEmployee = () => {
               //   allowInput= {true}
 
               dateFormat="Y-m-d"
-              id="date-time-picker"
+              id="endOnDate"
+              name="endOnDate"
               className="form-control"
-              onChange={(event) => handleDateFormat(event)}
+              onChange={(event) => handleEndDateFormat(event)}
             />
           </Col>
           <Col md="6" className="mb-1">
@@ -316,10 +185,10 @@ const AddEmployee = () => {
             </Label>
 
             <Input
-              id="bankAccountNo"
-              name="bankAccountNo"
-              //   value={state.bankAccountNo}
-              //   onChange={handleChange}
+              id="description"
+              name="description"
+              value={state.description}
+              onChange={handleChange}
               placeholder="Description"
             />
           </Col>
@@ -335,10 +204,10 @@ const AddEmployee = () => {
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
           <Button
-            type="submit"
+            // type="submit"
             color="primary"
             className="btn-next"
-            //   onClick={}
+            onClick={() => saveHoliday()}
           >
             <span className="align-middle d-sm-inline-block d-none">
               {id !== 0 ? "Update" : "Save"}
