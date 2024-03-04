@@ -33,7 +33,7 @@ const AdminManualAttendance = lazy(() =>
 const BasicLeave = lazy(() =>
   import("../../views/pages/LeaveModule/BasicLeave")
 );
-const HolidayLeave = lazy(() =>
+const Holiday = lazy(() =>
   import("../../views/pages/Holiday/TakeHolidayForm")
 );
 
@@ -72,7 +72,7 @@ const LeaveReport = lazy(() =>
   import("../../views/pages/LeaveReport/LeaveReport")
 );
 const Page404 = lazy(() => import("../../views/pages/Other/Page404"));
-
+const UnderDevelopment = lazy(() => import("../../views/pages/Other/UnderDevelopment"));
 const ListRoutes = [
   {
     element: <Dashboard />,
@@ -155,10 +155,17 @@ const ListRoutes = [
   },
   {
     element: <AddEmployee />,
-    path: "/MainDashboard/AddEmployee",
+    path: "/AddEmployee",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
+  },
+  {
+    element: <Holiday />,
+    path: "/Holiday",
+    route: "Holiday",
+    slug: "Holiday",
+    title: "Holiday",
   },
   {
     element: <AddDepartment />,
@@ -183,7 +190,7 @@ const ListRoutes = [
   },
   {
     element: <LeaveReport />,
-    path: "/MainDashboard/LeaveReport",
+    path: "/LeaveReport",
     route: "LeaveReport",
     slug: "LeaveReport",
     title: "LeaveReport",
@@ -197,35 +204,35 @@ const ListRoutes = [
   },
   {
     element: <AdminManualAttendance />,
-    path: "/MainDashboard/AdminManualAttendance",
+    path: "/AdminManualAttendance",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
   },
   {
     element: <AdminManualAttendance />,
-    path: "/MainDashboard/AdminManualAttendance/:id",
+    path: "/AdminManualAttendance/:id",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
   },
   {
     element: <ViewAllEmployeeReportData />,
-    path: "/MainDashboard/EmployeeReport",
+    path: "/EmployeeReport",
     route: "EmployeeReport",
     slug: "EmployeeReport",
     title: "EmployeeReport",
   },
   {
     element: <AttendanceReport />,
-    path: "/MainDashboard/AttendanceReport",
+    path: "/AttendanceReport",
     route: "AttendanceReport",
     slug: "AttendanceReport",
     title: "AttendanceReport",
   },
   {
     element: <BasicLeave />,
-    path: "/MainDashboard/BasicLeave",
+    path: "/BasicLeave",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
@@ -239,14 +246,14 @@ const ListRoutes = [
   },
   {
     element: <FirmManagement />,
-    path: "/MainDashboard/AddCompanies",
+    path: "/AddCompanies",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
   },
   {
     element: <AddStoreLocation />,
-    path: "/MainDashboard/AddStoreLocation",
+    path: "/AddStoreLocation",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
@@ -254,18 +261,18 @@ const ListRoutes = [
 
   {
     element: <ListOfBranches />,
-    path: "/MainDashboard/StoreLocationList",
+    path: "/StoreLocationList",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
   },
-  // {
-  //   element: <Page404 />,
-  //   path: "/targets",
-  //   route: "targets",
-  //   slug: "targets",
-  //   title: "targets",
-  // },
+  {
+    element: <UnderDevelopment />,
+    path: "/UnderDevelopment",
+    route: "targets",
+    slug: "targets",
+    title: "targets",
+  },
   // {
   //   element: <Page404 />,
   //   path: "/price_list",

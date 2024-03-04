@@ -62,19 +62,16 @@ const AddDesignation = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
           setState({label:""})
         } else {
           console.log(result);
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   useEffect(() => {

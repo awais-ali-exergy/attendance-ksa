@@ -60,15 +60,14 @@ const ViewAllEmployeesData = () => {
         if (result.SUCCESS === 1) {
           setAttendance(result.DATA);
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
 
@@ -99,18 +98,15 @@ const ViewAllEmployeesData = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
           // window.location.reload();
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
 

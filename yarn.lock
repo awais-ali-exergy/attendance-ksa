@@ -13604,7 +13604,7 @@ react-hook-form@7.18.1:
   resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.18.1.tgz"
   integrity sha512-T9Lv5nBnLzncEd2p87Bc0+LtNYS+ochURtyvw7Ln474xSGxoUjvVygXa3WPWTc/2lH1sw3VdGtSfNKC35vJd5A==
 
-react-hot-toast@^2.2.0:
+react-hot-toast@2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/react-hot-toast/-/react-hot-toast-2.2.0.tgz"
   integrity sha512-248rXw13uhf/6TNDVzagX+y7R8J183rp7MwUMNkcrBRyHj/jWOggfXTGlM8zAOuh701WyVW+eUaWG2LeSufX9g==

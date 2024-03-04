@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { useSkin } from "@hooks/useSkin";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Mail, GitHub } from "react-feather";
@@ -18,9 +18,9 @@ import {
 import "@styles/react/pages/page-authentication.scss";
 
 const Login = () => {
-  const [isOpenAlert, setIsOpenAlert] = React.useState(false);
-  const [alertMessage, setAlertMessage] = React.useState("");
-  const [alertSeverity, setAlertSeverity] = React.useState("");
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
   const handleOpenAlert = (msg, severity) => {
     setIsOpenAlert(true);
     setAlertMessage(msg);
@@ -32,7 +32,7 @@ const Login = () => {
     }
     setIsOpenAlert(false);
   };
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     email: "",
     password: "",
   });

@@ -4,6 +4,9 @@ import { MdDelete } from "react-icons/md";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import CustomAlert from "../../components/alerts/CustomAlert";
+
+
 const styles = {
   bgHeading: {
     background: "#10a945",
@@ -30,6 +33,20 @@ const styles = {
   },
 };
 const LeaveReport = () => {
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const handleOpenAlert = (msg, severity) => {
+    setIsOpenAlert(true);
+    setAlertMessage(msg);
+    setAlertSeverity(severity);
+  };
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsOpenAlert(false);
+  };
   const [leaves, setleaves] = useState([]);
   const getAllLeave = async () => {
     // setIsLoading(true);
@@ -55,15 +72,12 @@ const LeaveReport = () => {
         if (result.SUCCESS === 1) {
           setleaves(result.DATA);
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
     // setIsLoading(false);
   };
@@ -179,6 +193,7 @@ const LeaveReport = () => {
     []
   );
   return (
+    <>
     <div className="table-responsive">
       <div
         className="ag-theme-quartz"
@@ -200,6 +215,14 @@ const LeaveReport = () => {
         />
       </div>
     </div>
+    
+ <CustomAlert
+        isOpen={isOpenAlert}
+        message={alertMessage}
+        severity={alertSeverity}
+        handleCloseAlert={() => handleCloseAlert()}
+      />
+    </>
   );
 };
 

@@ -1,5 +1,7 @@
 // ** React Imports
 import { useState, useEffect, useRef, Fragment } from "react";
+import CustomAlert from "../../../components/alerts/CustomAlert";
+
 import { Link, useNavigate } from "react-router-dom";
 import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
@@ -20,6 +22,20 @@ import Flatpickr from "react-flatpickr";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 const AddEmployee = () => {
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const handleOpenAlert = (msg, severity) => {
+    setIsOpenAlert(true);
+    setAlertMessage(msg);
+    setAlertSeverity(severity);
+  };
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsOpenAlert(false);
+  };
   const { t } = useTranslation();
   const [designation, setDesignation] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -94,15 +110,13 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setDesignation(result.DATA);
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        
       });
   };
   const getBranches = () => {
@@ -130,15 +144,14 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setBraches(result.DATA);
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   const getDepartments = () => {
@@ -166,15 +179,12 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setDepartment(result.DATA);
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   const getemployeeData = () => {
@@ -202,15 +212,13 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setEmployees(result.DATA);
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+
       });
   };
   const getEmployeeDataBySelect = async (empid) => {
@@ -257,26 +265,16 @@ const AddEmployee = () => {
               typeId: data.typeId,
               reportingToUserId:data.reportingToUserId,
             });
-            // if(data.reportingToUserId!=null && data.reportingToUserId!=0){
-            //   var managerObj = employees.find(obj => { return obj.id == data.reportingToUserId });
-            //   if(managerObj){
-            //     setManager(managerObj);
-            //   } else {
-            //     setManager(null);
-            //   }
-            // }
+           
             setCustomFields([...data.customFields]);
           }
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   const saveEmployee = async () => {
@@ -293,7 +291,6 @@ const AddEmployee = () => {
       var formdata = new FormData(document.getElementById("employeedata"));
       formdata.append("id", state.userId);
       formdata.append("typeId", state.typeId);
-      //   formdata.append("reportingToUserId", manager.id);
 
       var requestOptions = {
         method: "POST",
@@ -335,25 +332,20 @@ const AddEmployee = () => {
               typeId: 0,
               reportingToUserId: "",
             });
-            // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
-            // setTimeout(window.location.reload(), 2000);
+            handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
+           
           } else {
-            // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+            andleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
           }
         })
         .catch((error) => {
           console.log("error", error);
-          //   handleOpenSnackbar(
-          //     "Failed to fetch ! Please try Again later.",
-          //     "error"
-          //   );
+          handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
         });
     } else {
       alert("passmatch");
-      //   handleOpenSnackbar(
-      //     <span>New password & confirm password doesn't match</span>,
-      //     "error"
-      //   );
+      handleOpenAlert(<span>New password & confirm password doesn't match</span>, "danger");
+      
     }
   };
   useEffect(() => {
@@ -614,6 +606,13 @@ const AddEmployee = () => {
           </Button>
         </div>
       </Form>
+      
+ <CustomAlert
+        isOpen={isOpenAlert}
+        message={alertMessage}
+        severity={alertSeverity}
+        handleCloseAlert={() => handleCloseAlert()}
+      />
     </Fragment>
   );
 };

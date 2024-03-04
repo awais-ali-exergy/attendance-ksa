@@ -8,8 +8,23 @@ import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
+import CustomAlert from "../../components/alerts/CustomAlert";
 
 const AddEmployee = () => {
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const handleOpenAlert = (msg, severity) => {
+    setIsOpenAlert(true);
+    setAlertMessage(msg);
+    setAlertSeverity(severity);
+  };
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsOpenAlert(false);
+  };
   const navigate = useNavigate();
   let parms = useParams();
   let id = parseInt(parms.id);
@@ -21,8 +36,8 @@ const AddEmployee = () => {
   const [picker, setPicker] = useState(new Date());
 
   const [userId, setUserId] = useState("");
-  //   const [userTime, setUserTime] = React.useState(dayjs(new Date()));
-  //   const [userDate, setUserDate] = React.useState(dayjs(new Date()));
+  //   const [userTime, setUserTime] = useState(dayjs(new Date()));
+  //   const [userDate, setUserDate] = useState(dayjs(new Date()));
   const [state, setState] = useState({
     userdate: "",
     usertime: "",
@@ -61,15 +76,12 @@ const AddEmployee = () => {
             setUserByFrim(data);
           }
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   const saveLeave = async () => {
@@ -100,17 +112,14 @@ const AddEmployee = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   const getLeaveTypes = async () => {
@@ -141,15 +150,13 @@ const AddEmployee = () => {
             setLeaveTypes(data);
           }
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
 
@@ -195,15 +202,12 @@ const AddEmployee = () => {
             setUserId(data.userId);
           }
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
     // setIsLoading(false);
   };
@@ -339,6 +343,14 @@ const AddEmployee = () => {
           </Button>
         </div>
       </Form>
+      
+
+ <CustomAlert
+        isOpen={isOpenAlert}
+        message={alertMessage}
+        severity={alertSeverity}
+        handleCloseAlert={() => handleCloseAlert()}
+      />
     </Fragment>
   );
 };

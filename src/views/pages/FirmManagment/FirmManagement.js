@@ -6,21 +6,35 @@ import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import Flatpickr from 'react-flatpickr'
 import { useParams } from "react-router-dom";
-
+import CustomAlert from "../../components/alerts/CustomAlert";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 
 const AddEmployee = () => {
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const handleOpenAlert = (msg, severity) => {
+    setIsOpenAlert(true);
+    setAlertMessage(msg);
+    setAlertSeverity(severity);
+  };
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsOpenAlert(false);
+  };
     let parms = useParams();
     let id = parseInt(parms.id);
     if (isNaN(id)) id = 0;
     const { t } = useTranslation();
-    const [businessType,setBusinessType] =useState([]);
+    // const [businessType,setBusinessType] =useState([]);
 
 
     const [state, setState] = useState({
       label: "",
-      businesstypeId: null,
+      businessType: "",
       webUrl: "",
       totalBranches: "",
       totalEmployees: "",
@@ -28,45 +42,42 @@ const AddEmployee = () => {
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const getBusinessTypes = async () => {
-    // setIsLoading(true);
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-    );
+  // const getBusinessTypes = async () => {
+  //   // setIsLoading(true);
+  //   var myHeaders = new Headers();
+  //   myHeaders.append(
+  //     "Authorization",
+  //     "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+  //   );
 
-    var formdata = new FormData();
+  //   var formdata = new FormData();
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
+  //   var requestOptions = {
+  //     method: "POST",
+  //     headers: myHeaders,
+  //     body: formdata,
+  //     redirect: "follow",
+  //   };
 
-    await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Firms/GetBusinessTypesDropdown`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.SUCCESS === 1) {
-          setBusinessType( result.DATA );
-        } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
-      });
-    // setIsLoading(false);
+  //   await fetch(
+  //     `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Firms/GetBusinessTypesDropdown`,
+  //     requestOptions
+  //   )
+  //     .then((response) => response.json())
+  //     .then((result) => {
+  //       if (result.SUCCESS === 1) {
+  //         setBusinessType( result.DATA );
+  //       } else {
+  //         handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("error", error);
+  //       handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+  //     });
+  //   // setIsLoading(false);
 
-  };
+  // };
   const getCompanyData = async () => {
     // setIsLoading(true);
 
@@ -99,19 +110,16 @@ const AddEmployee = () => {
               webUrl: data.webUrl,
 				      totalBranches: data.totalBranches,
 				      totalEmployees:data.totalEmployees,
-              businesstypeId:data.businessTypeId,
+              businessType:data.businessType,
             });
           }
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
     // setIsLoading(false);
 
@@ -146,21 +154,21 @@ const AddEmployee = () => {
           // setState({ ...state, companyData: result.DATA });
 
           // console.log(state.companyData);
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) =>{
          console.log("error", error)
-        //  handleOpenSnackbar("Failed to fetch ! Please try Again later.", "error");
+         handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
     });
     // setIsLoading(false);
 
   };
   useEffect(() => {
     getCompanyData()
-    getBusinessTypes();
+    // getBusinessTypes();
   }, []);
 
   return  (
@@ -184,22 +192,16 @@ const AddEmployee = () => {
     </Col>
     <Col md="4" className="mb-1">
       <Label className="form-label" >
-        {t("Business Type")}
+        {t("Add Business Type")}
       </Label>
       <Input
-        type="select"
-        name="businessTypeId"
-        id="businessTypeId"
-        value={state.businesstypeId}
+        // type="select"
+        name="businessType"
+        id="businessType"
+        value={state.businessType}
         onChange={handleChange}
-      >
-        <option></option>
-      {businessType && businessType.length > 0
-        ? businessType.map((obj, index) => (
-            <option value={obj.id} key={obj.id}>{obj.label}</option>
-          ))
-        : null}
-      </Input>
+      />
+       
     </Col>
     <Col md="4" className="mb-1">
       <Label className="form-label" >
@@ -235,6 +237,13 @@ const AddEmployee = () => {
     </Button>
   </div>
 </Form>
+
+<CustomAlert
+        isOpen={isOpenAlert}
+        message={alertMessage}
+        severity={alertSeverity}
+        handleCloseAlert={() => handleCloseAlert()}
+      />
 </Fragment>
   );
 };

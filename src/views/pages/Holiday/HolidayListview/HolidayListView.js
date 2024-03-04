@@ -5,6 +5,8 @@ import { MdDelete } from "react-icons/md";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import CustomAlert from "../../../components/alerts/CustomAlert";
+
 
 const styles = {
   bgHeading: {
@@ -32,6 +34,20 @@ const styles = {
   },
 };
 const ViewAllEmployeesData = () => {
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const handleOpenAlert = (msg, severity) => {
+    setIsOpenAlert(true);
+    setAlertMessage(msg);
+    setAlertSeverity(severity);
+  };
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsOpenAlert(false);
+  };
   const [attendance, setAttendance] = useState([]);
   const navigate = useNavigate();
   const handleNavigation = (id) => {
@@ -60,15 +76,13 @@ const ViewAllEmployeesData = () => {
         if (result.SUCCESS === 1) {
           setAttendance(result.DATA);
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+
       });
   };
 
@@ -99,18 +113,15 @@ const ViewAllEmployeesData = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
           // window.location.reload();
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
 
@@ -174,6 +185,7 @@ const ViewAllEmployeesData = () => {
   );
 
   return (
+    <>
     <div className="table-responsive">
       <div
         className="ag-theme-quartz"
@@ -195,6 +207,13 @@ const ViewAllEmployeesData = () => {
         />
       </div>
     </div>
+    <CustomAlert
+        isOpen={isOpenAlert}
+        message={alertMessage}
+        severity={alertSeverity}
+        handleCloseAlert={() => handleCloseAlert()}
+      />
+    </>
   );
 };
 
