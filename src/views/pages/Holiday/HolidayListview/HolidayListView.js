@@ -39,7 +39,7 @@ const ViewAllEmployeesData = () => {
   };
   const getAllAtt = async () => {
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetAllManualByFirm`,
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Holidays/GetAllByFirm`,
       {
         method: "POST",
         headers: {
@@ -122,53 +122,53 @@ const ViewAllEmployeesData = () => {
     () => [
       {
         headerName: "Holiday Label",
-        field: "userLabel",
+        field: "label",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
       {
         headerName: "Description",
-        field: "attendanceTypeLabel",
+        field: "description",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
       {
         headerName: "Start Date",
-        field: "createdOnByUserDateDisplay",
+        field: "startOnDateDisplay",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
       {
         headerName: "End Date",
-        field: "createdOnByUserTimeDisplay",
+        field: "endOnDateDisplay",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
 
-      {
-        headerName: "Action",
-        cellRenderer: (params) => (
-          <div style={styles.btnSpacing}>
-            <button
-              onClick={() => navigateToEdit(params.data)}
-              className=""
-              style={styles.btnStyle}
-            >
-              <MdModeEdit size={20} />
-            </button>
-            <button
-              style={{ ...styles.btnStyle, marginLeft: "8px" }}
-              onClick={() => deleteLeave(item.id)}
-            >
-              <MdDelete size={25} />
-            </button>
-          </div>
-        ),
-      },
+      // {
+      //   headerName: "Action",
+      //   cellRenderer: (params) => (
+      //     <div style={styles.btnSpacing}>
+      //       <button
+      //         onClick={() => navigateToEdit(params.data)}
+      //         className=""
+      //         style={styles.btnStyle}
+      //       >
+      //         <MdModeEdit size={20} />
+      //       </button>
+      //       <button
+      //         style={{ ...styles.btnStyle, marginLeft: "8px" }}
+      //         onClick={() => deleteLeave(item.id)}
+      //       >
+      //         <MdDelete size={25} />
+      //       </button>
+      //     </div>
+      //   ),
+      // },
     ],
     []
   );
@@ -177,7 +177,7 @@ const ViewAllEmployeesData = () => {
     <div className="table-responsive">
       <div
         className="ag-theme-quartz"
-        style={{ height: "500px", width: "85%" }}
+        style={{ height: "500px", width: "68%" }}
       >
         <AgGridReact
           columnDefs={columnDefs}

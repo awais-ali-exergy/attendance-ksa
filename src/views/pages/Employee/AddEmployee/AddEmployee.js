@@ -65,7 +65,7 @@ const AddEmployee = () => {
     bankAccountNo: "",
     typeId: 0,
     reportingToUserId: "",
-    editEmployeeId:"",
+    editEmployeeId: "",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -202,7 +202,7 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setEmployees(result.DATA);
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
@@ -255,7 +255,7 @@ const AddEmployee = () => {
               bankAccountNo: data.bankAccountNo,
               isAccountNonLocked: data.isAccountNonLocked,
               typeId: data.typeId,
-              reportingToUserId:data.reportingToUserId,
+              reportingToUserId: data.reportingToUserId,
             });
             // if(data.reportingToUserId!=null && data.reportingToUserId!=0){
             //   var managerObj = employees.find(obj => { return obj.id == data.reportingToUserId });
@@ -268,7 +268,7 @@ const AddEmployee = () => {
             setCustomFields([...data.customFields]);
           }
         } else {
-        //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
@@ -369,39 +369,38 @@ const AddEmployee = () => {
   };
 
   return (
-   
     <Fragment>
-        <Row>
-            <Col md="11" className="mb-1">
-            <Label className="form-label">{t("Select Employee")}</Label>
-            <Input
-              type="select"
-              id="editEmployeeId"
-              name="editEmployeeId"
-              value={state.editEmployeeId}
-              onChange={handleChange}
-              placeholder="Select Employee"
-            >
-                <option></option>
-              {employees && employees.length > 0
-                ? employees.map((obj, index) => (
-                    <option value={obj.id} key={obj.id}>
-                      {obj.label}
-                    </option>
-                  ))
-                : null}
-            </Input>
-            </Col>
-            <Col md="1" className="my-2 ">
-            <Button
+      <Row>
+        <Col md="11" className="mb-1">
+          <Label className="form-label">{t("Select Employee")}</Label>
+          <Input
+            type="select"
+            id="editEmployeeId"
+            name="editEmployeeId"
+            value={state.editEmployeeId}
+            onChange={handleChange}
+            placeholder="Select Employee"
+          >
+            <option></option>
+            {employees && employees.length > 0
+              ? employees.map((obj, index) => (
+                  <option value={obj.id} key={obj.id}>
+                    {obj.label}
+                  </option>
+                ))
+              : null}
+          </Input>
+        </Col>
+        <Col md="1" className="my-2 ">
+          <Button
             color="primary"
             className="btn-next"
             onClick={() => getEmployeeDataBySelect(state.editEmployeeId)}
           >
             <span className="align-middle d-sm-inline-block d-none">Edit</span>
           </Button>
-          </Col>
-        </Row>
+        </Col>
+      </Row>
       <Form id="employeedata" onSubmit={() => saveEmployee()}>
         <Row>
           <Col md="4" className="mb-1">
@@ -464,6 +463,7 @@ const AddEmployee = () => {
             <Label className="form-label">{t("Bank Account")}</Label>
             <Input
               id="bankAccountNo"
+              type="textarea"
               name="bankAccountNo"
               value={state.bankAccountNo}
               onChange={handleChange}
@@ -482,7 +482,7 @@ const AddEmployee = () => {
               value={state.departmentId}
               onChange={handleChange}
             >
-                <option></option>
+              <option></option>
               {department && department.length > 0
                 ? department.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
@@ -503,7 +503,7 @@ const AddEmployee = () => {
               onChange={handleChange}
               placeholder="Designation"
             >
-                <option></option>
+              <option></option>
               {designation && designation.length > 0
                 ? designation.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
@@ -524,7 +524,7 @@ const AddEmployee = () => {
               label="Branch"
               placeholder="Branch"
             >
-                <option></option>
+              <option></option>
               {braches && braches.length > 0
                 ? braches.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
@@ -568,7 +568,7 @@ const AddEmployee = () => {
               onChange={handleChange}
               placeholder="Repoting To"
             >
-                <option></option>
+              <option></option>
               {employees && employees.length > 0
                 ? employees.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
@@ -593,7 +593,6 @@ const AddEmployee = () => {
             </Input>
           </Col>
         </Row>
-
 
         <div className="d-flex justify-content-between">
           <Button
