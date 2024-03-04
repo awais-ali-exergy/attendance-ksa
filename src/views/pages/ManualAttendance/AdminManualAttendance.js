@@ -5,9 +5,15 @@ import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+
+import CustomAlert from "../../components/alerts/CustomAlert";
+
+
+
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+
 import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
 import { MdModeEdit } from "react-icons/md";
@@ -18,6 +24,20 @@ import { Item } from "react-contexify";
 import { data } from "jquery";
 
 const AddEmployee = () => {
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const handleOpenAlert = (msg, severity) => {
+    setIsOpenAlert(true);
+    setAlertMessage(msg);
+    setAlertSeverity(severity);
+  };
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsOpenAlert(false);
+  };
   const navigate = useNavigate();
   let parms = useParams();
   let id = parseInt(parms.id);
@@ -37,7 +57,9 @@ const AddEmployee = () => {
     (date) => setPicker(date);
   };
   const [userId, setUserId] = useState("");
+
   const [attendanceDataArray, setAttendanceDataArray] = useState([]);
+
   const [state, setState] = useState({
     userdate: "",
     createdOnDateByUser: "",
@@ -79,15 +101,12 @@ const AddEmployee = () => {
             setAttTypes(data);
           }
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   const getUsers = async () => {
@@ -118,15 +137,13 @@ const AddEmployee = () => {
             setUserByFrim(data);
           }
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   const saveAtt = async () => {
@@ -170,23 +187,26 @@ const AddEmployee = () => {
       .then((result) => {
         console.log(result, "result is coming");
         if (result.SUCCESS === 1) {
+
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
+
+
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
           setFinalData({
             userId: "",
             data: [],
           });
           setAttendanceDataArray([]);
-          navigate("/ViewAllAttendanceData");
+          //navigate("/ViewAllAttendanceData");
+
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
   const getattendanceById = async (id) => {
@@ -233,15 +253,12 @@ const AddEmployee = () => {
             setUserDate(new Date(data.createdOnDateByUser));
           }
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
     // setIsLoading(false);
   };
@@ -559,6 +576,12 @@ const AddEmployee = () => {
           </div>
         ) : null}
       </Form>
+      <CustomAlert
+        isOpen={isOpenAlert}
+        message={alertMessage}
+        severity={alertSeverity}
+        handleCloseAlert={() => handleCloseAlert()}
+      />
     </Fragment>
   );
 };

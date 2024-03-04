@@ -1,6 +1,6 @@
 // ** React Imports
 // import * as React from "react";
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -27,10 +27,25 @@ import StepsHref from "@components/steps-href";
 import { grn, stock, reports } from "./data";
 import classnames from "classnames";
 import { useParams } from "react-router-dom";
+import CustomAlert from "../../components/alerts/CustomAlert";
 
 
 const Production = () => {
-  const [groupFeature, setGroupFeature] = React.useState([]);
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const handleOpenAlert = (msg, severity) => {
+    setIsOpenAlert(true);
+    setAlertMessage(msg);
+    setAlertSeverity(severity);
+  };
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsOpenAlert(false);
+  };
+  const [groupFeature, setGroupFeature] = useState([]);
 
   let parms = useParams();
   let groupId = parseInt(parms.groupId);
@@ -56,15 +71,12 @@ const Production = () => {
           setGroupFeature(result.DATA);
           console.log("setGroupFeature:",groupFeature);
         } else {
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
     // setIsLoading(false);
   };
@@ -106,128 +118,17 @@ const href = window.location.href
         </Col>
         </>
         )})}
-        {/* <Col md="6" xl="4" xs="6">
-          <Card className="bg-transparent border-warning cursor-pointer">
-            <Link to={`/new_outlet_request`}>
-              <CardBody>
-                <CardTitle tag="h4">Production GRN</CardTitle>
-                <CardText>
-                  Some quick example text to build on the card title and make
-                  up.
-                </CardText>
-              </CardBody>
-            </Link>
-          </Card>
-        </Col>
-        <Col md="6" xl="4" xs="6">
-          <Card className="bg-transparent border-info cursor-pointer">
-            <CardBody>
-              <CardTitle tag="h4">Receipt from Production</CardTitle>
-              <CardText>
-                Some quick example text to build on the card title and make up.
-              </CardText>
-            </CardBody>
-          </Card>
-        </Col> */}
+
       </Row>
-      {/* <div
-        style={{
-          backgroundColor: "white",
-          padding: 10,
-          paddingTop: 20,
-          borderTopLeftRadius: 5,
-          borderTopRightRadius: 5,
-          marginBottom: 20,
-        }}
-      >
-        <h5>STOCK</h5>
-      </div>
-      <Row>
-        <Col md="6" xl="4" xs="6">
-          <Card className="bg-transparent border-primary cursor-pointer">
-            <CardBody>
-              <CardTitle tag="h4">Stock Transfer</CardTitle>
-              <CardText>
-                Some quick example text to build on the card title and make up.
-              </CardText>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col md="6" xl="4" xs="6">
-          <Card className="bg-transparent border-warning cursor-pointer">
-            <CardBody>
-              <CardTitle tag="h4">Warehouse Stock Transfer</CardTitle>
-              <CardText>
-                Some quick example text to build on the card title and make.
-              </CardText>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-      <div
-        style={{
-          backgroundColor: "white",
-          padding: 10,
-          paddingTop: 20,
-          borderTopLeftRadius: 5,
-          borderTopRightRadius: 5,
-          marginBottom: 20,
-        }}
-      >
-        <h5>REPORTS</h5>
-      </div>
-      <Row>
-        <Col md="6" xl="4" xs="6">
-          <Card className="bg-transparent border-primary cursor-pointer">
-            <CardBody>
-              <CardTitle tag="h4">Production GRN Report</CardTitle>
-              <CardText>
-                Some quick example text to build on the card title and make up.
-              </CardText>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col md="6" xl="4" xs="6">
-          <Card className="bg-transparent border-warning cursor-pointer">
-            <CardBody>
-              <CardTitle tag="h4">Production Report</CardTitle>
-              <CardText>
-                Some quick example text to build on the card title and make up.
-              </CardText>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row> */}
+      <CustomAlert
+        isOpen={isOpenAlert}
+        message={alertMessage}
+        severity={alertSeverity}
+        handleCloseAlert={() => handleCloseAlert()}
+      />
     </>
   ) : (
-    // <div className="app-user-view">
-    //   <Row>
-    //     <Fragment>
-    //       <Row>
-    //         <Col sm="12">
-    //           <Breadcrumbs title="GRN" data={[]} />
-    //           <StepsHref steps={grn} />
-    //         </Col>
-    //       </Row>
-    //     </Fragment>
-    //     <Fragment>
-    //       <Row>
-    //         <Col sm="12">
-    //           <Breadcrumbs title="Stock" data={[]} />
-    //           <StepsHref steps={stock} />
-    //         </Col>
-    //       </Row>
-    //     </Fragment>
-    //     <Fragment>
-    //       <Row>
-    //         <Col sm="12">
-    //           <Breadcrumbs title="Reports" data={[]} />
-    //           <StepsHref steps={reports} />
-    //         </Col>
-    //       </Row>
-    //     </Fragment>
-    //   </Row>
-    // </div>
+    
     <Alert color="danger">
       <h4 className="alert-heading">User not found</h4>
       <div className="alert-body">

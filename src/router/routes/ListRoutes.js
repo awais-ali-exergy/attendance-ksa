@@ -33,7 +33,7 @@ const AdminManualAttendance = lazy(() =>
 const BasicLeave = lazy(() =>
   import("../../views/pages/LeaveModule/BasicLeave")
 );
-const HolidayLeave = lazy(() =>
+const Holiday = lazy(() =>
   import("../../views/pages/Holiday/TakeHolidayForm")
 );
 const HolidayListView = lazy(() =>
@@ -75,7 +75,7 @@ const LeaveReport = lazy(() =>
   import("../../views/pages/LeaveReport/LeaveReport")
 );
 const Page404 = lazy(() => import("../../views/pages/Other/Page404"));
-
+const UnderDevelopment = lazy(() => import("../../views/pages/Other/UnderDevelopment"));
 const ListRoutes = [
   {
     element: <Dashboard />,
@@ -162,6 +162,13 @@ const ListRoutes = [
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
+  },
+  {
+    element: <Holiday />,
+    path: "/Holiday",
+    route: "Holiday",
+    slug: "Holiday",
+    title: "Holiday",
   },
   {
     element: <AddDepartment />,
@@ -277,13 +284,13 @@ const ListRoutes = [
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
   },
-  // {
-  //   element: <Page404 />,
-  //   path: "/targets",
-  //   route: "targets",
-  //   slug: "targets",
-  //   title: "targets",
-  // },
+  {
+    element: <UnderDevelopment />,
+    path: "/UnderDevelopment",
+    route: "targets",
+    slug: "targets",
+    title: "targets",
+  },
   // {
   //   element: <Page404 />,
   //   path: "/price_list",

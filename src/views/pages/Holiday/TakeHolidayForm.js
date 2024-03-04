@@ -5,6 +5,7 @@ import { Alert, InputGroup } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+import CustomAlert from "../../components/alerts/CustomAlert";
 
 import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
@@ -18,6 +19,7 @@ const AddEmployee = () => {
   if (isNaN(id)) id = 0;
   const { t } = useTranslation();
 
+
   const [userDate, setUserDate] = useState();
 
   const [state, setState] = useState({
@@ -30,6 +32,7 @@ const AddEmployee = () => {
     setState({ ...state, [e.target.name]: e.target.value });
     console.log(state);
   };
+
 
   const saveHoliday = async () => {
     var myHeaders = new Headers();
@@ -52,11 +55,15 @@ const AddEmployee = () => {
     };
 
     await fetch(
+
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Holidays/Save`,
+
       requestOptions
     )
       .then((response) => response.json())
       .then((result) => {
+
+
         if (result.USER_MESSAGE === "Holiday Saved") {
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
           console.log(state);
@@ -67,18 +74,17 @@ const AddEmployee = () => {
             endOnDate: new Date(),
           });
           setUserDate("");
+
         } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
   };
+
 
   const handleNavigation = () => {
     navigate("/ViewAllHolidayData");

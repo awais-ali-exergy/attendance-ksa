@@ -1,4 +1,5 @@
 import React from "react";
+import {useState} from "react";
 import { useSkin } from "@hooks/useSkin";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
@@ -22,13 +23,13 @@ const Singup = () => {
   const { skin } = useSkin();
   const windowWidth = React.useRef(window.innerWidth);
   const windowHeight = React.useRef(window.innerHeight);
-  const [isOpenAlert, setIsOpenAlert] = React.useState(false);
-  const [alertMessage, setAlertMessage] = React.useState("");
-  const [alertSeverity, setAlertSeverity] = React.useState("");
-  const [vCodeBool, setvCodeBool] = React.useState(true);
-  const [responeBool, setResponeBool] = React.useState(false);
-  const [resString, setResString] = React.useState("");
-  const [state, setState] = React.useState({
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const [vCodeBool, setvCodeBool] = useState(true);
+  const [responeBool, setResponeBool] = useState(false);
+  const [resString, setResString] = useState("");
+  const [state, setState] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -208,14 +209,11 @@ const Singup = () => {
           window.location.reload(false);
         } else {
           console.log(result);
-          // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+          handleOpenAlert("Failed to fetch ! Please try Again later.", "danger");
         }
       })
       .catch((error) => {
-        // handleOpenSnackbar(
-        //   <span>Failed to fetch ! Please try Again later.</span>,
-        //   "error"
-        // );
+        handleOpenAlert("Failed to fetch ! Please try Again later.", "danger");
         console.log("error", error);
       });
   };
