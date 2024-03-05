@@ -395,7 +395,7 @@ const AddEmployee = () => {
             <Label className="form-label">{t("Leave Type")}</Label>
             <Input
               type="select"
-              name="leaveTypeId"
+              name="attendanceTypeId"
               id="leaveTypeId"
               placeholder="Leave Type"
               value={state.attendanceTypeId}
@@ -418,12 +418,6 @@ const AddEmployee = () => {
               Leave Date
             </Label>
             <Flatpickr
-              // value={picker}
-
-              // altInput= {true}
-              //   dateFormat= "YYYY-MM-DD"
-              //   altFormat= "DD-MM-YYYY"
-              //   allowInput= {true}
               id="date-time-picker"
               className="form-control"
               onChange={(event) => handleDateFormat(event)}
@@ -435,8 +429,8 @@ const AddEmployee = () => {
             </Label>
             <Input
               value={picker}
-              type="time" // Set type to "time"
-              id="time-picker" // Unique identifier
+              type="time"
+              id="time-picker"
               className="form-control"
               onChange={(event) => handleTimeFormat(event)}
             />
