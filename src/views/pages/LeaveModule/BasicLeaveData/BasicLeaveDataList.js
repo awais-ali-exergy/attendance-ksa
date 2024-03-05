@@ -67,7 +67,10 @@ const BasicLeaveDataList = () => {
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        handleOpenAlert(
+          <span>Failed to fetch ! Please try Again later.</span>,
+          "danger"
+        );
       });
     // setIsLoading(false);
   };
@@ -111,8 +114,10 @@ const BasicLeaveDataList = () => {
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-
+        handleOpenAlert(
+          <span>Failed to fetch ! Please try Again later.</span>,
+          "danger"
+        );
       });
   };
   useEffect(() => {
@@ -183,7 +188,13 @@ const BasicLeaveDataList = () => {
     <div className="table-responsive">
       <div
         className="ag-theme-quartz"
-        style={{ height: "500px", width: "100%" }}
+        style={{
+          height: "500px",
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-evenly",
+          flexDirection: "column",
+        }}
       >
         <AgGridReact
           columnDefs={columnDefs}

@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import { useSkin } from "@hooks/useSkin";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
@@ -7,6 +7,8 @@ import { Facebook, Twitter, Mail, GitHub } from "react-feather";
 import InputPasswordToggle from "@components/input-password-toggle";
 import Carousel from "@components/carousel";
 import CustomAlert from "../components/alerts/CustomAlert";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Row,
   Col,
@@ -154,18 +156,54 @@ const Singup = () => {
             <span>Code hase been sent yo your Email</span>,
             "primary"
           );
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         } else {
           console.log(result.SYSTEM_MESSAGE);
-          handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
+          // handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
         // setError("Someting Went Wrong");
         console.log("error", error);
-        handleOpenAlert(
-          <span>Failed to fetch ! Please try Again later</span>,
-          "danger"
-        );
+        // handleOpenAlert(
+        //   <span>Failed to fetch ! Please try Again later</span>,
+        //   "danger"
+        // );
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "success",
+        });
       });
   };
   // const handleSubmit = async (data) => {
@@ -209,7 +247,10 @@ const Singup = () => {
           window.location.reload(false);
         } else {
           console.log(result);
-          handleOpenAlert("Failed to fetch ! Please try Again later.", "danger");
+          handleOpenAlert(
+            "Failed to fetch ! Please try Again later.",
+            "danger"
+          );
         }
       })
       .catch((error) => {
@@ -249,6 +290,9 @@ const Singup = () => {
 
   return (
     <>
+      <ToastContainer
+        toastStyle={{ backgroundColor: "#10a945", color: "white" }}
+      />
       <div className="auth-wrapper auth-cover">
         <Row className="auth-inner m-0">
           <Col
@@ -425,12 +469,12 @@ const Singup = () => {
           </Col>
         </Row>
       </div>
-      <CustomAlert
+      {/* <CustomAlert
         isOpen={isOpenAlert}
         message={alertMessage}
         severity={alertSeverity}
         handleCloseAlert={() => handleCloseAlert()}
-      />
+      /> */}
     </>
   );
 };

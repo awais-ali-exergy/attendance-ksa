@@ -109,7 +109,16 @@ const ListOfBranches = () => {
   );
 
   return (
-    <div className="ag-theme-quartz" style={{ height: "500px", width: "100%" }}>
+    <div
+      className="ag-theme-quartz"
+      style={{
+        height: "500px",
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-evenly",
+        flexDirection: "column",
+      }}
+    >
       <AgGridReact
         columnDefs={columnDefs}
         rowData={listBranches}

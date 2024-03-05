@@ -35,7 +35,7 @@ const ViewAllEmployeesData = () => {
   const [attendance, setAttendance] = useState([]);
   const navigate = useNavigate();
   const handleNavigation = (id) => {
-    navigate("/MainDashboard/AdminManualAttendance/" + id);
+    navigate("/AdminManualAttendance/" + id);
   };
   const getAllAtt = async () => {
     await fetch(
@@ -60,14 +60,15 @@ const ViewAllEmployeesData = () => {
         if (result.SUCCESS === 1) {
           setAttendance(result.DATA);
         } else {
-          
           handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-
         }
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        handleOpenAlert(
+          <span>Failed to fetch ! Please try Again later.</span>,
+          "danger"
+        );
       });
   };
 
@@ -106,7 +107,10 @@ const ViewAllEmployeesData = () => {
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        handleOpenAlert(
+          <span>Failed to fetch ! Please try Again later.</span>,
+          "danger"
+        );
       });
   };
 
@@ -173,7 +177,13 @@ const ViewAllEmployeesData = () => {
     <div className="table-responsive">
       <div
         className="ag-theme-quartz"
-        style={{ height: "500px", width: "85%" }}
+        style={{
+          height: "500px",
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-evenly",
+          flexDirection: "column",
+        }}
       >
         <AgGridReact
           columnDefs={columnDefs}

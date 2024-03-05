@@ -7,7 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import CustomAlert from "../../components/alerts/CustomAlert";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
@@ -37,7 +38,6 @@ const AddEmployee = () => {
   const [country, setCountry] = useState([]);
   const [managers, setManagers] = useState([]);
   const [city, setCity] = useState([]);
-
 
   const [state, setState] = useState({
     label: data ? data.label : "",
@@ -75,14 +75,33 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setManagers(result.DATA);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-        
-      
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "success",
+        });
       });
     // setIsLoading(false);
   };
@@ -113,14 +132,44 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setCountry(result.DATA);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          }
+        );
 
-        
+        // console.log("error", error);
+        // handleOpenAlert(
+        //   <span>Failed to fetch ! Please try Again later.</span>,
+        //   "danger"
+        // );
       });
     // setIsLoading(false);
   };
@@ -128,8 +177,8 @@ const AddEmployee = () => {
     // setIsLoading(true);
     if (countryId != null) {
     } else {
-      handleOpenAlert(<span>Please select country first.</span>, "danger");
-      
+      // handleOpenAlert(<span>Please select country first.</span>, "danger");
+
       //   setIsLoading(false);
       return;
     }
@@ -157,15 +206,32 @@ const AddEmployee = () => {
       .then((result) => {
         if (result.SUCCESS === 1) {
           setCity(result.DATA);
+          // toast(result.USER_MESSAGE);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
+          // handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-
-        
+        toast("Failed to fetch ! Please try Again later.", {
+          type: "error",
+        });
+        // console.log("error", error);
+        // handleOpenAlert(
+        //   <span>Failed to fetch ! Please try Again later.</span>,
+        //   "danger"
+        // );
       });
     // setIsLoading(false);
   };
@@ -210,9 +276,10 @@ const AddEmployee = () => {
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-
-        
+        handleOpenAlert(
+          <span>Failed to fetch ! Please try Again later.</span>,
+          "danger"
+        );
       });
 
     // setIsLoading(false);
@@ -233,10 +300,11 @@ const AddEmployee = () => {
       contactNo: "",
       managerLabel: "",
     });
-    navigate("/MainDashboard/StoreLocationList");
+    navigate("/StoreLocationList");
   };
   return (
     <Fragment>
+      <ToastContainer />
       <Form id="branchData" onSubmit={() => saveBranch()}>
         <Row>
           <Col md="4" className="mb-1">

@@ -27,17 +27,16 @@ const AddDepartment = () => {
   const [braches, setBraches] = useState([]);
   const [picker, setPicker] = useState(new Date());
   console.log("data is");
- 
+
   const ref = useRef(null);
 
-
   const [state, setState] = useState({
-    label:"",
+    label: "",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const saveDepartment = async() => {
+  const saveDepartment = async () => {
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -45,7 +44,6 @@ const AddDepartment = () => {
     );
 
     var formdata = new FormData(document.getElementById("AddDepartment"));
- 
 
     var requestOptions = {
       method: "POST",
@@ -62,7 +60,7 @@ const AddDepartment = () => {
       .then((result) => {
         if (result.SUCCESS === 1) {
           handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-          setState({label:""})
+          setState({ label: "" });
         } else {
           console.log(result);
           handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
@@ -70,25 +68,24 @@ const AddDepartment = () => {
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        handleOpenAlert(
+          <span>Failed to fetch ! Please try Again later.</span>,
+          "danger"
+        );
       });
   };
-  useEffect(() => {
-    
-  }, []);
+
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate("/ViewAllEmployeeData");
+    navigate("/AddDepartmentViewList");
   };
 
   return (
-   
     <Fragment>
-        
       <Form id="AddDepartment" onSubmit={() => saveDepartment()}>
-      <Row>
-        <Col md="12" className="mb-1">
+        <Row>
+          <Col md="12" className="mb-1">
             <Label className="form-label">{t("Add Department")}</Label>
             <Input
               name="label"
@@ -98,9 +95,7 @@ const AddDepartment = () => {
               placeholder="Add New Department"
             />
           </Col>
-           
         </Row>
-
 
         <div className="d-flex justify-content-between">
           <Button

@@ -6,6 +6,8 @@ import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import CustomAlert from "../../components/alerts/CustomAlert";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
@@ -19,7 +21,6 @@ const AddEmployee = () => {
   if (isNaN(id)) id = 0;
   const { t } = useTranslation();
 
-
   const [userDate, setUserDate] = useState();
 
   const [state, setState] = useState({
@@ -32,7 +33,6 @@ const AddEmployee = () => {
     setState({ ...state, [e.target.name]: e.target.value });
     console.log(state);
   };
-
 
   const saveHoliday = async () => {
     var myHeaders = new Headers();
@@ -55,15 +55,12 @@ const AddEmployee = () => {
     };
 
     await fetch(
-
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Holidays/Save`,
 
       requestOptions
     )
       .then((response) => response.json())
       .then((result) => {
-
-
         if (result.USER_MESSAGE === "Holiday Saved") {
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
           console.log(state);
@@ -73,18 +70,60 @@ const AddEmployee = () => {
             startOnDate: new Date(),
             endOnDate: new Date(),
           });
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
           setUserDate("");
-
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          }
+        );
+        // handleOpenAlert(
+        //   <span>Failed to fetch ! Please try Again later.</span>,
+        //   "danger"
+        // );
       });
   };
-
 
   const handleNavigation = () => {
     navigate("/ViewAllHolidayData");
@@ -110,6 +149,9 @@ const AddEmployee = () => {
 
   return (
     <Fragment>
+      <ToastContainer
+      // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
+      />
       <Form id="attForm" onSubmit={() => saveAtt()}>
         <Row>
           <Col md="6" className="mb-1">

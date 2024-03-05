@@ -86,7 +86,16 @@ const EmployeeReport = () => {
     };
   }, []);
   return (
-    <div className="ag-theme-quartz" style={{ height: "700px", width: "85%" }}>
+    <div
+      className="ag-theme-quartz"
+      style={{
+        height: "700px",
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-evenly",
+        flexDirection: "column",
+      }}
+    >
       <AgGridReact
         columnDefs={columnDefs}
         rowData={employees}

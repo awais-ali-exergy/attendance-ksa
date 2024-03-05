@@ -20,14 +20,12 @@ function Page404() {
       {AuthUser.isAdmin ? (
         <>
           <h1 style={{ fontSize: 60 }}>204</h1>
-          <h1>Access Denied: This Feature is under Delelopment</h1>
+          <h1>Access Denied: This Feature is under Development</h1>
         </>
       ) : (
         <>
           <h1 style={{ fontSize: 60 }}>204</h1>
-          <h3>
-            Access Denied: This Feature is under Delelopment
-          </h3>
+          <h3>Access Denied: This Feature is under Development</h3>
         </>
       )}
 

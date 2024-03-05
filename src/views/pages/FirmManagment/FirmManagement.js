@@ -1,14 +1,15 @@
 // ** React Imports
-import { useState,useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
-import Flatpickr from 'react-flatpickr'
+import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
 import CustomAlert from "../../components/alerts/CustomAlert";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddEmployee = () => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
@@ -25,20 +26,19 @@ const AddEmployee = () => {
     }
     setIsOpenAlert(false);
   };
-    let parms = useParams();
-    let id = parseInt(parms.id);
-    if (isNaN(id)) id = 0;
-    const { t } = useTranslation();
-    // const [businessType,setBusinessType] =useState([]);
+  let parms = useParams();
+  let id = parseInt(parms.id);
+  if (isNaN(id)) id = 0;
+  const { t } = useTranslation();
+  // const [businessType,setBusinessType] =useState([]);
 
-
-    const [state, setState] = useState({
-      label: "",
-      businessType: "",
-      webUrl: "",
-      totalBranches: "",
-      totalEmployees: "",
-    });
+  const [state, setState] = useState({
+    label: "",
+    businessType: "",
+    webUrl: "",
+    totalBranches: "",
+    totalEmployees: "",
+  });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
@@ -108,23 +108,64 @@ const AddEmployee = () => {
             setState({
               label: data.label,
               webUrl: data.webUrl,
-				      totalBranches: data.totalBranches,
-				      totalEmployees:data.totalEmployees,
-              businessType:data.businessType,
+              totalBranches: data.totalBranches,
+              totalEmployees: data.totalEmployees,
+              businessType: data.businessType,
             });
           }
+
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          }
+        );
+        // console.log("error", error);
+        // handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
       });
     // setIsLoading(false);
-
   };
-  const saveCompany = async ()  => {
+  const saveCompany = async () => {
     // setIsLoading(true);
 
     var myHeaders = new Headers();
@@ -152,99 +193,126 @@ const AddEmployee = () => {
         console.log("result", result);
         if (result.SUCCESS === 1) {
           // setState({ ...state, companyData: result.DATA });
-
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
           // console.log(state.companyData);
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
-      .catch((error) =>{
-         console.log("error", error)
-         handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-    });
+      .catch((error) => {
+        console.log("error", error);
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          }
+        );
+        // handleOpenAlert(
+        //   <span>Failed to fetch ! Please try Again later.</span>,
+        //   "danger"
+        // );
+      });
     // setIsLoading(false);
-
   };
   useEffect(() => {
-    getCompanyData()
+    getCompanyData();
     // getBusinessTypes();
   }, []);
 
-  return  (
-
-<Fragment>
-<Form id="companydata" onSubmit={() => saveCompany()}>
- 
- 
-    <Row>
-  <Col md="4" className="mb-1">
-      <Label className="form-label" >
-        {t("Firm Label")}
-      </Label>
-      <Input
-        id="label"
-        name="label"
-        value={state.label}
-        onChange={handleChange}
-       
+  return (
+    <Fragment>
+      <ToastContainer
+      // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
       />
-    </Col>
-    <Col md="4" className="mb-1">
-      <Label className="form-label" >
-        {t("Add Business Type")}
-      </Label>
-      <Input
-        // type="select"
-        name="businessType"
-        id="businessType"
-        value={state.businessType}
-        onChange={handleChange}
-      />
-       
-    </Col>
-    <Col md="4" className="mb-1">
-      <Label className="form-label" >
-        {t("Website URL")}
-      </Label>
-      <Input
-        id="webUrl"
-        name="webUrl"
-        value={state.webUrl}
-        onChange={handleChange}
-       
-      />
-    </Col>
-  </Row>
+      <Form id="companydata" onSubmit={() => saveCompany()}>
+        <Row>
+          <Col md="4" className="mb-1">
+            <Label className="form-label">{t("Firm Label")}</Label>
+            <Input
+              id="label"
+              name="label"
+              value={state.label}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md="4" className="mb-1">
+            <Label className="form-label">{t("Add Business Type")}</Label>
+            <Input
+              // type="select"
+              name="businessType"
+              id="businessType"
+              value={state.businessType}
+              onChange={handleChange}
+            />
+          </Col>
+          <Col md="4" className="mb-1">
+            <Label className="form-label">{t("Website URL")}</Label>
+            <Input
+              id="webUrl"
+              name="webUrl"
+              value={state.webUrl}
+              onChange={handleChange}
+            />
+          </Col>
+        </Row>
 
+        <div className="d-flex justify-content-end">
+          <Button color="secondary" className="btn-prev d-none" outline>
+            <span className="align-middle d-sm-inline-block d-none">View</span>
+          </Button>
+          <Button
+            type="submit"
+            color="primary"
+            className="btn-next"
+            //   onClick={}
+          >
+            <span className="align-middle d-sm-inline-block d-none">Save</span>
+          </Button>
+        </div>
+      </Form>
 
-
-  <div className="d-flex justify-content-end">
-    <Button color="secondary" className="btn-prev d-none" outline >
-     
-      <span className="align-middle d-sm-inline-block d-none">
-       View
-      </span>
-    </Button>
-    <Button
-    type="submit"
-      color="primary"
-      className="btn-next"
-    //   onClick={}
-    >
-      <span className="align-middle d-sm-inline-block d-none">Save</span>
-     
-    </Button>
-  </div>
-</Form>
-
-<CustomAlert
+      <CustomAlert
         isOpen={isOpenAlert}
         message={alertMessage}
         severity={alertSeverity}
         handleCloseAlert={() => handleCloseAlert()}
       />
-</Fragment>
+    </Fragment>
   );
 };
 export default AddEmployee;
