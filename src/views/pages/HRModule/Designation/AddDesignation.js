@@ -27,18 +27,17 @@ const AddDesignation = () => {
   const [braches, setBraches] = useState([]);
   const [picker, setPicker] = useState(new Date());
   console.log("data is");
- 
+
   const ref = useRef(null);
 
-
   const [state, setState] = useState({
-    label:"",
-    description:"",
+    label: "",
+    description: "",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const saveDesignation = async() => {
+  const saveDesignation = async () => {
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -46,7 +45,6 @@ const AddDesignation = () => {
     );
 
     var formdata = new FormData(document.getElementById("AddDesignation"));
- 
 
     var requestOptions = {
       method: "POST",
@@ -63,7 +61,7 @@ const AddDesignation = () => {
       .then((result) => {
         if (result.SUCCESS === 1) {
           handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-          setState({label:""})
+          setState({ label: "" });
         } else {
           console.log(result);
           handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
@@ -71,25 +69,24 @@ const AddDesignation = () => {
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        handleOpenAlert(
+          <span>Failed to fetch ! Please try Again later.</span>,
+          "danger"
+        );
       });
   };
-  useEffect(() => {
-    
-  }, []);
+  useEffect(() => {}, []);
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate("/ViewAllEmployeeData");
+    navigate("/AddDesignationViewList");
   };
 
   return (
-   
     <Fragment>
-        
       <Form id="AddDesignation" onSubmit={() => saveDesignation()}>
-      <Row>
-        <Col md="6" className="mb-1">
+        <Row>
+          <Col md="6" className="mb-1">
             <Label className="form-label">{t("Add Designation")}</Label>
             <Input
               name="label"
@@ -109,9 +106,7 @@ const AddDesignation = () => {
               placeholder="Add Description Here"
             />
           </Col>
-           
         </Row>
-
 
         <div className="d-flex justify-content-between">
           <Button

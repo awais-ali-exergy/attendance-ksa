@@ -6,7 +6,8 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import CustomAlert from "../../../components/alerts/CustomAlert";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const styles = {
   bgHeading: {
@@ -51,7 +52,7 @@ const ViewAllEmployeesData = () => {
   const [attendance, setAttendance] = useState([]);
   const navigate = useNavigate();
   const handleNavigation = (id) => {
-    navigate("/MainDashboard/AdminManualAttendance/" + id);
+    navigate("/AdminManualAttendance/" + id);
   };
   const getAllAtt = async () => {
     await fetch(
@@ -67,7 +68,7 @@ const ViewAllEmployeesData = () => {
     )
       .then((response) => {
         if (response.status === 401) {
-          <Logout />;
+          // <Logout />;
         }
         return response.json();
       })
@@ -75,14 +76,52 @@ const ViewAllEmployeesData = () => {
         console.log(result);
         if (result.SUCCESS === 1) {
           setAttendance(result.DATA);
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          }
+        );
       });
   };
 
@@ -113,15 +152,51 @@ const ViewAllEmployeesData = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-          // window.location.reload();
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          }
+        );
       });
   };
 
@@ -186,28 +261,37 @@ const ViewAllEmployeesData = () => {
 
   return (
     <>
-    <div className="table-responsive">
-      <div
-        className="ag-theme-quartz"
-        style={{ height: "500px", width: "68%" }}
-      >
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={attendance}
-          pagination={true}
-          paginationPageSize={10}
-          paginationAutoPageSize={true}
-          suppressPaginationPanel={true}
-          animateRows={true}
-          defaultColDef={{
-            sortable: true,
-            resizable: true,
-            filter: true,
+      <ToastContainer
+      // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
+      />
+      <div className="table-responsive">
+        <div
+          className="ag-theme-quartz"
+          style={{
+            height: "500px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-evenly",
+            flexDirection: "column",
           }}
-        />
+        >
+          <AgGridReact
+            columnDefs={columnDefs}
+            rowData={attendance}
+            pagination={true}
+            paginationPageSize={10}
+            paginationAutoPageSize={true}
+            suppressPaginationPanel={true}
+            animateRows={true}
+            defaultColDef={{
+              sortable: true,
+              resizable: true,
+              filter: true,
+            }}
+          />
+        </div>
       </div>
-    </div>
-    <CustomAlert
+      <CustomAlert
         isOpen={isOpenAlert}
         message={alertMessage}
         severity={alertSeverity}

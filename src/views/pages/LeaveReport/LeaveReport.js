@@ -5,7 +5,8 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import CustomAlert from "../../components/alerts/CustomAlert";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const styles = {
   bgHeading: {
@@ -63,23 +64,49 @@ const LeaveReport = () => {
     )
       .then((response) => {
         if (response.status === 401) {
-          <Logout />;
+          // <Logout />;
         }
         return response.json();
       })
       .then((result) => {
         console.log(result);
         if (result.SUCCESS === 1) {
+          // toast(result.USER_MESSAGE);
           setleaves(result.DATA);
         } else {
-          
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          });
         }
       })
       .catch((error) => {
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          }
+        );
       });
-    // setIsLoading(false);
   };
   //   const editleave = (id) => {
   //     window.location.replace("#/MainDashboard/BasicLeave/" + id);
@@ -194,29 +221,36 @@ const LeaveReport = () => {
   );
   return (
     <>
-    <div className="table-responsive">
-      <div
-        className="ag-theme-quartz"
-        style={{ height: "500px", width: "100%" }}
-      >
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={leaves}
-          pagination={true}
-          paginationPageSize={10}
-          paginationAutoPageSize={true}
-          suppressPaginationPanel={true}
-          animateRows={true}
-          defaultColDef={{
-            sortable: true,
-            resizable: true,
-            filter: true,
+      <ToastContainer />
+      <div className="table-responsive">
+        <div
+          className="ag-theme-quartz"
+          style={{
+            height: "500px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-evenly",
+            flexDirection: "column",
           }}
-        />
+        >
+          <AgGridReact
+            columnDefs={columnDefs}
+            rowData={leaves}
+            pagination={true}
+            paginationPageSize={10}
+            paginationAutoPageSize={true}
+            suppressPaginationPanel={true}
+            animateRows={true}
+            defaultColDef={{
+              sortable: true,
+              resizable: true,
+              filter: true,
+            }}
+          />
+        </div>
       </div>
-    </div>
-    
- <CustomAlert
+
+      <CustomAlert
         isOpen={isOpenAlert}
         message={alertMessage}
         severity={alertSeverity}

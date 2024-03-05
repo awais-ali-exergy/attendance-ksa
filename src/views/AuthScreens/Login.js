@@ -1,10 +1,13 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { useSkin } from "@hooks/useSkin";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Facebook, Twitter, Mail, GitHub } from "react-feather";
 import InputPasswordToggle from "@components/input-password-toggle";
 import Carousel from "@components/carousel";
 import CustomAlert from "../components/alerts/CustomAlert";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import {
   Row,
   Col,
@@ -18,6 +21,7 @@ import {
 import "@styles/react/pages/page-authentication.scss";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("");
@@ -96,7 +100,7 @@ const Login = () => {
     if (state.email.match(validRegex)) {
       console.log("Email" + state.email);
     } else {
-      handleOpenAlert(<span>Please enter a valid email.</span>, "danger");
+      // handleOpenAlert(<span>Please enter a valid email.</span>, "danger");
 
       return;
     }
@@ -121,17 +125,49 @@ const Login = () => {
           window.localStorage.setItem("AtouBeatXToken", result.DATA.jwtToken);
           // window.location.replace("#/MainDashboard");
           localStorage.setItem("userData", JSON.stringify(Math.random()));
-          window.location.reload(false);
+          // window.location.reload(false);
+          navigate("/");
+
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         } else {
-          console.log(result);
-          handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        handleOpenAlert(
-          <span>Failed to fetch ! Please try Again later.</span>,
-          "danger"
-        );
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "error",
+        });
 
         console.log("error", error);
       });
@@ -142,6 +178,9 @@ const Login = () => {
 
   return (
     <>
+      <ToastContainer
+        toastStyle={{ backgroundColor: "#10a945", color: "white" }}
+      />
       <div className="auth-wrapper auth-cover">
         <Row className="auth-inner m-0">
           <Col
@@ -258,12 +297,12 @@ const Login = () => {
           </Col>
         </Row>
       </div>
-      <CustomAlert
+      {/* <CustomAlert
         isOpen={isOpenAlert}
         message={alertMessage}
         severity={alertSeverity}
         handleCloseAlert={() => handleCloseAlert()}
-      />
+      /> */}
     </>
   );
 };

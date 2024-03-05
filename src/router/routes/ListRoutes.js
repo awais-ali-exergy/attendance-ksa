@@ -12,7 +12,12 @@ const Slip = lazy(() => import("../../views/pages/discountsAndPromo/Slip"));
 const CreditSlip = lazy(() =>
   import("../../views/pages/discountsAndPromo/CreditSlip")
 );
-// Administrator
+
+const AddDesignationViewList = lazy(() =>
+  import(
+    "../../views/pages/HRModule/Designation/DesignationView/DesignationViewList"
+  )
+);
 
 const NewOutletRequest = lazy(() =>
   import("../../views/pages/administrator/NewOutletRequest")
@@ -30,11 +35,18 @@ const AdminManualAttendance = lazy(() =>
   import("../../views/pages/ManualAttendance/AdminManualAttendance")
 );
 
+const AddDepartmentViewList = lazy(() =>
+  import(
+    "../../views/pages/HRModule/Department/DepartmentView/DepartmentViewList"
+  )
+);
+
 const BasicLeave = lazy(() =>
   import("../../views/pages/LeaveModule/BasicLeave")
 );
-const Holiday = lazy(() =>
-  import("../../views/pages/Holiday/TakeHolidayForm")
+const Holiday = lazy(() => import("../../views/pages/Holiday/TakeHolidayForm"));
+const HolidayLeave = lazy(() =>
+  import("../../views/pages/Holiday/HolidayListview/HolidayListView")
 );
 const HolidayListView = lazy(() =>
   import("../../views/pages/Holiday/HolidayListview/HolidayListView")
@@ -75,7 +87,9 @@ const LeaveReport = lazy(() =>
   import("../../views/pages/LeaveReport/LeaveReport")
 );
 const Page404 = lazy(() => import("../../views/pages/Other/Page404"));
-const UnderDevelopment = lazy(() => import("../../views/pages/Other/UnderDevelopment"));
+const UnderDevelopment = lazy(() =>
+  import("../../views/pages/Other/UnderDevelopment")
+);
 const ListRoutes = [
   {
     element: <Dashboard />,
@@ -176,6 +190,20 @@ const ListRoutes = [
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
+  },
+  {
+    element: <AddDepartmentViewList />,
+    path: "/AddDepartmentViewList",
+    route: "AddDepartmentViewList",
+    slug: "AddDepartmentViewList",
+    title: "AddDepartmentViewList",
+  },
+  {
+    element: <AddDesignationViewList />,
+    path: "/AddDesignationViewList",
+    route: "AddDesignationViewList",
+    slug: "AddDesignationViewList",
+    title: "AddDesignationViewList",
   },
   {
     element: <HolidayLeave />,

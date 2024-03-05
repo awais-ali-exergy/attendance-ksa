@@ -5,10 +5,9 @@ import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
-
 import CustomAlert from "../../components/alerts/CustomAlert";
-
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
@@ -101,12 +100,35 @@ const AddEmployee = () => {
             setAttTypes(data);
           }
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          });
+
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "error",
+        });
       });
   };
   const getUsers = async () => {
@@ -137,13 +159,39 @@ const AddEmployee = () => {
             setUserByFrim(data);
           }
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          });
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "error",
+        });
+        // console.log("error", error);
+        // handleOpenAlert(
+        //   <span>Failed to fetch ! Please try Again later.</span>,
+        //   "danger"
+        // );
       });
   };
   const saveAtt = async () => {
@@ -187,9 +235,7 @@ const AddEmployee = () => {
       .then((result) => {
         console.log(result, "result is coming");
         if (result.SUCCESS === 1) {
-
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
 
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
           setFinalData({
@@ -197,16 +243,46 @@ const AddEmployee = () => {
             data: [],
           });
           setAttendanceDataArray([]);
-          //navigate("/ViewAllAttendanceData");
-
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "error",
+        });
       });
   };
   const getattendanceById = async (id) => {
@@ -252,15 +328,36 @@ const AddEmployee = () => {
             );
             setUserDate(new Date(data.createdOnDateByUser));
           }
+          // toast(result.USER_MESSAGE);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "error",
+        });
       });
-    // setIsLoading(false);
   };
 
   useEffect(() => {
@@ -425,8 +522,6 @@ const AddEmployee = () => {
       });
     }
 
-    console.log(finalData);
-
     setState({
       userdate: "",
       createdOnDateByUser: "",
@@ -441,6 +536,9 @@ const AddEmployee = () => {
 
   return (
     <Fragment>
+      <ToastContainer
+      // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
+      />
       <Form id="attForm" onSubmit={() => saveAtt()}>
         <Row>
           <Col md="6" className="mb-1">
@@ -539,7 +637,13 @@ const AddEmployee = () => {
           >
             <div
               className="ag-theme-quartz"
-              style={{ height: "500px", width: "70%" }}
+              style={{
+                height: "500px",
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-evenly",
+                flexDirection: "column",
+              }}
             >
               <AgGridReact
                 columnDefs={columnDefs}

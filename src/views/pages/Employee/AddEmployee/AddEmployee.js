@@ -1,7 +1,8 @@
 // ** React Imports
 import { useState, useEffect, useRef, Fragment } from "react";
 import CustomAlert from "../../../components/alerts/CustomAlert";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
@@ -110,13 +111,39 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setDesignation(result.DATA);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-        
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          }
+        );
       });
   };
   const getBranches = () => {
@@ -144,14 +171,34 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setBraches(result.DATA);
         } else {
-          
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "success",
+        });
       });
   };
   const getDepartments = () => {
@@ -179,12 +226,33 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setDepartment(result.DATA);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "success",
+        });
       });
   };
   const getemployeeData = () => {
@@ -212,15 +280,33 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setEmployees(result.DATA);
         } else {
-
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
-
+        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnFocusLoss: true,
+          draggable: true,
+          pauseOnHover: true,
+          type: "success",
+        });
       });
   };
   const getEmployeeDataBySelect = async (empid) => {
@@ -267,18 +353,42 @@ const AddEmployee = () => {
               typeId: data.typeId,
               reportingToUserId: data.reportingToUserId,
             });
-           
+
             setCustomFields([...data.customFields]);
           }
         } else {
-
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          }
+        );
       });
   };
   const saveEmployee = async () => {
@@ -336,20 +446,59 @@ const AddEmployee = () => {
               typeId: 0,
               reportingToUserId: "",
             });
-            handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-           
+            toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              newestOnTop: false,
+              closeOnClick: true,
+              rtl: false,
+              pauseOnFocusLoss: true,
+              draggable: true,
+              pauseOnHover: true,
+              type: "success",
+            });
           } else {
-            andleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+            toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              newestOnTop: false,
+              closeOnClick: true,
+              rtl: false,
+              pauseOnFocusLoss: true,
+              draggable: true,
+              pauseOnHover: true,
+              type: "success",
+            });
           }
         })
         .catch((error) => {
           console.log("error", error);
-          handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+          toast(
+            <p style={{ fontSize: 16 }}>
+              {"Failed to fetch ! Please try Again later."}
+            </p>,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              newestOnTop: false,
+              closeOnClick: true,
+              rtl: false,
+              pauseOnFocusLoss: true,
+              draggable: true,
+              pauseOnHover: true,
+              type: "success",
+            }
+          );
+          // handleOpenAlert(
+          //   <span>Failed to fetch ! Please try Again later.</span>,
+          //   "danger"
+          // );
         });
     } else {
-      alert("passmatch");
-      handleOpenAlert(<span>New password & confirm password doesn't match</span>, "danger");
-      
+      // toast("New password & confirm password doesn't match");
     }
   };
   useEffect(() => {
@@ -366,6 +515,9 @@ const AddEmployee = () => {
 
   return (
     <Fragment>
+      <ToastContainer
+      // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
+      />
       <Row>
         <Col md="11" className="mb-1">
           <Label className="form-label">{t("Select Employee")}</Label>
@@ -609,8 +761,8 @@ const AddEmployee = () => {
           </Button>
         </div>
       </Form>
-      
- <CustomAlert
+
+      <CustomAlert
         isOpen={isOpenAlert}
         message={alertMessage}
         severity={alertSeverity}

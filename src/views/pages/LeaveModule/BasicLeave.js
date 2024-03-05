@@ -9,7 +9,8 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 import CustomAlert from "../../components/alerts/CustomAlert";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AddEmployee = () => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -36,8 +37,7 @@ const AddEmployee = () => {
   const [picker, setPicker] = useState(new Date());
 
   const [userId, setUserId] = useState("");
-  //   const [userTime, setUserTime] = useState(dayjs(new Date()));
-  //   const [userDate, setUserDate] = useState(dayjs(new Date()));
+
   const [state, setState] = useState({
     userdate: "",
     usertime: "",
@@ -75,13 +75,40 @@ const AddEmployee = () => {
           if (data) {
             setUserByFrim(data);
           }
+          // toast(result.USER_MESSAGE);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          }
+        );
       });
   };
   const saveLeave = async () => {
@@ -112,14 +139,58 @@ const AddEmployee = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
+          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          }
+        );
+
+        // handleOpenAlert(
+        //   <span>Failed to fetch ! Please try Again later.</span>,
+        //   "danger"
+        // );
       });
   };
   const getLeaveTypes = async () => {
@@ -149,14 +220,40 @@ const AddEmployee = () => {
           if (data) {
             setLeaveTypes(data);
           }
+          // toast(result.USER_MESSAGE);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "success",
+          }
+        );
       });
   };
 
@@ -202,12 +299,44 @@ const AddEmployee = () => {
             setUserId(data.userId);
           }
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          });
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(<span>Failed to fetch ! Please try Again later.</span>, "danger");
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            type: "error",
+          }
+        );
+
+        // console.log("error", error);
+        // handleOpenAlert(
+        //   <span>Failed to fetch ! Please try Again later.</span>,
+        //   "danger"
+        // );
       });
     // setIsLoading(false);
   };
@@ -237,6 +366,9 @@ const AddEmployee = () => {
 
   return (
     <Fragment>
+      <ToastContainer
+      // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
+      />
       <Form id="employeedata" onSubmit={() => saveLeave()}>
         <Row>
           <Col md="6" className="mb-1">
@@ -271,7 +403,7 @@ const AddEmployee = () => {
             >
               <option></option>
               {leaveTypes && leaveTypes.length > 0
-                ? leaveTypes.map((obj, index) => (
+                ? leaveTypes.map((obj) => (
                     <option value={obj.id} key={obj.id}>
                       {obj.label}
                     </option>
@@ -343,9 +475,8 @@ const AddEmployee = () => {
           </Button>
         </div>
       </Form>
-      
 
- <CustomAlert
+      <CustomAlert
         isOpen={isOpenAlert}
         message={alertMessage}
         severity={alertSeverity}
