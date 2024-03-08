@@ -11,7 +11,9 @@ import { MedicineAvailbilityIcon } from "../../../../../assets/wasfaty/SVG";
 import { EventEmitter } from "../../../../../views/wasfaty/services";
 import TooltipItem from "./MenuTooltip";
 import { useTranslation } from "react-i18next";
-
+import { useDispatch, useSelector } from "react-redux";
+import { sideBar, navigationData } from "../../../../../redux/navigationSlice";
+import { useSlider } from "react-use";
 const VerticalNavMenuLink = ({
   item,
   activeItem,
@@ -20,12 +22,13 @@ const VerticalNavMenuLink = ({
   key,
   menuCollapsed,
 }) => {
-  // ** Conditional Link Tag, if item has newTab or externalLink props use <a> tag else use NavLink
+  // const navBarData = useSelector(navigationData);
+  // const navData = navBarData.navigationSlice.setState;
+  // const dispatch = useDispatch();
+
   const LinkTag = item.externalLink ? "a" : NavLink;
   const { t } = useTranslation();
 
-  // ** Hooks
-  // const t = useIntl();
   const Icon =
     item.icon ||
     (() => {
@@ -54,7 +57,19 @@ const VerticalNavMenuLink = ({
                 to: item.navLink || "/",
                 className: ({ isActive }) => {
                   if (isActive && !item.disabled) {
+                    // let obj = {
+                    //   setState: item,
+                    // };
+                    // dispatch(sideBar(obj));
+                    // console.log(navData, "data is coming");
+
+                    // if (item) {
                     return "d-flex align-items-center active";
+                    // } else {
+                    // if (navData) {
+                    // return "d-flex align-items-center active";
+                    // }
+                    // }
                   }
                 },
               })}

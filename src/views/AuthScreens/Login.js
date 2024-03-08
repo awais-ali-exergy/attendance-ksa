@@ -98,7 +98,6 @@ const Login = () => {
     var validRegex =
       /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
     if (state.email.match(validRegex)) {
-      console.log("Email" + state.email);
     } else {
       // handleOpenAlert(<span>Please enter a valid email.</span>, "danger");
 
@@ -113,7 +112,6 @@ const Login = () => {
       object[key] = value;
     });
     var json = JSON.stringify(object);
-    console.log(json);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const url = `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Auth/Login`;

@@ -10,8 +10,19 @@ import CustomAlert from "../../components/alerts/CustomAlert";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { navigation } from "../../../redux/navigationSlice";
 
+import { useDispatch } from "react-redux";
 const AddEmployee = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let obj = {
+      navigationURL: "/Module/101",
+      navigationTitle: "Firm Management",
+    };
+
+    dispatch(navigation(obj));
+  }, []);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("");
@@ -113,19 +124,6 @@ const AddEmployee = () => {
               businessType: data.businessType,
             });
           }
-
-          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
-          });
         } else {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",

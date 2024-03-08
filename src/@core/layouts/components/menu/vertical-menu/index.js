@@ -74,8 +74,8 @@ const Sidebar = (props) => {
             "menu-dark": skin === "semi-dark" || skin === "dark",
           }
         )}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={() => setMenuHover(false)}
+        // onMouseEnter={onMouseEnter}
+        // onMouseLeave={() => setMenuHover(false)}
       >
         {menu ? (
           menu({ ...props })

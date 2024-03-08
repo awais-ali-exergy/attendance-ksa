@@ -1,6 +1,6 @@
 // ** React Imports
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 // ** Store & Actions
 import { useSelector, useDispatch } from "react-redux";
@@ -28,7 +28,6 @@ import FooterComponent from "./components/footer";
 import NavbarComponent from "./components/navbar";
 import SidebarComponent from "./components/menu/vertical-menu";
 
-// ** Custom Hooks
 import { useRTL } from "@hooks/useRTL";
 import { useSkin } from "@hooks/useSkin";
 import { useLayout } from "@hooks/useLayout";
@@ -40,7 +39,6 @@ import { useRouterTransition } from "@hooks/useRouterTransition";
 // ** Styles
 import "@styles/base/core/menu/menu-types/vertical-menu.scss";
 import "@styles/base/core/menu/menu-types/vertical-overlay-menu.scss";
-
 const VerticalLayout = (props) => {
   // ** Props
   const { menu, navbar, footer, children, menuData } = props;
@@ -213,7 +211,6 @@ const VerticalLayout = (props) => {
         })}
         onClick={() => setMenuVisibility(false)}
       ></div>
-      {/* Vertical Nav Menu Overlay */}
 
       {themeConfig.layout.customizer === true ? (
         <Customizer

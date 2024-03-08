@@ -72,6 +72,7 @@ const VerticalMenuNavItems = (props) => {
   // ** Render Nav Menu Items
   const RenderNavItems = props.items?.map((item, index) => {
     const TagName = Components[resolveNavItemComponent(item)];
+
     if (item.children) {
       return (
         <TagName
