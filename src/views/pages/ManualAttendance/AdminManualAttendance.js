@@ -105,13 +105,6 @@ const AddEmployee = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           });
 
@@ -595,7 +588,7 @@ const AddEmployee = () => {
             </Input>
           </Col>
 
-          <Col md="6" className="mb-1">
+          <Col md="3" className="mb-1">
             <Label className="form-label">{t("Select Branch")}</Label>
             <Input
               type="select"
@@ -616,7 +609,7 @@ const AddEmployee = () => {
                 : null}
             </Input>
           </Col>
-          <Col md="6" className="mb-1">
+          <Col md="3" className="mb-1">
             <Label className="form-label" for="date-time-picker">
               Attendance Date
             </Label>
@@ -629,9 +622,8 @@ const AddEmployee = () => {
               onChange={(event) => handleDateFormat(event)}
             />
           </Col>
-        </Row>
-        <Row>
-          <Col md="6" className="mb-1">
+        
+          <Col md="3" className="mb-1">
             <Label className="form-label" for="date-time-picker">
               Clock In Time
             </Label>
@@ -645,7 +637,7 @@ const AddEmployee = () => {
               onChange={(event) => handleChange(event)}
             />
           </Col>
-          <Col md="6" className="mb-1">
+          <Col md="3" className="mb-1">
             <Label className="form-label" for="date-time-picker">
               Clock Out Time
             </Label>

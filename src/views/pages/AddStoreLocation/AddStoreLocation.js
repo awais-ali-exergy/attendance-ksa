@@ -405,24 +405,29 @@ const AddEmployee = () => {
             />
           </Col>
           <Col md="4" className="mb-1">
-            <Label className="form-label">{t("Select Manager")}</Label>
+            <Label className="form-label">{t("Address")}</Label>
             <Input
-              type="select"
-              name="managerId"
-              id="managerId"
-              value={state.managerId}
+              id="address"
+              name="address"
+              value={state.address}
               onChange={handleChange}
-            >
-              <option></option>
-              {managers && managers.length > 0
-                ? managers.map((obj, index) => (
-                    <option value={obj.id} key={obj.id}>
-                      {obj.label}
-                    </option>
-                  ))
-                : null}
-            </Input>
+              placeholder="Address"
+            />
           </Col>
+          <Col md="4" className="mb-1">
+            <Label className="form-label">{t("Contact No")}</Label>
+            <Input
+              id="contactNo"
+              name="contactNo"
+              value={state.contactNo}
+              onChange={handleChange}
+              placeholder="contact No"
+            />
+          </Col>
+          
+        </Row>
+        <Row>
+        
           <Col md="4" className="mb-1">
             <Label className="form-label">{t("Select Country")}</Label>
             <Input
@@ -442,8 +447,6 @@ const AddEmployee = () => {
                 : null}
             </Input>
           </Col>
-        </Row>
-        <Row>
           <Col md="4" className="mb-1">
             <Label className="form-label">{t("Select City")}</Label>
             <Input
@@ -464,24 +467,23 @@ const AddEmployee = () => {
             </Input>
           </Col>
           <Col md="4" className="mb-1">
-            <Label className="form-label">{t("Address")}</Label>
+            <Label className="form-label">{t("Select Manager")}</Label>
             <Input
-              id="address"
-              name="address"
-              value={state.address}
+              type="select"
+              name="managerId"
+              id="managerId"
+              value={state.managerId}
               onChange={handleChange}
-              placeholder="Address"
-            />
-          </Col>
-          <Col md="4" className="mb-1">
-            <Label className="form-label">{t("Contact No")}</Label>
-            <Input
-              id="contactNo"
-              name="contactNo"
-              value={state.contactNo}
-              onChange={handleChange}
-              placeholder="contact No"
-            />
+            >
+              <option></option>
+              {managers && managers.length > 0
+                ? managers.map((obj, index) => (
+                    <option value={obj.id} key={obj.id}>
+                      {obj.label}
+                    </option>
+                  ))
+                : null}
+            </Input>
           </Col>
         </Row>
 

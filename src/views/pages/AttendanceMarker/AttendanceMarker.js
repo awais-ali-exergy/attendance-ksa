@@ -28,6 +28,8 @@ import StepsHref from "@components/steps-href";
 // import { grn, stock, reports } from "./data";
 import classnames from "classnames";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import CustomAlert from "../../components/alerts/CustomAlert";
 
 const Production = () => {
@@ -73,21 +75,33 @@ const Production = () => {
         redirect: "follow",
       }
     )
-    .then((response) => console.log(response.json()))
+    .then((response) => response.json())
       .then((result) => {
         console.log(result);
+        console.log("data is coming", result)
+
         if (result.SUCCESS === 1) {
-            alert("ok")
+            // alert("ok")
+            toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+              position: "top-right",
+              autoClose: 3000,
+              type: "success",
+            });
         } else {
-        //   handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          });
         }
       })
       .catch((error) => {
         console.log("error", error);
-        // handleOpenAlert(
-        //   <span>Failed to fetch ! Please try Again later.</span>,
-        //   "danger"
-        // );
+        toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+          position: "top-right",
+          autoClose: 3000,
+          type: "error",
+        });
       });
   };
 const getAttendaceMarker = async () => {
@@ -149,6 +163,7 @@ const getAttendaceMarker = async () => {
   }, []);
   return(
     <>
+    <ToastContainer />
       <div
         style={{
           backgroundColor: "white",
