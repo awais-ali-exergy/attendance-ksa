@@ -47,8 +47,7 @@ const ThemeNavbar = (props) => {
         <div
           style={{
             backgroundColor: "white",
-            padding: 10,
-            paddingTop: 31,
+            margin: '25px 10px 10px',
             borderTopLeftRadius: 5,
             borderTopRightRadius: 5,
             marginBottom: 20,

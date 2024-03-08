@@ -36,14 +36,16 @@ const AddEmployee = () => {
   const [userByFrim, setUserByFrim] = useState([]);
   const [leaveTypes, setLeaveTypes] = useState([]);
 
-  const [picker, setPicker] = useState(new Date());
+  const [startPicker, setStartPicker] = useState(new Date());
+  const [endPicker, setEndPicker] = useState(new Date());
+
 
   const [userId, setUserId] = useState("");
 
   const [state, setState] = useState({
     userdate: "",
     usertime: "",
-    attendanceTypeId: "",
+    leaveTypeId: "",
     userId: "",
   });
   const handleChange = (e) => {
@@ -121,14 +123,14 @@ const AddEmployee = () => {
     );
 
     var formdata = new FormData(document.getElementById("leaveForm"));
-
-    formdata.append("userId", userId);
+    formdata.append("userId", state.userId);
     formdata.append("id", id);
 
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
       redirect: "follow",
+      body:formdata,
     };
 
     await fetch(
@@ -143,6 +145,7 @@ const AddEmployee = () => {
             autoClose: 3000,
             type: "success",
           });
+        
         }
       })
       .catch((error) => {
@@ -322,10 +325,15 @@ const AddEmployee = () => {
     const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
   };
 
-  const handleTimeFormat = (event) => {
+  const handleTimeFormat1 = (event) => {
     const selectedDate = event.target.value;
     const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
-    setPicker(selectedDate);
+    setStartPicker(selectedDate);
+  };
+  const handleTimeFormat2 = (event) => {
+    const selectedDate = event.target.value;
+    const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
+    setEndPicker(selectedDate);
   };
 
   return (
@@ -359,10 +367,10 @@ const AddEmployee = () => {
             <Label className="form-label">{t("Leave Type")}</Label>
             <Input
               type="select"
-              name="attendanceTypeId"
+              name="leaveTypeId"
               id="leaveTypeId"
               placeholder="Leave Type"
-              value={state.attendanceTypeId}
+              value={state.leaveTypeId}
               onChange={handleChange}
             >
               <option></option>
@@ -377,27 +385,55 @@ const AddEmployee = () => {
           </Col>
         </Row>
         <Row>
-          <Col md="6" className="mb-1">
+          <Col md="3" className="mb-1">
             <Label className="form-label" for="date-time-picker">
-              Leave Date
+              Leave Start Date
             </Label>
             <Flatpickr
               id="date-time-picker"
               className="form-control"
+              name="startOnDate"
               // value={}
               onChange={(event) => handleDateFormat(event)}
             />
           </Col>
-          <Col md="6" className="mb-1">
+          <Col md="3" className="mb-1">
             <Label className="form-label" for="date-time-picker">
-              Leave Time
+              Leave End Date
+            </Label>
+            <Flatpickr
+              id="date-time-picker"
+              className="form-control"
+              name="endOnDate"
+
+              // value={}
+              onChange={(event) => handleDateFormat(event)}
+            />
+          </Col>
+          <Col md="3" className="mb-1">
+            <Label className="form-label" for="date-time-picker">
+              Leave start Time
             </Label>
             <Input
-              value={picker}
+              value={startPicker}
+              type="time"
+              id="time-picker"
+              name="startOnTime"
+              className="form-control"
+              onChange={(event) => handleTimeFormat1(event)}
+            />
+          </Col>
+          <Col md="3" className="mb-1">
+            <Label className="form-label" for="date-time-picker">
+              Leave End Time
+            </Label>
+            <Input
+              value={endPicker}
+              name="endOnTime"
               type="time"
               id="time-picker"
               className="form-control"
-              onChange={(event) => handleTimeFormat(event)}
+              onChange={(event) => handleTimeFormat2(event)}
             />
           </Col>
         </Row>

@@ -185,18 +185,21 @@ const ManagerRights = () => {
         .then((response) => response.json())
         .then((result) => {
           if (result.SUCCESS === 1) {
-            // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
-            setTimeout(window.location.reload(), 2000);
+            toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+              position: "top-right",
+              autoClose: 3000,
+              type: "success",
+            });
           } else {
-            // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
           }
         })
         .catch((error) => {
           console.log("error", error);
-        //   handleOpenSnackbar(
-        //     "Failed to fetch ! Please try Again later.",
-        //     "error"
-        //   );
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          });
         });
    
   };
