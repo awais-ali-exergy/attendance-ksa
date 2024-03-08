@@ -210,13 +210,13 @@ const ManagerRights = () => {
       <Form id="branchData">
         <Row>
           <Col md="12" className="mb-1">
-            <Label className="form-label">{t("Select Manager")}</Label>
+            <Label className="form-label">{t("Select User")}</Label>
             <Input
               type="select"
               name="managerId"
               id="managerId"
               value={state.managerId}
-              onChange={handleChange}
+              onChange={(e) =>getFeaturesDataBySelect(e.target.value)}
               // onChange={(e) =>
               //     getFeaturesDataBySelect(state.managerId)
               //   }
@@ -234,7 +234,7 @@ const ManagerRights = () => {
         </Row>
         <Row>
           <Col md="12" className="mb-1">
-            {setIsUserSelect ? (
+            {isUserSelect ? (
               <>
                 <div>
                   <Accordion flush open={open} toggle={toggle}>

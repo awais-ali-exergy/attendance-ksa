@@ -44,6 +44,7 @@ const ViewAllEmployeesData = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [attendance, setAttendance] = useState([]);
+  // const [isActive, setIsActive] = useState(true);
 
   const getAllAtt = async () => {
     await fetch(
@@ -107,16 +108,71 @@ const ViewAllEmployeesData = () => {
         console.log("error", error);
       });
   };
-
+//   const getAttendaceMarker = async () => {
+//     // setIsLoading(true);
+// // debugger;
+//     await fetch(
+//       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Firms/GetIsManualAttendanceVisibleByFirm`,
+//       {
+//         method: "POST",
+//         headers: {
+//           Authorization:
+//             "Bearer " + window.localStorage.getItem("AtouBeatXToken"),
+//         },
+//         redirect: "follow",
+//       }
+//     )
+//       .then((response) => response.json())
+//       .then((result) => {
+//         console.log(result);
+//         if (result.SUCCESS === 1) {
+//             if(result.DATA.isActive===1){
+//                     setIsActive(true);
+//                     alert("true");
+//                 }else{
+//                     setIsActive(false);
+//                     alert("false");
+//                 }
+//         } else {
+//           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+//             position: "top-right",
+//             autoClose: 3000,
+//             hideProgressBar: false,
+//             newestOnTop: false,
+//             closeOnClick: true,
+//             rtl: false,
+//             pauseOnFocusLoss: true,
+//             draggable: true,
+//             pauseOnHover: true,
+//             type: "success",
+//           });
+//         }
+//       })
+//       .catch((error) => {
+//         toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+//           position: "top-right",
+//           autoClose: 3000,
+//           hideProgressBar: false,
+//           newestOnTop: false,
+//           closeOnClick: true,
+//           rtl: false,
+//           pauseOnFocusLoss: true,
+//           draggable: true,
+//           pauseOnHover: true,
+//           type: "success",
+//         });
+//       });
+//     // setIsLoading(false);
+//   };
   useEffect(() => {
     let obj = {
       navigationURL: "/AdminManualAttendance",
       navigationTitle: "Attendances List",
     };
     dispatch(navigation(obj));
+    // getAttendaceMarker();
     getAllAtt();
   }, []);
-
   const columnDefs = useMemo(
     () => [
       {
@@ -140,6 +196,7 @@ const ViewAllEmployeesData = () => {
         filter: true,
         floatingFilter: true,
       },
+      // isActive &&
       {
         headerName: "Entry Type",
         field: "isManualAttendance",
