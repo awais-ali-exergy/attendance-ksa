@@ -172,44 +172,35 @@ const AddEmployee = () => {
               value={state.label}
             />
           </Col>
+          
           <Col md="6" className="mb-1">
+            <Label className="form-label" for="date-time-picker">
+              Description
+            </Label>
+
+            <Input
+              id="description"
+              name="description"
+              value={state.description}
+              onChange={handleChange}
+              placeholder="Description"
+            />
+          </Col>
+        </Row>
+        <Row>
+        <Col md="6" className="mb-1">
             <Label className="form-label" for="date-time-picker">
               Start Date
             </Label>
             <Flatpickr
               value={userDate}
-              // altInput= {true}
-              //   dateFormat= "YYYY-MM-DD"
-              //   altFormat= "DD-MM-YYYY"
-              //   allowInput= {true}
               dateFormat="Y-m-d"
               id="startOnDate"
               name="startOnDate"
               className="form-control"
               onChange={(event) => handleStartDateFormat(event)}
             />
-
-            {/* <Label className="form-label">{t("Attendance Type")}</Label> */}
-            {/* <Input
-              type="select"
-              name="attendanceTypeId"
-              id="attendanceTypeId"
-              placeholder="Attendance Type"
-              value={state.attendanceTypeId}
-              onChange={handleChange}
-            >
-              <option></option>
-              {attTypes && attTypes.length > 0
-                ? attTypes.map((obj, index) => (
-                    <option value={obj.id} key={obj.id}>
-                      {obj.label}
-                    </option>
-                  ))
-                : null}
-            </Input> */}
           </Col>
-        </Row>
-        <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="date-time-picker">
               End Date
@@ -229,19 +220,7 @@ const AddEmployee = () => {
               onChange={(event) => handleEndDateFormat(event)}
             />
           </Col>
-          <Col md="6" className="mb-1">
-            <Label className="form-label" for="date-time-picker">
-              Description
-            </Label>
-
-            <Input
-              id="description"
-              name="description"
-              value={state.description}
-              onChange={handleChange}
-              placeholder="Description"
-            />
-          </Col>
+          
         </Row>
 
         <div className="d-flex justify-content-between">
