@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { MdModeEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-
+import { useNavigate } from "react-router-dom";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -15,14 +15,16 @@ const styles = {
     textAlign: "center",
   },
   btnStyle: {
-    // background: "#10a945",
-    // color: "white",
-    // padding: "8px",
-    // border: "none",
-    // borderRadius: "10px",
     border: "none",
     padding: "0px 14px",
     background: "#10a945",
+    color: "white",
+    borderRadius: "10px",
+  },
+  btnStyleDel: {
+    border: "none",
+    padding: "0px 14px",
+    background: "red",
     color: "white",
     borderRadius: "10px",
   },
@@ -38,6 +40,7 @@ const styles = {
   },
 };
 const BasicLeaveDataList = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [leaves, setLeaves] = useState([]);
   const getAllLeave = async () => {
@@ -67,9 +70,7 @@ const BasicLeaveDataList = () => {
       })
       .catch((error) => {});
   };
-  //   const editLeave = (id) => {
-  //     window.location.replace("/MainDashboard/BasicLeave/" + id);
-  //   };
+
   const deleteLeave = async (id) => {
     var myHeaders = new Headers();
     myHeaders.append(
@@ -171,7 +172,7 @@ const BasicLeaveDataList = () => {
               <MdModeEdit size={20} />
             </button>
             <button
-              style={{ ...styles.btnStyle, marginLeft: "8px" }}
+              style={{ ...styles.btnStyleDel, marginLeft: "8px" }}
               onClick={() => deleteLeave(item.id)}
             >
               <MdDelete size={25} />
@@ -182,6 +183,10 @@ const BasicLeaveDataList = () => {
     ],
     []
   );
+
+  const navigateToEdit = (data) => {
+    navigate(`/BasicLeave/${data.id}`);
+  };
   return (
     <div className="table-responsive">
       <div

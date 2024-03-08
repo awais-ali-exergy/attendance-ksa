@@ -5,7 +5,6 @@ import { MdDelete } from "react-icons/md";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { param } from "jquery";
 import { useDispatch } from "react-redux";
 import { navigation } from "../../../../redux/navigationSlice";
 
@@ -23,6 +22,13 @@ const styles = {
     color: "white",
     borderRadius: "10px",
   },
+  btnStyleDel: {
+    border: "none",
+    padding: "0px 12px",
+    background: "red",
+    color: "white",
+    borderRadius: "10px",
+  },
   btnSpacing: {
     display: "flex",
     justifyContent: "space-evenly",
@@ -35,6 +41,7 @@ const styles = {
   },
 };
 const ViewAllEmployeesData = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [attendance, setAttendance] = useState([]);
   // const [isActive, setIsActive] = useState(true);
@@ -231,7 +238,7 @@ const ViewAllEmployeesData = () => {
               <MdModeEdit size={20} />
             </button>
             <button
-              style={{ ...styles.btnStyle, marginLeft: "8px" }}
+              style={{ ...styles.btnStyleDel, marginLeft: "8px" }}
               onClick={() => deleteLeave(item.id)}
             >
               <MdDelete size={25} />
@@ -242,6 +249,10 @@ const ViewAllEmployeesData = () => {
     ],
     []
   );
+
+  const navigateToEdit = (data) => {
+    navigate(`/AdminManualAttendance/${data.id}`);
+  };
 
   return (
     <div className="table-responsive">
