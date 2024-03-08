@@ -20,6 +20,10 @@ import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 const ManagerRights = () => {
   const [open, setOpen] = useState("");
+  const [isUserSelect, setIsUserSelect] = useState(false);
+  const [features, setFeatures] = useState([]);
+  const [userId, setUserId] = useState(0);
+
   const toggle = (id) => {
     if (open === id) {
       setOpen();
@@ -44,6 +48,61 @@ const ManagerRights = () => {
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+  const getFeaturesDataBySelect = async (empid) => {
+    if (empid == 0) {
+      setIsUserSelect(false);
+      window.location.reload();
+    }
+    setUserId(empid);
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
+
+    var formdata = new FormData();
+    formdata.append("userId", empid);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    await fetch(
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/UsersFeaturesFirmsBranches/getUserFeatureFirmBranchesByUserId`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.SUCCESS === 1) {
+          let data = result.DATA;
+          console.log(result.DATA);
+          if (data) {
+            const updatedBranches = data.map((data) => ({
+              ...data,
+              firmBranches: data.firmBranches.map((branch) => ({
+                ...branch,
+                value: branch.label,
+              })),
+            }));
+            setFeatures(updatedBranches);
+            setIsUserSelect(true);
+          }
+        } else {
+          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        // handleOpenSnackbar(
+        //   "Failed to fetch ! Please try Again later.",
+        //   "error"
+        // );
+      });
+  };
+
   const getManagers = async () => {
     // setIsLoading(true);
 
@@ -105,12 +164,14 @@ const ManagerRights = () => {
         <Row>
           <Col md="12" className="mb-1">
             <Label className="form-label">{t("Select Manager")}</Label>
+            
             <Input
               type="select"
               name="managerId"
               id="managerId"
               value={state.managerId}
-              onChange={handleChange}
+              onChange={(e) => getFeaturesDataBySelect(e.target.value)}
+              // onChange={handleChange}
             >
               <option></option>
               {managers && managers.length > 0
@@ -125,43 +186,57 @@ const ManagerRights = () => {
         </Row>
         <Row>
           <Col md="12" className="mb-1">
-            {state.managerId ? (
+            {isUserSelect ? (
               <>
                 <div>
-                  <Accordion flush open={open} toggle={toggle}>
-                    <AccordionItem>
-                      <AccordionHeader targetId="1">
-                        Feature Group 1
-                      </AccordionHeader>
-                      <AccordionBody accordionId="1">
+                  {features.map((obj, index) => {
+                    return (
+                      <>
                         <Row>
                           <Col>
-                            <b>feature 1.1</b>
+                            <b>{obj.id + " - " + obj.label}</b>
                           </Col>
-                          <Col>
+                          {/* <Col>
                             <Input
                               id="exampleCheck"
                               name="check"
                               type="checkbox"
                             />
-                          </Col>
+                          </Col> */}
                           <Col>
-                          <Input
-            type="select"
-            // placeholder=""
-            id="editEmployeeId"
-            name="editEmployeeId"
-            // value={state.editEmployeeId}
-            // onChange={handleChange}
-            placeholder="Select Employee"
-          >
-            <option></option>
-          </Input>
+                          <Select
+              closeMenuOnSelect={false}
+              isMulti
+              // value={selectedOption}
+              // onChange={setSelectedOption}
+              options={obj.firmBranches}
+            />
+                            {/* <Input
+                              type="select"
+                              // placeholder=""
+                              id="editEmployeeId"
+                              name="editEmployeeId"
+                              // value={state.editEmployeeId}
+                              // onChange={handleChange}
+                              placeholder="Select Employee"
+                            >
+                              <option></option>
+                              {obj.firmBranches.map((obj2, index2) => {
+                                return (
+                                  <option value={obj2.id} key={obj2.id}>
+                                    {obj2.label}
+                                  </option>
+                                );
+                              })}
+                            </Input> */}
                           </Col>
                         </Row>
-                      </AccordionBody>
-                    </AccordionItem>
-                    {/* <AccordionItem>
+                        <hr />
+                      </>
+                    );
+                  })}
+
+                  {/* <AccordionItem>
                       <AccordionHeader targetId="2">
                         Feature Group 2
                       </AccordionHeader>
@@ -191,7 +266,6 @@ const ManagerRights = () => {
                         limit overflow.
                       </AccordionBody>
                     </AccordionItem> */}
-                  </Accordion>
                 </div>
               </>
             ) : (
