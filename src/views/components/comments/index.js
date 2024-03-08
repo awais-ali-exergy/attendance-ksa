@@ -61,9 +61,7 @@ const CommentsComponent = ({ id, comments }) => {
         return com;
       })}
       onSubmitAction={(data) => sendMessage(data)}
-      currentData={(data) => {
-        console.log("curent data", data);
-      }}
+      currentData={(data) => {}}
       submitBtnStyle={{
         fontSize: 12,
       }}

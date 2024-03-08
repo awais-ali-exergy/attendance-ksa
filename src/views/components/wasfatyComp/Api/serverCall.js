@@ -5,7 +5,6 @@ import errorHandler from "./errorHandler";
 
 const baseUrl = process.env.REACT_APP_BASEURL;
 const version = process.env.REACT_APP_VERSION;
-console.log("version", version);
 
 export const SC = {
   getCall,

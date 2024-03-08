@@ -1,21 +1,29 @@
 // ** React Imports
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect } from "react";
 
 // ** Table Columns
-import { columns } from './columns'
+import { columns } from "./columns";
 
 // ** Store & Actions
-import { getAllData, getData } from './store'
-import { useDispatch, useSelector } from 'react-redux'
+import { getAllData, getData } from "./store";
+import { useDispatch, useSelector } from "react-redux";
 
 // ** Third Party Components
-import Select from 'react-select'
-import ReactPaginate from 'react-paginate'
-import DataTable from 'react-data-table-component'
-import { ChevronDown, Share, Printer, FileText, File, Grid, Copy } from 'react-feather'
+import Select from "react-select";
+import ReactPaginate from "react-paginate";
+import DataTable from "react-data-table-component";
+import {
+  ChevronDown,
+  Share,
+  Printer,
+  FileText,
+  File,
+  Grid,
+  Copy,
+} from "react-feather";
 
 // ** Utils
-import { selectThemeColors } from '@utils'
+import { selectThemeColors } from "@utils";
 
 // ** Reactstrap Imports
 import {
@@ -31,12 +39,12 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
-  UncontrolledDropdown
-} from 'reactstrap'
+  UncontrolledDropdown,
+} from "reactstrap";
 
 // ** Styles
-import '@styles/react/libs/react-select/_react-select.scss'
-import '@styles/react/libs/tables/react-dataTable-component.scss'
+import "@styles/react/libs/react-select/_react-select.scss";
+import "@styles/react/libs/tables/react-dataTable-component.scss";
 
 // ** Table Header
 // const CustomHeader = ({ store, toggleSidebar, handlePerPage, rowsPerPage, handleFilter, searchTerm }) => {
@@ -163,26 +171,36 @@ import '@styles/react/libs/tables/react-dataTable-component.scss'
 
 const UsersList = () => {
   // ** Store Vars
-  const dispatch = useDispatch()
-  const store = useSelector(state => state.users)
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.users);
 
   // ** States
-  const [sort, setSort] = useState('desc')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [sortColumn, setSortColumn] = useState('id')
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [currentRole, setCurrentRole] = useState({ value: '', label: 'Select Role' })
-  const [currentPlan, setCurrentPlan] = useState({ value: '', label: 'Select Plan' })
-  const [currentStatus, setCurrentStatus] = useState({ value: '', label: 'Select Status', number: 0 })
+  const [sort, setSort] = useState("desc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState("id");
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentRole, setCurrentRole] = useState({
+    value: "",
+    label: "Select Role",
+  });
+  const [currentPlan, setCurrentPlan] = useState({
+    value: "",
+    label: "Select Plan",
+  });
+  const [currentStatus, setCurrentStatus] = useState({
+    value: "",
+    label: "Select Status",
+    number: 0,
+  });
 
   // ** Function to toggle sidebar
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   // ** Get data on mount
   useEffect(() => {
-    dispatch(getAllData())
+    dispatch(getAllData());
     dispatch(
       getData({
         sort,
@@ -192,38 +210,38 @@ const UsersList = () => {
         perPage: rowsPerPage,
         role: currentRole.value,
         status: currentStatus.value,
-        currentPlan: currentPlan.value
+        currentPlan: currentPlan.value,
       })
-    )
-  }, [dispatch, store.data.length, sort, sortColumn, currentPage])
+    );
+  }, [dispatch, store.data.length, sort, sortColumn, currentPage]);
 
   // ** User filter options
   const roleOptions = [
-    { value: '', label: 'Select Role' },
-    { value: 'admin', label: 'Admin' },
-    { value: 'author', label: 'Author' },
-    { value: 'editor', label: 'Editor' },
-    { value: 'maintainer', label: 'Maintainer' },
-    { value: 'subscriber', label: 'Subscriber' }
-  ]
+    { value: "", label: "Select Role" },
+    { value: "admin", label: "Admin" },
+    { value: "author", label: "Author" },
+    { value: "editor", label: "Editor" },
+    { value: "maintainer", label: "Maintainer" },
+    { value: "subscriber", label: "Subscriber" },
+  ];
 
   const planOptions = [
-    { value: '', label: 'Select Plan' },
-    { value: 'basic', label: 'Basic' },
-    { value: 'company', label: 'Company' },
-    { value: 'enterprise', label: 'Enterprise' },
-    { value: 'team', label: 'Team' }
-  ]
+    { value: "", label: "Select Plan" },
+    { value: "basic", label: "Basic" },
+    { value: "company", label: "Company" },
+    { value: "enterprise", label: "Enterprise" },
+    { value: "team", label: "Team" },
+  ];
 
   const statusOptions = [
-    { value: '', label: 'Select Status', number: 0 },
-    { value: 'pending', label: 'Pending', number: 1 },
-    { value: 'active', label: 'Active', number: 2 },
-    { value: 'inactive', label: 'Inactive', number: 3 }
-  ]
+    { value: "", label: "Select Status", number: 0 },
+    { value: "pending", label: "Pending", number: 1 },
+    { value: "active", label: "Active", number: 2 },
+    { value: "inactive", label: "Inactive", number: 3 },
+  ];
 
   // ** Function in get data on page change
-  const handlePagination = page => {
+  const handlePagination = (page) => {
     dispatch(
       getData({
         sort,
@@ -233,15 +251,15 @@ const UsersList = () => {
         page: page.selected + 1,
         role: currentRole.value,
         status: currentStatus.value,
-        currentPlan: currentPlan.value
+        currentPlan: currentPlan.value,
       })
-    )
-    setCurrentPage(page.selected + 1)
-  }
+    );
+    setCurrentPage(page.selected + 1);
+  };
 
   // ** Function in get data on rows per page
-  const handlePerPage = e => {
-    const value = parseInt(e.currentTarget.value)
+  const handlePerPage = (e) => {
+    const value = parseInt(e.currentTarget.value);
     dispatch(
       getData({
         sort,
@@ -251,15 +269,15 @@ const UsersList = () => {
         page: currentPage,
         role: currentRole.value,
         currentPlan: currentPlan.value,
-        status: currentStatus.value
+        status: currentStatus.value,
       })
-    )
-    setRowsPerPage(value)
-  }
+    );
+    setRowsPerPage(value);
+  };
 
   // ** Function in get data on search query change
-  const handleFilter = val => {
-    setSearchTerm(val)
+  const handleFilter = (val) => {
+    setSearchTerm(val);
     dispatch(
       getData({
         sort,
@@ -269,33 +287,35 @@ const UsersList = () => {
         perPage: rowsPerPage,
         role: currentRole.value,
         status: currentStatus.value,
-        currentPlan: currentPlan.value
+        currentPlan: currentPlan.value,
       })
-    )
-  }
+    );
+  };
 
   // ** Custom Pagination
   const CustomPagination = () => {
-    const count = Number(Math.ceil(store.total / rowsPerPage))
+    const count = Number(Math.ceil(store.total / rowsPerPage));
 
     return (
       <ReactPaginate
-        previousLabel={''}
-        nextLabel={''}
+        previousLabel={""}
+        nextLabel={""}
         pageCount={count || 1}
-        activeClassName='active'
+        activeClassName="active"
         forcePage={currentPage !== 0 ? currentPage - 1 : 0}
-        onPageChange={page => handlePagination(page)}
-        pageClassName={'page-item'}
-        nextLinkClassName={'page-link'}
-        nextClassName={'page-item next'}
-        previousClassName={'page-item prev'}
-        previousLinkClassName={'page-link'}
-        pageLinkClassName={'page-link'}
-        containerClassName={'pagination react-paginate justify-content-end my-2 pe-1'}
+        onPageChange={(page) => handlePagination(page)}
+        pageClassName={"page-item"}
+        nextLinkClassName={"page-link"}
+        nextClassName={"page-item next"}
+        previousClassName={"page-item prev"}
+        previousLinkClassName={"page-link"}
+        pageLinkClassName={"page-link"}
+        containerClassName={
+          "pagination react-paginate justify-content-end my-2 pe-1"
+        }
       />
-    )
-  }
+    );
+  };
 
   // ** Table data to render
   const dataToRender = () => {
@@ -303,13 +323,12 @@ const UsersList = () => {
       role: currentRole.value,
       currentPlan: currentPlan.value,
       status: currentStatus.value,
-      q: searchTerm
-    }
+      q: searchTerm,
+    };
 
     const isFiltered = Object.keys(filters).some(function (k) {
-      return filters[k].length > 0
-    })
-    console.log('qwasdsa', store.data)
+      return filters[k].length > 0;
+    });
     // if (store.data.length > 0) {
     //   return store.data
     // } else if (store.data.length === 0 && isFiltered) {
@@ -317,11 +336,11 @@ const UsersList = () => {
     // } else {
     //   return store.allData.slice(0, rowsPerPage)
     // }
-  }
+  };
 
   const handleSort = (column, sortDirection) => {
-    setSort(sortDirection)
-    setSortColumn(column.sortField)
+    setSort(sortDirection);
+    setSortColumn(column.sortField);
     dispatch(
       getData({
         sort,
@@ -331,10 +350,10 @@ const UsersList = () => {
         perPage: rowsPerPage,
         role: currentRole.value,
         status: currentStatus.value,
-        currentPlan: currentPlan.value
+        currentPlan: currentPlan.value,
       })
-    )
-  }
+    );
+  };
 
   return (
     <Fragment>
@@ -427,36 +446,35 @@ const UsersList = () => {
       </Card> */}
 
       {/* <Card className='overflow-hidden'> */}
-        <div className='react-dataTable'>
-          <DataTable
-            noHeader
-            subHeader
-            sortServer
-            pagination
-            responsive
-            paginationServer
-            columns={columns}
-            onSort={handleSort}
-            sortIcon={<ChevronDown />}
-            className='react-dataTable'
-            paginationComponent={CustomPagination}
-            data={dataToRender()}
-            // subHeaderComponent={
-            //   <CustomHeader
-            //     store={store}
-            //     searchTerm={searchTerm}
-            //     rowsPerPage={rowsPerPage}
-            //     handleFilter={handleFilter}
-            //     handlePerPage={handlePerPage}
-            //     toggleSidebar={toggleSidebar}
-            //   />
-            // }
-          />
-        </div>
+      <div className="react-dataTable">
+        <DataTable
+          noHeader
+          subHeader
+          sortServer
+          pagination
+          responsive
+          paginationServer
+          columns={columns}
+          onSort={handleSort}
+          sortIcon={<ChevronDown />}
+          className="react-dataTable"
+          paginationComponent={CustomPagination}
+          data={dataToRender()}
+          // subHeaderComponent={
+          //   <CustomHeader
+          //     store={store}
+          //     searchTerm={searchTerm}
+          //     rowsPerPage={rowsPerPage}
+          //     handleFilter={handleFilter}
+          //     handlePerPage={handlePerPage}
+          //     toggleSidebar={toggleSidebar}
+          //   />
+          // }
+        />
+      </div>
       {/* </Card> */}
-
     </Fragment>
-  )
-}
+  );
+};
 
-export default UsersList
+export default UsersList;

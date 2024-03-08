@@ -7,6 +7,8 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import CustomAlert from "../../components/alerts/CustomAlert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../redux/navigationSlice";
 
 const styles = {
   bgHeading: {
@@ -34,6 +36,7 @@ const styles = {
   },
 };
 const LeaveReport = () => {
+  const dispatch = useDispatch();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("");
@@ -156,6 +159,11 @@ const LeaveReport = () => {
   //       });
   //   };
   useEffect(() => {
+    let obj = {
+      navigationURL: "/Module/106",
+      navigationTitle: "Leaves Report",
+    };
+    dispatch(navigation(obj));
     getAllLeave();
   }, []);
 

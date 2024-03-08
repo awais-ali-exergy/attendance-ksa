@@ -2,7 +2,8 @@ import React, { useEffect, useState, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../redux/navigationSlice";
 const EmployeeReport = () => {
   const [employees, setEmployees] = useState([]);
 
@@ -33,8 +34,13 @@ const EmployeeReport = () => {
       // Handle error
     }
   };
-
+  const dispatch = useDispatch();
   useEffect(() => {
+    let obj = {
+      navigationURL: "/Module/106",
+      navigationTitle: "Employee Report",
+    };
+    dispatch(navigation(obj));
     getAllEmp();
   }, []);
 

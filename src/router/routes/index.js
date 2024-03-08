@@ -49,7 +49,6 @@ const getRouteMeta = (route) => {
 
 // ** Return Filtered Array of Routes & Paths
 const MergeLayoutRoutes = (layout, defaultLayout) => {
-
   const LayoutRoutes = [];
 
   if (Routes) {

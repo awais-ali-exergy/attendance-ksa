@@ -19,7 +19,6 @@ import {
 // var navData = [];
 
 // const getFeaturesGroups = async () => {
-//   console.log("data is coming");
 
 //   try {
 //     const response = await fetch(
@@ -53,7 +52,6 @@ import {
 //       // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
 //     }
 //   } catch (error) {
-//     console.log("error", error);
 //     handleOpenSnackbar("Failed to fetch ! Please try Again later.", "error");
 //   }
 // };
@@ -65,7 +63,6 @@ var navigationLinks = [
     title: "Dashboards",
     icon: () => DashboardIcon,
     navLink: "/",
-
   },
 
   {
@@ -74,7 +71,6 @@ var navigationLinks = [
     title: "Admin Module",
     icon: () => productionIcon,
     navLink: "/Module/" + 101,
-
   },
   {
     id: "administration",
@@ -125,7 +121,6 @@ var navigationLinks = [
 
 // (async () => {
 //   await getFeaturesGroups();
-//   console.log(navData, "data is coming");
 //   if (navData.length > 0) {
 //     navigationLinks.push(...navData);
 //   }

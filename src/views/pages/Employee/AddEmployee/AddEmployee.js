@@ -3,7 +3,8 @@ import { useState, useEffect, useRef, Fragment } from "react";
 import CustomAlert from "../../../components/alerts/CustomAlert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
 import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import WizardVertical from "../../../../views/forms/wizard/WizardVertical";
@@ -12,17 +13,12 @@ import { useTranslation } from "react-i18next";
 import AccountDetails from "../../../forms/wizard/steps/AccountDetails";
 import OutletDetails from "../../../forms/wizard/steps/OutletDetail";
 import SocialLinks from "../../../forms/wizard/steps/SocialLinks";
-import Wizard from "@components/wizard";
-import { clippingParents } from "@popperjs/core";
-// ** Icons Imports
-import { ArrowLeft, ArrowRight } from "react-feather";
-// import { useTranslation } from "react-i18next";
-import Flatpickr from "react-flatpickr";
-
-// ** Reactstrap Imports
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../../redux/navigationSlice";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 const AddEmployee = () => {
+  const dispatch = useDispatch();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("");
@@ -37,13 +33,15 @@ const AddEmployee = () => {
     }
     setIsOpenAlert(false);
   };
+  let params = useParams();
+  let id = parseInt(params.id);
+  if (isNaN(id)) id = 0;
   const { t } = useTranslation();
   const [designation, setDesignation] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [department, setDepartment] = useState([]);
-  const [braches, setBraches] = useState([]);
-  const [picker, setPicker] = useState(new Date());
-  console.log("data is");
+  const [branches, setbranches] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
   const [stepper, setStepper] = useState(null);
   const ref = useRef(null);
 
@@ -64,6 +62,7 @@ const AddEmployee = () => {
       content: <SocialLinks stepper={stepper} type="wizard-vertical" />,
     },
   ];
+
   const [state, setState] = useState({
     firstName: "",
     lastName: "",
@@ -83,6 +82,7 @@ const AddEmployee = () => {
     typeId: 0,
     reportingToUserId: "",
     editEmployeeId: "",
+    isBranchManager: 0,
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -111,18 +111,23 @@ const AddEmployee = () => {
         if (result.SUCCESS === 1) {
           setDesignation(result.DATA);
         } else {
-          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
-          });
+          toast(
+            <p style={{ fontSize: 16 }}>
+              {"Failed to fetch ! Please try Again later"}
+            </p>,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              newestOnTop: false,
+              closeOnClick: true,
+              rtl: false,
+              pauseOnFocusLoss: true,
+              draggable: true,
+              pauseOnHover: true,
+              type: "error",
+            }
+          );
         }
       })
       .catch((error) => {
@@ -141,7 +146,7 @@ const AddEmployee = () => {
             pauseOnFocusLoss: true,
             draggable: true,
             pauseOnHover: true,
-            type: "success",
+            type: "error",
           }
         );
       });
@@ -169,9 +174,37 @@ const AddEmployee = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          setBraches(result.DATA);
+          const updatedBranches = result.DATA.map((branch) => ({
+            ...branch,
+            value: branch.label,
+          }));
+          setbranches(updatedBranches);
         } else {
-          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+          toast(
+            <p style={{ fontSize: 16 }}>
+              {"Failed to fetch ! Please try Again later"}
+            </p>,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              newestOnTop: false,
+              closeOnClick: true,
+              rtl: false,
+              pauseOnFocusLoss: true,
+              draggable: true,
+              pauseOnHover: true,
+              type: "error",
+            }
+          );
+        }
+      })
+      .catch((error) => {
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -181,24 +214,9 @@ const AddEmployee = () => {
             pauseOnFocusLoss: true,
             draggable: true,
             pauseOnHover: true,
-            type: "success",
-          });
-          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
-        }
-      })
-      .catch((error) => {
-        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
-          type: "success",
-        });
+            type: "error",
+          }
+        );
       });
   };
   const getDepartments = () => {
@@ -225,8 +243,14 @@ const AddEmployee = () => {
       .then((result) => {
         if (result.SUCCESS === 1) {
           setDepartment(result.DATA);
-        } else {
-          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+        }
+      })
+      .catch((error) => {
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -236,23 +260,9 @@ const AddEmployee = () => {
             pauseOnFocusLoss: true,
             draggable: true,
             pauseOnHover: true,
-            type: "success",
-          });
-        }
-      })
-      .catch((error) => {
-        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
-          type: "success",
-        });
+            type: "error",
+          }
+        );
       });
   };
   const getemployeeData = () => {
@@ -279,8 +289,14 @@ const AddEmployee = () => {
       .then((result) => {
         if (result.SUCCESS === 1) {
           setEmployees(result.DATA);
-        } else {
-          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+        }
+      })
+      .catch((error) => {
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -290,23 +306,9 @@ const AddEmployee = () => {
             pauseOnFocusLoss: true,
             draggable: true,
             pauseOnHover: true,
-            type: "success",
-          });
-        }
-      })
-      .catch((error) => {
-        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
-          type: "success",
-        });
+            type: "error",
+          }
+        );
       });
   };
   const getEmployeeDataBySelect = async (empid) => {
@@ -334,7 +336,6 @@ const AddEmployee = () => {
       .then((result) => {
         if (result.SUCCESS === 1) {
           let data = result.DATA;
-          console.log(result.DATA);
           if (data) {
             // debugger;
             setState({
@@ -352,43 +353,38 @@ const AddEmployee = () => {
               isAccountNonLocked: data.isAccountNonLocked,
               typeId: data.typeId,
               reportingToUserId: data.reportingToUserId,
+              isBranchManager: data.isBranchManager,
             });
+
+            const updatedBranches = data?.branches?.map((branch) => ({
+              ...branch,
+              value: branch.label,
+            }));
+
+            setSelectedOption([...updatedBranches]);
 
             setCustomFields([...data.customFields]);
           }
-        } else {
-          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
-          });
         }
       })
       .catch((error) => {
-        toast(
-          <p style={{ fontSize: 16 }}>
-            {"Failed to fetch ! Please try Again later"}
-          </p>,
-          {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
-          }
-        );
+        // toast(
+        //   <p style={{ fontSize: 16 }}>
+        //     {"Failed to fetch ! Please try Again later"}
+        //   </p>,
+        //   {
+        //     position: "top-right",
+        //     autoClose: 3000,
+        //     hideProgressBar: false,
+        //     newestOnTop: false,
+        //     closeOnClick: true,
+        //     rtl: false,
+        //     pauseOnFocusLoss: true,
+        //     draggable: true,
+        //     pauseOnHover: true,
+        //     type: "error",
+        //   }
+        // );
       });
   };
   const saveEmployee = async () => {
@@ -405,7 +401,10 @@ const AddEmployee = () => {
       var formdata = new FormData(document.getElementById("employeedata"));
       formdata.append("id", state.userId);
       formdata.append("typeId", state.typeId);
-
+      formdata.append("isBranchManager", state.isBranchManager);
+      for (let i = 0; i < selectedOption.length; i++) {
+        formdata.append("branchId", selectedOption[i].id);
+      }
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -425,8 +424,8 @@ const AddEmployee = () => {
       )
         .then((response) => response.json())
         .then((result) => {
-          console.log("result is omcing", result);
           if (result.SUCCESS === 1) {
+            setSelectedOption([]);
             setState({
               firstName: "",
               lastName: "",
@@ -445,31 +444,34 @@ const AddEmployee = () => {
               bankAccountNo: "",
               typeId: 0,
               reportingToUserId: "",
+              isBranchManager: 0,
             });
+            if (id !== 0) {
+              toast(<p style={{ fontSize: 16 }}>{"User Updated"}</p>, {
+                position: "top-right",
+                autoClose: 3000,
+                type: "success",
+              });
+            }
+            if (id === 0) {
+              toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+                position: "top-right",
+                autoClose: 3000,
+                type: "success",
+              });
+            }
+
+            setTimeout(function () {
+              if (id != 0) {
+                navigate("/AddEmployee");
+              }
+            }, 2000);
+          }
+          if (result.SUCCESS === 0) {
             toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
               position: "top-right",
               autoClose: 3000,
-              hideProgressBar: false,
-              newestOnTop: false,
-              closeOnClick: true,
-              rtl: false,
-              pauseOnFocusLoss: true,
-              draggable: true,
-              pauseOnHover: true,
-              type: "success",
-            });
-          } else {
-            toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              newestOnTop: false,
-              closeOnClick: true,
-              rtl: false,
-              pauseOnFocusLoss: true,
-              draggable: true,
-              pauseOnHover: true,
-              type: "success",
+              type: "error",
             });
           }
         })
@@ -489,7 +491,7 @@ const AddEmployee = () => {
               pauseOnFocusLoss: true,
               draggable: true,
               pauseOnHover: true,
-              type: "success",
+              type: "error",
             }
           );
           // handleOpenAlert(
@@ -498,7 +500,7 @@ const AddEmployee = () => {
           // );
         });
     } else {
-      // toast("New password & confirm password doesn't match");
+      toast("New password & confirm password doesn't match");
     }
   };
   useEffect(() => {
@@ -506,6 +508,14 @@ const AddEmployee = () => {
     getBranches();
     getDesignation();
     getDepartments();
+    let obj = {
+      navigationURL: "/Module/102",
+      navigationTitle: "Add Employee",
+    };
+    dispatch(navigation(obj));
+    if (id !== 0) {
+      getEmployeeDataBySelect(id);
+    }
   }, []);
   const navigate = useNavigate();
 
@@ -513,43 +523,27 @@ const AddEmployee = () => {
     navigate("/ViewAllEmployeeData");
   };
 
+  const handleRole = (event) => {
+    if (event.target.checked === true) {
+      setState({
+        ...state,
+        isBranchManager: 1,
+      });
+    } else {
+      setState({
+        ...state,
+        isBranchManager: 0,
+      });
+    }
+  };
+
   return (
     <Fragment>
       <ToastContainer
       // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
       />
-      <Row>
-        <Col md="11" className="mb-1">
-          <Label className="form-label">{t("Select Employee")}</Label>
-          <Input
-            type="select"
-            id="editEmployeeId"
-            name="editEmployeeId"
-            value={state.editEmployeeId}
-            onChange={handleChange}
-            placeholder="Select Employee"
-          >
-            <option></option>
-            {employees && employees.length > 0
-              ? employees.map((obj, index) => (
-                  <option value={obj.id} key={obj.id}>
-                    {obj.label}
-                  </option>
-                ))
-              : null}
-          </Input>
-        </Col>
-        <Col md="1" className="my-2 ">
-          <Button
-            color="primary"
-            className="btn-next"
-            onClick={() => getEmployeeDataBySelect(state.editEmployeeId)}
-          >
-            <span className="align-middle d-sm-inline-block d-none">Edit</span>
-          </Button>
-        </Col>
-      </Row>
-      <Form id="employeedata" onSubmit={() => saveEmployee()}>
+
+      <Form id="employeedata">
         <Row>
           <Col md="4" className="mb-1">
             <Label className="form-label">{t("First Name")}</Label>
@@ -663,7 +657,14 @@ const AddEmployee = () => {
           </Col>
           <Col md="4" className="mb-1">
             <Label className="form-label">{t("Branch")}</Label>
-            <Input
+            <Select
+              closeMenuOnSelect={false}
+              isMulti
+              value={selectedOption}
+              onChange={setSelectedOption}
+              options={branches}
+            />
+            {/* <Input
               type="select"
               name="branchId"
               id="branchId"
@@ -673,14 +674,14 @@ const AddEmployee = () => {
               placeholder="Branch"
             >
               <option></option>
-              {braches && braches.length > 0
-                ? braches.map((obj, index) => (
+              {branches && branches.length > 0
+                ? branches.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
                       {obj.label}
                     </option>
                   ))
                 : null}
-            </Input>
+            </Input> */}
           </Col>
         </Row>
         <Row>
@@ -740,6 +741,23 @@ const AddEmployee = () => {
               <option value={1}>Active</option>
             </Input>
           </Col>
+          <Col md="12" className="mb-1">
+            <Label
+              className="form-label"
+              style={{
+                marginRight: "10px",
+              }}
+            >
+              {t("Branch Manager to be")}
+            </Label>
+            <Input
+              type="checkbox"
+              id="isBranchManager"
+              name="isBranchManager"
+              value={state.isBranchManager}
+              onChange={handleRole}
+            ></Input>
+          </Col>
         </Row>
 
         <div className="d-flex justify-content-between">
@@ -752,12 +770,13 @@ const AddEmployee = () => {
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
           <Button
-            type="submit"
             color="primary"
             className="btn-next"
-            //   onClick={}
+            onClick={() => saveEmployee()}
           >
-            <span className="align-middle d-sm-inline-block d-none">Save</span>
+            <span className="align-middle d-sm-inline-block d-none">
+              {id !== 0 ? "Update" : "Save"}
+            </span>
           </Button>
         </div>
       </Form>

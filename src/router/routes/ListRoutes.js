@@ -1,13 +1,10 @@
 import { lazy } from "react";
 const UserList = lazy(() => import("../../views/pages/List/UserList"));
 const Dashboard = lazy(() => import("../../views/pages/dashboard"));
-//GroupedFeatures
 const GroupedFeatures = lazy(() => import("../../views/pages/GroupedFeatures"));
-// Production
 const Production = lazy(() => import("../../views/pages/production"));
 const Stock = lazy(() => import("../../views/pages/production/Stock"));
 const Report = lazy(() => import("../../views/pages/production/Report"));
-// Discounts and Promo
 const Slip = lazy(() => import("../../views/pages/discountsAndPromo/Slip"));
 const CreditSlip = lazy(() =>
   import("../../views/pages/discountsAndPromo/CreditSlip")
@@ -178,6 +175,13 @@ const ListRoutes = [
     title: "AddEmployee",
   },
   {
+    element: <AddEmployee />,
+    path: "/AddEmployee/:id",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
     element: <Holiday />,
     path: "/Holiday",
     route: "Holiday",
@@ -187,6 +191,13 @@ const ListRoutes = [
   {
     element: <AddDepartment />,
     path: "/AddDepartment",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
+    element: <AddDepartment />,
+    path: "/AddDepartment/:id",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",
@@ -308,6 +319,13 @@ const ListRoutes = [
   {
     element: <ListOfBranches />,
     path: "/StoreLocationList",
+    route: "ViewAllAttendance",
+    slug: "ViewAllAttendance",
+    title: "ViewAllAttendance",
+  },
+  {
+    element: <AddStoreLocation />,
+    path: "/AddStoreLocation/:id",
     route: "ViewAllAttendance",
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",

@@ -5,6 +5,9 @@ import { MdDelete } from "react-icons/md";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import { param } from "jquery";
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../../redux/navigationSlice";
 
 const styles = {
   bgHeading: {
@@ -32,14 +35,12 @@ const styles = {
   },
 };
 const ViewAllEmployeesData = () => {
+  const dispatch = useDispatch();
   const [attendance, setAttendance] = useState([]);
-  const navigate = useNavigate();
-  const handleNavigation = (id) => {
-    navigate("/AdminManualAttendance/" + id);
-  };
+
   const getAllAtt = async () => {
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetAllManualByFirm`,
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetAllByFirm`,
       {
         method: "POST",
         headers: {
@@ -56,20 +57,12 @@ const ViewAllEmployeesData = () => {
         return response.json();
       })
       .then((result) => {
-        console.log(result);
         if (result.SUCCESS === 1) {
           setAttendance(result.DATA);
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
-      .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(
-          <span>Failed to fetch ! Please try Again later.</span>,
-          "danger"
-        );
-      });
+      .catch((error) => {});
   };
 
   const editBranch = (id) => {
@@ -99,22 +92,21 @@ const ViewAllEmployeesData = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
           // window.location.reload();
         } else {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
         console.log("error", error);
-        handleOpenAlert(
-          <span>Failed to fetch ! Please try Again later.</span>,
-          "danger"
-        );
       });
   };
 
   useEffect(() => {
+    let obj = {
+      navigationURL: "/AdminManualAttendance",
+      navigationTitle: "Attendances List",
+    };
+    dispatch(navigation(obj));
     getAllAtt();
   }, []);
 
@@ -128,11 +120,32 @@ const ViewAllEmployeesData = () => {
         floatingFilter: true,
       },
       {
+        headerName: "Branch Name",
+        field: "branchLabel",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+      },
+      {
         headerName: "Attendance Type",
         field: "attendanceTypeLabel",
         sortable: true,
         filter: true,
         floatingFilter: true,
+      },
+      {
+        headerName: "Entry Type",
+        field: "isManualAttendance",
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+        cellRenderer: (params) => {
+          return (
+            <div style={styles.btnSpacing}>
+              {params.value === 1 ? "Manual" : "Auto"}
+            </div>
+          );
+        },
       },
       {
         headerName: "Date",
@@ -190,14 +203,6 @@ const ViewAllEmployeesData = () => {
           rowData={attendance}
           pagination={true}
           paginationPageSize={10}
-          paginationAutoPageSize={true}
-          suppressPaginationPanel={true}
-          animateRows={true}
-          defaultColDef={{
-            sortable: true,
-            resizable: true,
-            filter: true,
-          }}
         />
       </div>
       {/* <table className="table table-striped">

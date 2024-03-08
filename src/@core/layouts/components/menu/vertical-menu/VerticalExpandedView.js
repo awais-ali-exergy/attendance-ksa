@@ -31,14 +31,15 @@ const VerticalExpandedView = ({
     // Handle other actions if needed
   };
   const checkIsChildrenActive = () => {
-    if (finalPathname) 
-    return item?.children.filter((menuItem) => {
-  console.log('item.navLink === finalPathname', menuItem.navLink, finalPathname)
-      if(menuItem.navLink === finalPathname) {
-        return true
-      } 
-      return menuItem.navLink.includes(finalPathname) && finalPathname !== "/";
-    });
+    if (finalPathname)
+      return item?.children.filter((menuItem) => {
+        if (menuItem.navLink === finalPathname) {
+          return true;
+        }
+        return (
+          menuItem.navLink.includes(finalPathname) && finalPathname !== "/"
+        );
+      });
     return [];
   };
 
@@ -73,7 +74,6 @@ const VerticalExpandedView = ({
             />
           )}
         </span>
-        {console.log("item.title", item.title)}
         <span className="menu-title text-truncate" style={{ marginLeft: 10 }}>
           {t(item.title)}
         </span>

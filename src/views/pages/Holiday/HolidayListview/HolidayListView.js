@@ -8,7 +8,8 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import CustomAlert from "../../../components/alerts/CustomAlert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../../redux/navigationSlice";
 const styles = {
   bgHeading: {
     background: "#10a945",
@@ -76,18 +77,6 @@ const ViewAllEmployeesData = () => {
         console.log(result);
         if (result.SUCCESS === 1) {
           setAttendance(result.DATA);
-          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
-          });
         } else {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
@@ -200,8 +189,14 @@ const ViewAllEmployeesData = () => {
       });
   };
 
+  const dispatch = useDispatch();
   useEffect(() => {
     getAllAtt();
+    let obj = {
+      navigationURL: "/Holiday",
+      navigationTitle: "Holidays List",
+    };
+    dispatch(navigation(obj));
   }, []);
 
   const columnDefs = useMemo(

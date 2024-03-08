@@ -27,8 +27,7 @@ import StepsHref from "@components/steps-href";
 import { grn, stock, reports } from "./data";
 import classnames from "classnames";
 import { useParams } from "react-router-dom";
-// import CustomAlert from "../../components/alerts/CustomAlert";
-
+import { navigation } from "../../../redux/navigationSlice";
 const Production = () => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -71,7 +70,12 @@ const Production = () => {
         console.log(result);
         if (result.SUCCESS === 1) {
           setGroupFeature(result.DATA);
-          console.log("setGroupFeature:", groupFeature);
+          let obj = {
+            navigationURL: "",
+            navigationTitle: result.DATA[0].featureGroupLabel,
+          };
+
+          dispatch(navigation(obj));
         } else {
           handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
@@ -90,10 +94,11 @@ const Production = () => {
   }, [groupId]);
 
   const dispatch = useDispatch();
+
   const href = window.location.href;
   return true ? (
     <>
-      <div
+      {/* <div
         style={{
           backgroundColor: "white",
           padding: 10,
@@ -104,7 +109,7 @@ const Production = () => {
         }}
       >
         <h5>{groupFeature[0] ? groupFeature[0].featureGroupLabel : ""}</h5>
-      </div>
+      </div> */}
       <Row>
         {groupFeature.map((obj, index2) => {
           return (

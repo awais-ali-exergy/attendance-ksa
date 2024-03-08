@@ -35,8 +35,6 @@ function Example(props) {
     height: window.innerHeight,
   });
 
-  console.log("data is coming", props);
-
   const next = () => {
     if (animating) return;
     const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
@@ -67,8 +65,6 @@ function Example(props) {
       window.removeEventListener("resize", updateWindowSize);
     };
   }, []);
-
-  console.log(props?.items);
 
   const slides = props?.items?.map((item) => (
     <CarouselItem

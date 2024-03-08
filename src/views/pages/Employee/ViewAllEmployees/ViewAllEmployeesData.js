@@ -2,6 +2,10 @@ import React, { useEffect, useState, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../../redux/navigationSlice";
+import { MdModeEdit } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 const styles = {
   bgHeading: {
     background: "#10a945",
@@ -11,6 +15,15 @@ const styles = {
 };
 
 const ViewAllEmployeesData = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let obj = {
+      navigationURL: "/AddEmployee",
+      navigationTitle: "Employees List",
+    };
+    dispatch(navigation(obj));
+  }, []);
   const [employees, setEmployees] = useState([]);
 
   const getAllEmp = async () => {
@@ -45,6 +58,10 @@ const ViewAllEmployeesData = () => {
   useEffect(() => {
     getAllEmp();
   }, []);
+
+  const navigateToEdit = (data) => {
+    navigate(`/AddEmployee/${data.id}`);
+  };
 
   const columns = useMemo(
     () => [
@@ -116,6 +133,24 @@ const ViewAllEmployeesData = () => {
         floatingFilter: true,
         valueFormatter: (params) =>
           params.value === "1" ? "Verified" : "Non-Verified",
+      },
+      {
+        headerName: "Action",
+        cellRenderer: (params) => (
+          <button
+            onClick={() => navigateToEdit(params.data)}
+            className=""
+            style={{
+              border: "none",
+              padding: "0px 12px",
+              background: "#10a945",
+              color: "white",
+              borderRadius: "10px",
+            }}
+          >
+            <MdModeEdit size={20} />
+          </button>
+        ),
       },
     ],
     []

@@ -5,41 +5,41 @@ import { MdDelete } from "react-icons/md";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-const styles = {
-  bgHeading: {
-    background: "#10a945",
-    color: "white",
-    padding: "30px",
-    textAlign: "center",
-  },
-  btnStyle: {
-    // background: "#10a945",
-    // color: "white",
-    // padding: "8px",
-    // border: "none",
-    // borderRadius: "10px",
-    border: "none",
-    padding: "0px 14px",
-    background: "#10a945",
-    color: "white",
-    borderRadius: "10px",
-  },
-  btnSpacing: {
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: "item",
-  },
-  pad_Col: {
-    padding: "15px",
-    textAlign: "center",
-  },
-};
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../../../redux/navigationSlice";
+// const styles = {
+//   bgHeading: {
+//     background: "#10a945",
+//     color: "white",
+//     padding: "30px",
+//     textAlign: "center",
+//   },
+//   btnStyle: {
+//     border: "none",
+//     padding: "0px 14px",
+//     background: "#10a945",
+//     color: "white",
+//     borderRadius: "10px",
+//   },
+//   btnSpacing: {
+//     display: "flex",
+//     justifyContent: "space-evenly",
+//     alignItems: "center",
+//     flexDirection: "item",
+//   },
+//   pad_Col: {
+//     padding: "15px",
+//     textAlign: "center",
+//   },
+// };
 const AddDesignationViewList = () => {
   const [departmentList, setDepartmentListView] = useState([]);
   const getAllDepartment = async () => {
+    const firmIdText = localStorage.getItem("AtouBeatXData");
+    const firmIdData = JSON.parse(firmIdText);
+    console.log(firmIdData.DATA.firmId);
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/AMS/FirmsDepartments/GetAllByFirmId`,
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/FirmsDesignations/GetAllByFirmId?firmId=${firmIdData.DATA.firmId}`,
       {
         method: "POST",
         headers: {
@@ -108,67 +108,40 @@ const AddDesignationViewList = () => {
   //         );
   //       });
   //   };
+
+  const dispatch = useDispatch();
   useEffect(() => {
     getAllDepartment();
+    let obj = {
+      navigationURL: "/AddDesignation",
+      navigationTitle: "All Designations List",
+    };
+    dispatch(navigation(obj));
   }, []);
 
   const columnDefs = useMemo(
     () => [
       {
-        headerName: "Employee Name",
-        field: "userLabel",
+        headerName: "Designation Name",
+        field: "label",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
       {
-        headerName: "Leave Type",
-        field: "attendanceTypeLabel",
+        headerName: "Designation Id",
+        field: "id",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
       {
-        headerName: "Start Date",
-        field: "startOnDateDisplay",
+        headerName: "Description",
+        field: "designation",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
-      {
-        headerName: "End Date",
-        field: "endOnDateDisplay",
-        sortable: true,
-        filter: true,
-        floatingFilter: true,
-      },
-      {
-        headerName: "Leave Reason",
-        field: "leaveReason",
-        sortable: true,
-        filter: true,
-        floatingFilter: true,
-      },
-      //   {
-      //     headerName: "Action",
-      //     cellRenderer: (params) => (
-      //       <div style={styles.btnSpacing}>
-      //         <button
-      //           onClick={() => navigateToEdit(params.data)}
-      //           className=""
-      //           style={styles.btnStyle}
-      //         >
-      //           <MdModeEdit size={20} />
-      //         </button>
-      //         <button
-      //           style={{ ...styles.btnStyle, marginLeft: "8px" }}
-      //           onClick={() => deleteLeave(item.id)}
-      //         >
-      //           <MdDelete size={25} />
-      //         </button>
-      //       </div>
-      //     ),
-      //   },
     ],
     []
   );
@@ -179,9 +152,6 @@ const AddDesignationViewList = () => {
         style={{
           height: "500px",
           width: "100%",
-          display: "flex",
-          justifyContent: "space-evenly",
-          flexDirection: "column",
         }}
       >
         <AgGridReact
