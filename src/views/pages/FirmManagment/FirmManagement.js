@@ -257,7 +257,7 @@ const AddEmployee = () => {
       <ToastContainer
       // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
       />
-      <Form id="companydata" onSubmit={() => saveCompany()}>
+      <Form id="companydata" >
         <Row>
           <Col md="4" className="mb-1">
             <Label className="form-label">{t("Firm Label")}</Label>
@@ -294,10 +294,9 @@ const AddEmployee = () => {
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
           <Button
-            type="submit"
             color="primary"
             className="btn-next"
-            //   onClick={}
+              onClick={() => saveCompany()}
           >
             <span className="align-middle d-sm-inline-block d-none">Save</span>
           </Button>

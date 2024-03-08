@@ -392,7 +392,7 @@ const AddEmployee = () => {
   return (
     <Fragment>
       <ToastContainer />
-      <Form id="branchData" onSubmit={() => saveBranch()}>
+      <Form id="branchData" >
         <Row>
           <Col md="4" className="mb-1">
             <Label className="form-label">{t("Store Name")}</Label>
@@ -498,7 +498,7 @@ const AddEmployee = () => {
             // type="submit"
             color="primary"
             className="btn-next"
-            onClick={saveBranch}
+              onClick={() => saveBranch()}
           >
             <span className="align-middle d-sm-inline-block d-none">
               {id !== 0 ? "Update" : "Save"}

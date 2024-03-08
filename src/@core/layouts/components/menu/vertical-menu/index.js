@@ -69,7 +69,7 @@ const Sidebar = (props) => {
         className={classnames(
           "main-menu menu-fixed menu-accordion menu-shadow",
           {
-            expanded: menuHover || menuCollapsed === false,
+            // expanded: menuHover || menuCollapsed === false,
             "menu-light": skin !== "semi-dark" && skin !== "dark",
             "menu-dark": skin === "semi-dark" || skin === "dark",
           }

@@ -570,7 +570,7 @@ const AddEmployee = () => {
       <ToastContainer
       // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
       />
-      <Form id="attForm" onSubmit={() => saveAtt()}>
+      <Form id="attForm" >
         <Row>
           <Col md="12" className="mb-1">
             <Label className="form-label">{t("Select Employee")}</Label>

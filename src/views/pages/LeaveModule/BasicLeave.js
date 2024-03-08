@@ -373,7 +373,7 @@ const AddEmployee = () => {
       <ToastContainer
       // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
       />
-      <Form id="employeedata" onSubmit={() => saveLeave()}>
+      <Form id="employeedata" >
         <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label">{t("Select Employee")}</Label>
@@ -464,10 +464,10 @@ const AddEmployee = () => {
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
           <Button
-            type="submit"
+            
             color="primary"
             className="btn-next"
-            //   onClick={}
+              onClick={() => saveLeave()}
           >
             <span className="align-middle d-sm-inline-block d-none">Save</span>
           </Button>

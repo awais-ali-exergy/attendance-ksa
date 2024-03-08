@@ -377,7 +377,6 @@ const Singup = () => {
                 {vCodeBool === true ? (
                   <>
                     <Button
-                      type="submit"
                       onClick={(e) => onEmailSubmit(e)}
                       color="primary"
                       block
@@ -388,8 +387,6 @@ const Singup = () => {
                 ) : (
                   <>
                     <Button
-                      // type="submit"
-                      // disabled={codeBool}
                       onClick={(e) => onVCodeSubmit(e)}
                       color="primary"
                       block

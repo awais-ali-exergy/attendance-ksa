@@ -121,7 +121,7 @@ const AddDesignation = () => {
 
   return (
     <Fragment>
-      <Form id="AddDesignation" onSubmit={() => saveDesignation()}>
+      <Form id="AddDesignation" >
         <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label">{t("Add Designation")}</Label>
@@ -155,10 +155,10 @@ const AddDesignation = () => {
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
           <Button
-            type="submit"
+            
             color="primary"
             className="btn-next"
-            //   onClick={}
+              onClick={() => saveDesignation()}
           >
             <span className="align-middle d-sm-inline-block d-none">Save</span>
           </Button>
