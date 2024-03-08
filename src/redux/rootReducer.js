@@ -2,6 +2,7 @@
 import navbar from "./navbar";
 import layout from "./layout";
 import users from "@src/views/apps/user/store";
+import navigationSlice from "./navigationSlice";
 
 const rootReducer = {
   // auth,
@@ -9,6 +10,7 @@ const rootReducer = {
   users,
   navbar,
   layout,
+  navigationSlice,
 };
 
 export default rootReducer;

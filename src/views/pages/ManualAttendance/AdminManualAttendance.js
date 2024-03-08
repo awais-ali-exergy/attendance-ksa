@@ -1,7 +1,7 @@
 // ** React Imports
 import { useState, useEffect, useRef, Fragment, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Alert } from "reactstrap";
+
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -17,15 +17,16 @@ import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
 import { MdModeEdit } from "react-icons/md";
 import { FaMinusCircle } from "react-icons/fa";
-
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../redux/navigationSlice";
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
-import { Item } from "react-contexify";
-import { data } from "jquery";
 
 const AddEmployee = () => {
+  const dispatch = useDispatch();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("");
+  const [branches, setBranches] = useState([]);
   const handleOpenAlert = (msg, severity) => {
     setIsOpenAlert(true);
     setAlertMessage(msg);
@@ -68,6 +69,7 @@ const AddEmployee = () => {
     attendanceTypeId: "",
     userId: "",
     userName: "",
+    branchId: "",
   });
   // const handleChange = (e) => {
   //   setState({ ...state, [e.target.name]: e.target.value });
@@ -187,15 +189,9 @@ const AddEmployee = () => {
           pauseOnHover: true,
           type: "error",
         });
-        // console.log("error", error);
-        // handleOpenAlert(
-        //   <span>Failed to fetch ! Please try Again later.</span>,
-        //   "danger"
-        // );
       });
   };
   const saveAtt = async () => {
-    console.log(finalData, "Final Data is coming");
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -205,8 +201,8 @@ const AddEmployee = () => {
     // var formdata = new FormData(document.getElementById("attForm"));
     var formdata = new FormData();
     formdata.append("userId", finalData.userId);
+    formdata.append("userId", finalData.branchId);
     for (let i = 0; i < finalData.data.length; i++) {
-      console.log(finalData.data[i].createdOnDateByUser);
       formdata.append(
         "createdOnDateByUser",
         finalData.data[i].createdOnDateByUser
@@ -217,8 +213,6 @@ const AddEmployee = () => {
       );
       formdata.append("attendanceTypeId", finalData.data[i].attendanceTypeId);
     }
-
-    console.log(formdata);
 
     var requestOptions = {
       method: "POST",
@@ -233,7 +227,6 @@ const AddEmployee = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result, "result is coming");
         if (result.SUCCESS === 1) {
           // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
 
@@ -361,15 +354,21 @@ const AddEmployee = () => {
   };
 
   useEffect(() => {
+    let obj = {
+      navigationURL: "/Module/104",
+      navigationTitle: "Add Manual Attendance",
+    };
+    dispatch(navigation(obj));
     getattendanceById(id);
     getUsers();
     getAttTypes();
   }, []);
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     const { name, value } = event.target;
 
     setState({ ...state, [name]: value });
+
     if (name === "userId") {
       const findName = userByFrim.find(
         (item) => String(item.id) === String(event.target.value)
@@ -379,6 +378,36 @@ const AddEmployee = () => {
         userName: findName.label,
         [name]: value,
       });
+      var myHeaders = new Headers();
+      myHeaders.append(
+        "Authorization",
+        "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+      );
+
+      var formdata = new FormData();
+
+      formdata.append("userId", value);
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+      };
+
+      await fetch(
+        `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Attendances/GetUserFirmBranchesByUserIdAndFirm`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.SUCCESS === 1) {
+            setBranches(result?.DATA);
+          }
+        })
+        .catch((error) => {
+          console.log(error, "error is coming");
+        });
     }
   };
   const handleNavigation = () => {
@@ -477,6 +506,7 @@ const AddEmployee = () => {
       attendanceTypeId: state.attendanceTypeId,
       userId: state.userId,
       userName: state.userName,
+      branchId: state.branchId,
     };
     setAttendanceDataArray([...attendanceDataArray, newState]);
 
@@ -496,6 +526,7 @@ const AddEmployee = () => {
         ];
         setFinalData({
           userId: newState.userId,
+          branchId: newState.branchId,
           data: [...finalData.data, ...obj],
         });
       } else {
@@ -541,7 +572,7 @@ const AddEmployee = () => {
       />
       <Form id="attForm" >
         <Row>
-          <Col md="6" className="mb-1">
+          <Col md="12" className="mb-1">
             <Label className="form-label">{t("Select Employee")}</Label>
             <Input
               type="select"
@@ -555,6 +586,28 @@ const AddEmployee = () => {
               <option></option>
               {userByFrim && userByFrim.length > 0
                 ? userByFrim.map((obj, index) => (
+                    <option value={obj.id} key={obj.id}>
+                      {obj.label}
+                    </option>
+                  ))
+                : null}
+            </Input>
+          </Col>
+
+          <Col md="6" className="mb-1">
+            <Label className="form-label">{t("Select Branch")}</Label>
+            <Input
+              type="select"
+              id="branchId"
+              name="branchId"
+              value={state.branchId}
+              disabled={branches.length === 0}
+              onChange={handleChange}
+              placeholder="Select Employee"
+            >
+              <option></option>
+              {branches && branches.length > 0
+                ? branches.map((obj, index) => (
                     <option value={obj.id} key={obj.id}>
                       {obj.label}
                     </option>
@@ -623,6 +676,10 @@ const AddEmployee = () => {
             }}
             color="primary"
             className="btn-next"
+            disabled={
+              state.createdOnTimeByUser1 === "" &&
+              state.createdOnTimeByUser2 === ""
+            }
           >
             <span className="align-middle d-sm-inline-block d-none">
               {"Add"}

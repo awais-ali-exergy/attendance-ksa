@@ -13,8 +13,18 @@ import Flatpickr from "react-flatpickr";
 import { useParams } from "react-router-dom";
 
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../redux/navigationSlice";
 
 const AddEmployee = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let obj = {
+      navigationURL: "/Module/102",
+      navigationTitle: "Add Holiday",
+    };
+    dispatch(navigation(obj));
+  }, []);
   const navigate = useNavigate();
   let parms = useParams();
   let id = parseInt(parms.id);
@@ -31,7 +41,6 @@ const AddEmployee = () => {
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
-    console.log(state);
   };
 
   const saveHoliday = async () => {
@@ -63,7 +72,6 @@ const AddEmployee = () => {
       .then((result) => {
         if (result.USER_MESSAGE === "Holiday Saved") {
           //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
-          console.log(state);
           setState({
             label: "",
             description: "",

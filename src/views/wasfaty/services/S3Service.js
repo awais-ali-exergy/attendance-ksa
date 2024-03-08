@@ -15,7 +15,6 @@ class Service {
 
   uploadFile(file, callBackS3, progressCB) {
     if (file) {
-      console.log("Upload file");
       const s3 = new AWS.S3({
         ...config,
         s3ForcePathStyle: true,

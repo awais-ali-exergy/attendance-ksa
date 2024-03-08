@@ -55,7 +55,6 @@ const WizardVertical = (props) => {
           linear: false,
         }}
         // instance={(el) => {
-        //   console.log("=-=-=el", el);
         //   setStepper(el);
         // }}
       />

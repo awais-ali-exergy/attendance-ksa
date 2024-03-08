@@ -29,7 +29,6 @@ function HistoryModal({ modal, toggle, taskSelected }) {
                       placement="top"
                       target={"id" + his._id}
                     >
-                      {console.log(his.reason)}
                     </UncontrolledTooltip>
                     <span
                       style={{ color: "red", marginLeft: 10 }}

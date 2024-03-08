@@ -4,8 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../../redux/navigationSlice";
+import { ediSvg } from "../../List/components/scheduleTask/SVGSheduleAsset";
 const ListOfBranches = () => {
+  const dispatch = useDispatch();
+  let obj = {
+    navigationURL: "/AddStoreLocation",
+    navigationTitle: "Store Location List",
+  };
+
+  dispatch(navigation(obj));
   const [listBranches, setListBranches] = useState([]);
   const navigate = useNavigate();
 
@@ -39,8 +48,7 @@ const ListOfBranches = () => {
   }, []);
 
   const navigateToEdit = (data) => {
-    console.log(data);
-    // navigate("/MainDashboard/AddStoreLocation/", { state: { data: data } });
+    navigate(`/AddStoreLocation/${data.id}`);
   };
 
   const columnDefs = useMemo(
@@ -95,9 +103,10 @@ const ListOfBranches = () => {
             className=""
             style={{
               border: "none",
-              padding: "0px 14px",
+              padding: "0px 12px",
               background: "#10a945",
               color: "white",
+              borderRadius: "10px",
             }}
           >
             <MdModeEdit size={20} />

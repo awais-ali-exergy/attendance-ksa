@@ -1,7 +1,6 @@
 // ** React Imports
 import { useState, useEffect, useRef, Fragment } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import Flatpickr from "react-flatpickr";
@@ -11,7 +10,10 @@ import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 import CustomAlert from "../../components/alerts/CustomAlert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../redux/navigationSlice";
 const AddEmployee = () => {
+  const dispatch = useDispatch();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("");
@@ -341,6 +343,11 @@ const AddEmployee = () => {
     // setIsLoading(false);
   };
   useEffect(() => {
+    let obj = {
+      navigationURL: "/Module/107",
+      navigationTitle: "Add Basic Leave",
+    };
+    dispatch(navigation(obj));
     getLeaveById(id);
     getLeaveTypes();
     getUsers();
@@ -353,15 +360,12 @@ const AddEmployee = () => {
   const handleDateFormat = (selectedDates) => {
     const selectedDate = selectedDates[0];
     const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
-
-    console.log(formattedDate);
   };
 
   const handleTimeFormat = (event) => {
     const selectedDate = event.target.value;
     const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
     setPicker(selectedDate);
-    console.log(formattedTime);
   };
 
   return (

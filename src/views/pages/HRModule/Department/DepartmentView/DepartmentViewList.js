@@ -5,6 +5,9 @@ import { MdDelete } from "react-icons/md";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../../../redux/navigationSlice";
+import { useNavigate } from "react-router-dom";
 const styles = {
   bgHeading: {
     background: "#10a945",
@@ -36,10 +39,22 @@ const styles = {
   },
 };
 const AddDepartmentViewList = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let obj = {
+      navigationURL: "/AddDepartment",
+      navigationTitle: "All Departments List",
+    };
+    dispatch(navigation(obj));
+  }, []);
   const [departmentList, setDepartmentListView] = useState([]);
   const getAllDepartment = async () => {
+    const firmIdText = localStorage.getItem("AtouBeatXData");
+    const firmIdData = JSON.parse(firmIdText);
+    console.log(firmIdData.DATA.firmId);
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/AMS/FirmsDepartments/GetAllByFirmId`,
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/FirmsDepartments/GetAllByFirmId?firmId=${firmIdData.DATA.firmId}`,
       {
         method: "POST",
         headers: {
@@ -112,63 +127,44 @@ const AddDepartmentViewList = () => {
     getAllDepartment();
   }, []);
 
+  const navigateToEdit = (data) => {
+    navigate(`/AddDepartment/${data.id}`);
+  };
+
   const columnDefs = useMemo(
     () => [
       {
-        headerName: "Employee Name",
-        field: "userLabel",
+        headerName: "Department Name",
+        field: "label",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
       {
-        headerName: "Leave Type",
-        field: "attendanceTypeLabel",
+        headerName: "Department Id",
+        field: "id",
         sortable: true,
         filter: true,
         floatingFilter: true,
       },
       {
-        headerName: "Start Date",
-        field: "startOnDateDisplay",
-        sortable: true,
-        filter: true,
-        floatingFilter: true,
+        headerName: "Action",
+        cellRenderer: (params) => (
+          <button
+            onClick={() => navigateToEdit(params.data)}
+            className=""
+            style={{
+              border: "none",
+              padding: "0px 12px",
+              background: "#10a945",
+              color: "white",
+              borderRadius: "10px",
+            }}
+          >
+            <MdModeEdit size={20} />
+          </button>
+        ),
       },
-      {
-        headerName: "End Date",
-        field: "endOnDateDisplay",
-        sortable: true,
-        filter: true,
-        floatingFilter: true,
-      },
-      {
-        headerName: "Leave Reason",
-        field: "leaveReason",
-        sortable: true,
-        filter: true,
-        floatingFilter: true,
-      },
-      //   {
-      //     headerName: "Action",
-      //     cellRenderer: (params) => (
-      //       <div style={styles.btnSpacing}>
-      //         <button
-      //           onClick={() => navigateToEdit(params.data)}
-      //           className=""
-      //           style={styles.btnStyle}
-      //         >
-      //           <MdModeEdit size={20} />
-      //         </button>
-      //         <button
-      //           style={{ ...styles.btnStyle, marginLeft: "8px" }}
-      //           onClick={() => deleteLeave(item.id)}
-      //         >
-      //           <MdDelete size={25} />
-      //         </button>
-      //       </div>
-      //     ),
-      //   },
     ],
     []
   );
@@ -178,7 +174,7 @@ const AddDepartmentViewList = () => {
         className="ag-theme-quartz"
         style={{
           height: "500px",
-          width: "100%",
+          width: "auto",
           display: "flex",
           justifyContent: "space-evenly",
           flexDirection: "column",
@@ -189,14 +185,6 @@ const AddDepartmentViewList = () => {
           rowData={departmentList}
           pagination={true}
           paginationPageSize={10}
-          paginationAutoPageSize={true}
-          suppressPaginationPanel={true}
-          animateRows={true}
-          defaultColDef={{
-            sortable: true,
-            resizable: true,
-            filter: true,
-          }}
         />
       </div>
     </div>

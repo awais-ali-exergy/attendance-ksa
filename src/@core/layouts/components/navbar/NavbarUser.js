@@ -10,9 +10,9 @@ const NavbarUser = ({ windowWidth }) => {
   const logOut = (e) => {
     var myHeaders = new Headers();
     myHeaders.append(
-        "Authorization",
-        "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-      );
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
 
     var requestOptions = {
       method: "POST",
@@ -27,8 +27,8 @@ const NavbarUser = ({ windowWidth }) => {
       .then((result) => {
         window.localStorage.removeItem("AtouBeatXData");
         window.localStorage.removeItem("AtouBeatXToken");
-    localStorage.clear();
-    navigate("/login");
+        localStorage.clear();
+        navigate("/login");
 
         // window.location.replace("#/Login");
       })

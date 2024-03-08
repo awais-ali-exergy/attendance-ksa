@@ -39,19 +39,19 @@ const Singup = () => {
   });
   const items = [
     {
-      src: require(`@src/assets/images/pages/banner-1.png`).default,
+      src: require(`@src/assets/images/pages/log.png`).default,
       altText: "Slide 1",
       caption: "Slide 1",
       key: 1,
     },
     {
-      src: require(`@src/assets/images/pages/banner-3.jpeg`).default,
+      src: require(`@src/assets/images/pages/Login-bg.jpg`).default,
       altText: "Slide 2",
       caption: "Slide 2",
       key: 2,
     },
     {
-      src: require(`@src/assets/images/pages/banner-1.png`).default,
+      src: require(`@src/assets/images/pages/serg.jpg`).default,
       altText: "Slide 3",
       caption: "Slide 3",
       key: 3,
@@ -169,8 +169,6 @@ const Singup = () => {
             type: "success",
           });
         } else {
-          console.log(result.SYSTEM_MESSAGE);
-          // handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
@@ -186,12 +184,6 @@ const Singup = () => {
         }
       })
       .catch((error) => {
-        // setError("Someting Went Wrong");
-        console.log("error", error);
-        // handleOpenAlert(
-        //   <span>Failed to fetch ! Please try Again later</span>,
-        //   "danger"
-        // );
         toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
           position: "top-right",
           autoClose: 3000,
@@ -206,11 +198,6 @@ const Singup = () => {
         });
       });
   };
-  // const handleSubmit = async (data) => {
-  //   data.preventDefault();
-  //   localStorage.setItem("userData", JSON.stringify(Math.random()));
-  //   window.location.reload(false);
-  // };
 
   // start function login form submit
   const onFormSubmit = async (e) => {
@@ -218,7 +205,6 @@ const Singup = () => {
     // var validRegex =
     //   /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
     // if (state.email.match(validRegex)) {
-    //   console.log("Email" + state.email);
     // } else {
     //   handleOpenSnackbar(<span>Please enter a valid email.</span>, "error");
     //   return;
@@ -232,7 +218,6 @@ const Singup = () => {
       object[key] = value;
     });
     var json = JSON.stringify(object);
-    console.log(json);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const url = `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Auth/Login`;
@@ -242,19 +227,12 @@ const Singup = () => {
         if (result.SUCCESS === 1) {
           window.localStorage.setItem("AtouBeatXData", JSON.stringify(result));
           window.localStorage.setItem("AtouBeatXToken", result.DATA.jwtToken);
-          // window.location.replace("#/MainDashboard");
           localStorage.setItem("userData", JSON.stringify(Math.random()));
           window.location.reload(false);
         } else {
-          console.log(result);
-          handleOpenAlert(
-            "Failed to fetch ! Please try Again later.",
-            "danger"
-          );
         }
       })
       .catch((error) => {
-        handleOpenAlert("Failed to fetch ! Please try Again later.", "danger");
         console.log("error", error);
       });
   };
@@ -271,20 +249,12 @@ const Singup = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "primary");
-          setTimeout(() => {
-            window.location.replace("/login");
-            window.Location.reload();
-          }, 3000);
         } else {
-          console.log(result.SYSTEM_MESSAGE);
-          handleOpenAlert(<span>{result.USER_MESSAGE}</span>, "danger");
         }
       })
       .catch((error) => {
         // setError("Someting Went Wrong");
         console.log("error", error);
-        handleOpenAlert("Failed to fetch ! Please try Again later.", "danger");
       });
   };
 

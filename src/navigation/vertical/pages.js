@@ -18,8 +18,7 @@ import {
 } from "../../assets/wasfaty/SVG";
 var navData = [];
 
-const getFeaturesGroups = async () => {
-  console.log("data is coming");
+// const getFeaturesGroups = async () => {
 
   try {
     const response = await fetch(
@@ -40,23 +39,22 @@ const getFeaturesGroups = async () => {
 
     const result = await response.json();
 
-    if (result.SUCCESS === 1) {
-      let data = result.DATA;
-      navData = data.map((item) => ({
-        id: item.label,
-        slug: item.subLabel,
-        title: item.label,
-        navLink: `/Module/${item.id}`,
-        icon: () => productionIcon,
-      }));
-    } else {
-      // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
-    }
-  } catch (error) {
-    console.log("error", error);
-    handleOpenSnackbar("Failed to fetch ! Please try Again later.", "error");
-  }
-};
+//     if (result.SUCCESS === 1) {
+//       let data = result.DATA;
+//       navData = data.map((item) => ({
+//         id: item.label,
+//         slug: item.subLabel,
+//         title: item.label,
+//         navLink: `/Module/${item.id}`,
+//         icon: () => productionIcon,
+//       }));
+//     } else {
+//       // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+//     }
+//   } catch (error) {
+//     handleOpenSnackbar("Failed to fetch ! Please try Again later.", "error");
+//   }
+// };
 
 var navigationLinks = [
   {
@@ -65,7 +63,6 @@ var navigationLinks = [
     title: "Dashboards",
     icon: () => DashboardIcon,
     navLink: "/",
-
   },
 
   {
@@ -74,7 +71,6 @@ var navigationLinks = [
     title: "Admin Module",
     icon: () => productionIcon,
     navLink: "/Module/" + 101,
-
   },
   {
     id: "administration",
@@ -125,7 +121,6 @@ var navigationLinks = [
 
 // (async () => {
 //   await getFeaturesGroups();
-//   console.log(navData, "data is coming");
 //   if (navData.length > 0) {
 //     navigationLinks.push(...navData);
 //   }

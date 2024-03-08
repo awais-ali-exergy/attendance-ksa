@@ -1,35 +1,30 @@
 // ** React Imports
 import { useState, useEffect, useRef, Fragment } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Alert } from "reactstrap";
 import "@styles/react/apps/app-users.scss";
-import WizardVertical from "../../../../views/forms/wizard/WizardVertical";
-import BreadCrumbs from "@components/breadcrumbs";
 import { useTranslation } from "react-i18next";
-import AccountDetails from "../../../forms/wizard/steps/AccountDetails";
-import OutletDetails from "../../../forms/wizard/steps/OutletDetail";
-import SocialLinks from "../../../forms/wizard/steps/SocialLinks";
-import Wizard from "@components/wizard";
-import { clippingParents } from "@popperjs/core";
-// ** Icons Imports
-import { ArrowLeft, ArrowRight } from "react-feather";
-// import { useTranslation } from "react-i18next";
-import Flatpickr from "react-flatpickr";
-
-// ** Reactstrap Imports
 import { Label, Row, Col, Form, Input, Button } from "reactstrap";
-
+import { useDispatch } from "react-redux";
+import { navigation } from "../../../../redux/navigationSlice";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AddDesignation = () => {
+  let params = useParams();
+  let id = parseInt(params.id);
+  if (isNaN(id)) id = 0;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let obj = {
+      navigationURL: "/Module/102",
+      navigationTitle: "Add Designation",
+    };
+    dispatch(navigation(obj));
+    if (id !== 0) {
+      // getDesignationToEdit(id);
+    }
+  }, []);
   const { t } = useTranslation();
-  const [designation, setDesignation] = useState([]);
-  const [employees, setEmployees] = useState([]);
-  const [department, setDepartment] = useState([]);
-  const [braches, setBraches] = useState([]);
-  const [picker, setPicker] = useState(new Date());
-  console.log("data is");
-
-  const ref = useRef(null);
-
   const [state, setState] = useState({
     label: "",
     description: "",
@@ -75,11 +70,53 @@ const AddDesignation = () => {
         );
       });
   };
-  useEffect(() => {}, []);
   const navigate = useNavigate();
 
   const handleNavigation = () => {
     navigate("/AddDesignationViewList");
+  };
+
+  const getDesignationToEdit = async (id) => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
+
+    var formdata = new FormData();
+    formdata.append("id", id);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    await fetch(
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/FirmsDepartments/GetById`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.SUCCESS === 1) {
+          setState({ label: result.DATA.label });
+        } else {
+          console.log(result);
+        }
+      })
+      .catch((error) => {
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch, Please try again!"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
+      });
   };
 
   return (

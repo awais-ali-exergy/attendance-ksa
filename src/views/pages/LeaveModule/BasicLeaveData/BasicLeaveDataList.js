@@ -5,6 +5,8 @@ import { MdDelete } from "react-icons/md";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import { navigation } from "../../../../redux/navigationSlice";
+import { useDispatch } from "react-redux";
 const styles = {
   bgHeading: {
     background: "#10a945",
@@ -36,10 +38,9 @@ const styles = {
   },
 };
 const BasicLeaveDataList = () => {
+  const dispatch = useDispatch();
   const [leaves, setLeaves] = useState([]);
   const getAllLeave = async () => {
-    // setIsLoading(true);
-
     await fetch(
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Leaves/GetAllByFirm`,
       {
@@ -58,21 +59,13 @@ const BasicLeaveDataList = () => {
         return response.json();
       })
       .then((result) => {
-        console.log(result);
         if (result.SUCCESS === 1) {
           setLeaves(result.DATA);
         } else {
           handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
-      .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(
-          <span>Failed to fetch ! Please try Again later.</span>,
-          "danger"
-        );
-      });
-    // setIsLoading(false);
+      .catch((error) => {});
   };
   //   const editLeave = (id) => {
   //     window.location.replace("/MainDashboard/BasicLeave/" + id);
@@ -121,6 +114,11 @@ const BasicLeaveDataList = () => {
       });
   };
   useEffect(() => {
+    let obj = {
+      navigationURL: "/BasicLeave",
+      navigationTitle: "All Leaves Data",
+    };
+    dispatch(navigation(obj));
     getAllLeave();
   }, []);
 
