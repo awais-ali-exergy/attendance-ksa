@@ -40,7 +40,7 @@ const AuthenticationRoutes = [
   //   isAuth: true,
   // },
   {
-    path: "/Singup",
+    path: "/Signup",
     element: <Singup />,
     route: "",
     meta: {

@@ -9,6 +9,7 @@ import Carousel from "@components/carousel";
 import CustomAlert from "../components/alerts/CustomAlert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 import {
   Row,
   Col,
@@ -22,6 +23,7 @@ import {
 import "@styles/react/pages/page-authentication.scss";
 
 const Singup = () => {
+  const navigate = useNavigate()
   const { skin } = useSkin();
   const windowWidth = React.useRef(window.innerWidth);
   const windowHeight = React.useRef(window.innerHeight);
@@ -249,6 +251,13 @@ const Singup = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            type: "success",
+          });
+
+          navigate("/login")
         } else {
         }
       })
