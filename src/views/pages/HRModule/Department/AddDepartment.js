@@ -62,7 +62,7 @@ const AddDepartment = () => {
       .then((result) => {
         if (result.SUCCESS === 1) {
           if (id !== 0) {
-            toast(<p style={{ fontSize: 16 }}>{"Branch Updated"}</p>, {
+            toast(<p style={{ fontSize: 16 }}>{"Department Updated"}</p>, {
               position: "top-right",
               autoClose: 3000,
               type: "success",
