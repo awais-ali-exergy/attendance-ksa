@@ -248,6 +248,13 @@ const ListRoutes = [
     title: "AddEmployee",
   },
   {
+    element: <AddDesignation />,
+    path: "/AddDesignation/:id",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
     element: <ViewAllEmployeesData />,
     path: "/ViewAllEmployeeData",
     route: "ViewAllEmployees",
@@ -299,6 +306,13 @@ const ListRoutes = [
   {
     element: <BasicLeave />,
     path: "/BasicLeave",
+    route: "AddEmployee",
+    slug: "AddEmployee",
+    title: "AddEmployee",
+  },
+  {
+    element: <BasicLeave />,
+    path: "/BasicLeave/:id",
     route: "AddEmployee",
     slug: "AddEmployee",
     title: "AddEmployee",

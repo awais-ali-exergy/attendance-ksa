@@ -21,7 +21,7 @@ const AddDesignation = () => {
     };
     dispatch(navigation(obj));
     if (id !== 0) {
-      // getDesignationToEdit(id);
+      getDesignationToEdit(id);
     }
   }, []);
   const { t } = useTranslation();
@@ -40,7 +40,9 @@ const AddDesignation = () => {
     );
 
     var formdata = new FormData(document.getElementById("AddDesignation"));
-
+    if (id !== 0) {
+      formdata.append("designationId ", id);
+    }
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -55,20 +57,32 @@ const AddDesignation = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-          setState({ label: "" });
+          if (id !== 0) {
+            toast(<p style={{ fontSize: 16 }}>{"Designation Updated"}</p>, {
+              position: "top-right",
+              autoClose: 3000,
+              type: "success",
+            });
+          }
+
+          if (id === 0) {
+            toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+              position: "top-right",
+              autoClose: 3000,
+              type: "success",
+            });
+          }
+          setState({ label: "", description: "" });
+          setTimeout(function () {
+            if (id != 0) {
+              navigate("/AddDesignation");
+            }
+          }, 2000);
         } else {
           console.log(result);
-          handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
-      .catch((error) => {
-        console.log("error", error);
-        handleOpenAlert(
-          <span>Failed to fetch ! Please try Again later.</span>,
-          "danger"
-        );
-      });
+      .catch((error) => {});
   };
   const navigate = useNavigate();
 
@@ -84,7 +98,7 @@ const AddDesignation = () => {
     );
 
     var formdata = new FormData();
-    formdata.append("id", id);
+    formdata.append("designationId ", id);
 
     var requestOptions = {
       method: "POST",
@@ -94,13 +108,16 @@ const AddDesignation = () => {
     };
 
     await fetch(
-      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/FirmsDepartments/GetById`,
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/FirmsDesignations/GetById`,
       requestOptions
     )
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          setState({ label: result.DATA.label });
+          setState({
+            label: result.DATA.label,
+            description: result.DATA.description,
+          });
         } else {
           console.log(result);
         }
@@ -121,7 +138,8 @@ const AddDesignation = () => {
 
   return (
     <Fragment>
-      <Form id="AddDesignation" >
+      <ToastContainer />
+      <Form id="AddDesignation">
         <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label">{t("Add Designation")}</Label>
@@ -155,12 +173,13 @@ const AddDesignation = () => {
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
           <Button
-            
             color="primary"
             className="btn-next"
-              onClick={() => saveDesignation()}
+            onClick={() => saveDesignation()}
           >
-            <span className="align-middle d-sm-inline-block d-none">Save</span>
+            <span className="align-middle d-sm-inline-block d-none">
+              {id !== 0 ? "Updated" : "Save"}
+            </span>
           </Button>
         </div>
       </Form>

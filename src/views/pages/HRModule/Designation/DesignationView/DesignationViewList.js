@@ -7,32 +7,10 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useDispatch } from "react-redux";
 import { navigation } from "../../../../../redux/navigationSlice";
-// const styles = {
-//   bgHeading: {
-//     background: "#10a945",
-//     color: "white",
-//     padding: "30px",
-//     textAlign: "center",
-//   },
-//   btnStyle: {
-//     border: "none",
-//     padding: "0px 14px",
-//     background: "#10a945",
-//     color: "white",
-//     borderRadius: "10px",
-//   },
-//   btnSpacing: {
-//     display: "flex",
-//     justifyContent: "space-evenly",
-//     alignItems: "center",
-//     flexDirection: "item",
-//   },
-//   pad_Col: {
-//     padding: "15px",
-//     textAlign: "center",
-//   },
-// };
+import { useNavigate } from "react-router-dom";
+
 const AddDesignationViewList = () => {
+  const navigate = useNavigate();
   const [departmentList, setDepartmentListView] = useState([]);
   const getAllDepartment = async () => {
     const firmIdText = localStorage.getItem("AtouBeatXData");
@@ -142,9 +120,31 @@ const AddDesignationViewList = () => {
         filter: true,
         floatingFilter: true,
       },
+      {
+        headerName: "Action",
+        cellRenderer: (params) => (
+          <button
+            onClick={() => navigateToEdit(params.data)}
+            className=""
+            style={{
+              border: "none",
+              padding: "0px 12px",
+              background: "#10a945",
+              color: "white",
+              borderRadius: "10px",
+            }}
+          >
+            <MdModeEdit size={20} />
+          </button>
+        ),
+      },
     ],
     []
   );
+
+  const navigateToEdit = (data) => {
+    navigate(`/AddDesignation/${data.id}`);
+  };
   return (
     <div className="table-responsive">
       <div

@@ -359,6 +359,7 @@ const AddEmployee = () => {
       navigationTitle: "Add Manual Attendance",
     };
     dispatch(navigation(obj));
+
     getattendanceById(id);
     getUsers();
     getAttTypes();
@@ -570,7 +571,7 @@ const AddEmployee = () => {
       <ToastContainer
       // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
       />
-      <Form id="attForm" >
+      <Form id="attForm">
         <Row>
           <Col md="12" className="mb-1">
             <Label className="form-label">{t("Select Employee")}</Label>

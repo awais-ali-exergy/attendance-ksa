@@ -125,12 +125,9 @@ const AddEmployee = () => {
     formdata.append("userId", userId);
     formdata.append("id", id);
 
-    console.log(formdata);
-
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
-      body: formdata,
       redirect: "follow",
     };
 
@@ -144,30 +141,8 @@ const AddEmployee = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "success",
           });
-          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-        } else {
-          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
-          });
-          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
@@ -178,21 +153,9 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
+            type: "error",
           }
         );
-
-        // handleOpenAlert(
-        //   <span>Failed to fetch ! Please try Again later.</span>,
-        //   "danger"
-        // );
       });
   };
   const getLeaveTypes = async () => {
@@ -260,11 +223,6 @@ const AddEmployee = () => {
   };
 
   const getLeaveById = async (id) => {
-    // setIsLoading(true);
-    if (id === 0) {
-      // setIsLoading(false);
-      return;
-    }
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -348,7 +306,9 @@ const AddEmployee = () => {
       navigationTitle: "Add Basic Leave",
     };
     dispatch(navigation(obj));
-    getLeaveById(id);
+    if (id !== 0) {
+      getLeaveById(id);
+    }
     getLeaveTypes();
     getUsers();
   }, []);
@@ -373,7 +333,7 @@ const AddEmployee = () => {
       <ToastContainer
       // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
       />
-      <Form id="employeedata" >
+      <Form id="leaveForm">
         <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label">{t("Select Employee")}</Label>
@@ -424,6 +384,7 @@ const AddEmployee = () => {
             <Flatpickr
               id="date-time-picker"
               className="form-control"
+              // value={}
               onChange={(event) => handleDateFormat(event)}
             />
           </Col>
@@ -464,10 +425,9 @@ const AddEmployee = () => {
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
           <Button
-            
             color="primary"
             className="btn-next"
-              onClick={() => saveLeave()}
+            onClick={() => saveLeave()}
           >
             <span className="align-middle d-sm-inline-block d-none">Save</span>
           </Button>
