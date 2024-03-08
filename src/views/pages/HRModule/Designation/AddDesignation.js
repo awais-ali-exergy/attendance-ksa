@@ -41,7 +41,7 @@ const AddDesignation = () => {
 
     var formdata = new FormData(document.getElementById("AddDesignation"));
     if (id !== 0) {
-      formdata.append("designationId ", id);
+      formdata.append("id ", id);
     }
     var requestOptions = {
       method: "POST",

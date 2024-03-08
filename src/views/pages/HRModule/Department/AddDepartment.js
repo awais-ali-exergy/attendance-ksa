@@ -44,7 +44,7 @@ const AddDepartment = () => {
     var formdata = new FormData(document.getElementById("AddDepartment"));
 
     if (id !== 0) {
-      formdata.append("userId", id);
+      formdata.append("id", id);
     }
 
     var requestOptions = {
