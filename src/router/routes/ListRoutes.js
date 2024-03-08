@@ -67,6 +67,15 @@ const AddStoreLocation = lazy(() =>
   import("../../views/pages/AddStoreLocation/AddStoreLocation")
 );
 
+const ManagerRights = lazy(() =>
+  import("../../views/pages/HRModule/ManagerRights/ManagerRights")
+);
+const UserRights = lazy(() =>
+  import("../../views/pages/HRModule/UserRights/UserRights")
+);
+const AttendanceMarker = lazy(() =>
+  import("../../views/pages/AttendanceMarker/AttendanceMarker")
+);
 const ListOfBranches = lazy(() =>
   import("../../views/pages/AddStoreLocation/ListOfBranches/ListOfBranches")
 );
@@ -304,7 +313,27 @@ const ListRoutes = [
     slug: "ViewAllAttendance",
     title: "ViewAllAttendance",
   },
-
+  {
+    element: <ManagerRights />,
+    path: "/ManagerRights",
+    route: "ViewAllAttendance",
+    slug: "ViewAllAttendance",
+    title: "ViewAllAttendance",
+  },
+  {
+    element: <UserRights />,
+    path: "/UserRights",
+    route: "ViewAllAttendance",
+    slug: "ViewAllAttendance",
+    title: "ViewAllAttendance",
+  },
+  {
+    element: <AttendanceMarker />,
+    path: "/AttendanceMarker",
+    route: "ViewAllAttendance",
+    slug: "ViewAllAttendance",
+    title: "ViewAllAttendance",
+  },
   {
     element: <ListOfBranches />,
     path: "/StoreLocationList",

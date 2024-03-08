@@ -16,47 +16,47 @@ import {
   mobileIcon,
   CashIcon,
 } from "../../assets/wasfaty/SVG";
-// var navData = [];
+var navData = [];
 
-// const getFeaturesGroups = async () => {
-//   console.log("data is coming");
+const getFeaturesGroups = async () => {
+  console.log("data is coming");
 
-//   try {
-//     const response = await fetch(
-//       "http://192.168.24.201:8081/AMS/UsersFeatures/GetAllGroupedFeaturesByUser",
-//       {
-//         method: "POST",
-//         headers: {
-//           Authorization:
-//             "Bearer " + window.localStorage.getItem("AtouBeatXToken"),
-//         },
-//         redirect: "follow",
-//       }
-//     );
+  try {
+    const response = await fetch(
+      "http://192.168.24.201:8081/AMS/UsersFeatures/GetAllGroupedFeaturesByUser",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer " + window.localStorage.getItem("AtouBeatXToken"),
+        },
+        redirect: "follow",
+      }
+    );
 
-//     if (response.status === 401) {
-//       <Logout />;
-//     }
+    if (response.status === 401) {
+      <Logout />;
+    }
 
-//     const result = await response.json();
+    const result = await response.json();
 
-//     if (result.SUCCESS === 1) {
-//       let data = result.DATA;
-//       navData = data.map((item) => ({
-//         id: item.label,
-//         slug: item.subLabel,
-//         title: item.label,
-//         navLink: `/Module/${item.id}`,
-//         icon: () => productionIcon,
-//       }));
-//     } else {
-//       // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
-//     }
-//   } catch (error) {
-//     console.log("error", error);
-//     handleOpenSnackbar("Failed to fetch ! Please try Again later.", "error");
-//   }
-// };
+    if (result.SUCCESS === 1) {
+      let data = result.DATA;
+      navData = data.map((item) => ({
+        id: item.label,
+        slug: item.subLabel,
+        title: item.label,
+        navLink: `/Module/${item.id}`,
+        icon: () => productionIcon,
+      }));
+    } else {
+      // handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
+    }
+  } catch (error) {
+    console.log("error", error);
+    handleOpenSnackbar("Failed to fetch ! Please try Again later.", "error");
+  }
+};
 
 var navigationLinks = [
   {

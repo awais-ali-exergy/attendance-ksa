@@ -549,7 +549,7 @@ const AddEmployee = () => {
           </Button>
         </Col>
       </Row>
-      <Form id="employeedata" onSubmit={() => saveEmployee()}>
+      <Form id="employeedata" >
         <Row>
           <Col md="4" className="mb-1">
             <Label className="form-label">{t("First Name")}</Label>
@@ -752,10 +752,10 @@ const AddEmployee = () => {
             <span className="align-middle d-sm-inline-block d-none">View</span>
           </Button>
           <Button
-            type="submit"
             color="primary"
             className="btn-next"
-            //   onClick={}
+              onClick={() => saveEmployee()}
+              
           >
             <span className="align-middle d-sm-inline-block d-none">Save</span>
           </Button>
