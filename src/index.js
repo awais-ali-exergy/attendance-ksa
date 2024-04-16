@@ -1,7 +1,7 @@
 // ** React Imports
 import ReactDOM from "react-dom";
 import React, { Suspense, lazy } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 
 // ** Redux Imports
 import { store } from "./redux/store";
@@ -103,7 +103,7 @@ if (!token) {
 
 ReactDOM.render(
   <ErrorBoundary>
-    <BrowserRouter>
+    <HashRouter basename="/">
       <Provider store={store}>
         <IntlProviderWrapper>
           <Suspense fallback={<Spinner />}>
@@ -119,7 +119,7 @@ ReactDOM.render(
           </Suspense>
         </IntlProviderWrapper>
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   </ErrorBoundary>,
   document.getElementById("root")
 );

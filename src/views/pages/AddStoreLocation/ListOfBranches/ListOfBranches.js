@@ -6,7 +6,6 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useDispatch } from "react-redux";
 import { navigation } from "../../../../redux/navigationSlice";
-import { ediSvg } from "../../List/components/scheduleTask/SVGSheduleAsset";
 const ListOfBranches = () => {
   const dispatch = useDispatch();
   let obj = {
@@ -59,6 +58,7 @@ const ListOfBranches = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Branch Name",
@@ -66,6 +66,7 @@ const ListOfBranches = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Manager Name",
@@ -73,6 +74,7 @@ const ListOfBranches = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Country",
@@ -80,6 +82,7 @@ const ListOfBranches = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "City",
@@ -87,6 +90,7 @@ const ListOfBranches = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Contact No",
@@ -94,9 +98,11 @@ const ListOfBranches = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Action",
+        flex: 1,
         cellRenderer: (params) => (
           <button
             onClick={() => navigateToEdit(params.data)}
@@ -121,7 +127,7 @@ const ListOfBranches = () => {
     <div
       className="ag-theme-quartz"
       style={{
-        height: "500px",
+        height: "570px",
         width: "100%",
         display: "flex",
         justifyContent: "space-evenly",
@@ -133,14 +139,6 @@ const ListOfBranches = () => {
         rowData={listBranches}
         pagination={true}
         paginationPageSize={10}
-        paginationAutoPageSize={true}
-        suppressPaginationPanel={true}
-        animateRows={true}
-        defaultColDef={{
-          sortable: true,
-          resizable: true,
-          filter: true,
-        }}
       />
     </div>
   );

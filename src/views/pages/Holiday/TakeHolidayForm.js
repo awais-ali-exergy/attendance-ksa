@@ -39,11 +39,49 @@ const AddEmployee = () => {
     startOnDate: "",
     endOnDate: "",
   });
+
+  const [error, setError] = useState({
+    label: "",
+    description: "",
+    startOnDate: "",
+    endOnDate: "",
+  });
+
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const saveHoliday = async () => {
+  const saveHoliday = async (e) => {
+    e.preventDefault();
+    let isValid = true;
+    const newErrors = { ...error };
+
+    if (!state.label) {
+      newErrors.label = "Department label is required";
+      isValid = false;
+    } else {
+      newErrors.label = "";
+    }
+
+    if (!state.startOnDate) {
+      newErrors.startOnDate = "Start Date is required";
+      isValid = false;
+    } else {
+      newErrors.startOnDate = "";
+    }
+    if (!state.endOnDate) {
+      newErrors.endOnDate = "End Date is required";
+      isValid = false;
+    } else {
+      newErrors.endOnDate = "";
+    }
+
+    setError(newErrors);
+
+    if (!isValid) {
+      return;
+    }
+
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -81,13 +119,6 @@ const AddEmployee = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "success",
           });
           setUserDate("");
@@ -95,14 +126,7 @@ const AddEmployee = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
+            type: "error",
           });
           // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
@@ -116,20 +140,9 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
+            type: "error",
           }
         );
-        // handleOpenAlert(
-        //   <span>Failed to fetch ! Please try Again later.</span>,
-        //   "danger"
-        // );
       });
   };
 
@@ -144,6 +157,12 @@ const AddEmployee = () => {
       ...state,
       startOnDate: formattedDate,
     });
+    const startDate = moment(selectedDate).toDate();
+    setUserDate(startDate);
+    const endDatePicker = document.getElementById("endOnDate");
+    if (endDatePicker) {
+      endDatePicker._flatpickr.set("minDate", startDate);
+    }
   };
 
   const handleEndDateFormat = (selectedDates) => {
@@ -160,7 +179,7 @@ const AddEmployee = () => {
       <ToastContainer
       // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
       />
-      <Form id="attForm" >
+      <Form id="attForm">
         <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label">{t("Holiday Label")}</Label>
@@ -171,8 +190,16 @@ const AddEmployee = () => {
               placeholder="Label"
               value={state.label}
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.label}
+            </div>
           </Col>
-          
+
           <Col md="6" className="mb-1">
             <Label className="form-label" for="date-time-picker">
               Description
@@ -188,7 +215,7 @@ const AddEmployee = () => {
           </Col>
         </Row>
         <Row>
-        <Col md="6" className="mb-1">
+          <Col md="6" className="mb-1">
             <Label className="form-label" for="date-time-picker">
               Start Date
             </Label>
@@ -200,6 +227,14 @@ const AddEmployee = () => {
               className="form-control"
               onChange={(event) => handleStartDateFormat(event)}
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.startOnDate}
+            </div>
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="date-time-picker">
@@ -219,8 +254,15 @@ const AddEmployee = () => {
               className="form-control"
               onChange={(event) => handleEndDateFormat(event)}
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.endOnDate}
+            </div>
           </Col>
-          
         </Row>
 
         <div className="d-flex justify-content-between">
@@ -235,7 +277,7 @@ const AddEmployee = () => {
           <Button
             color="primary"
             className="btn-next"
-            onClick={() => saveHoliday()}
+            onClick={(e) => saveHoliday(e)}
           >
             <span className="align-middle d-sm-inline-block d-none">
               {id !== 0 ? "Update" : "Save"}

@@ -207,6 +207,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Description",
@@ -214,6 +215,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Start Date",
@@ -221,6 +223,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "End Date",
@@ -228,6 +231,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
 
       // {
@@ -263,7 +267,7 @@ const ViewAllEmployeesData = () => {
         <div
           className="ag-theme-quartz"
           style={{
-            height: "500px",
+            height: "570px",
             width: "100%",
             display: "flex",
             justifyContent: "space-evenly",
@@ -275,23 +279,9 @@ const ViewAllEmployeesData = () => {
             rowData={attendance}
             pagination={true}
             paginationPageSize={10}
-            paginationAutoPageSize={true}
-            suppressPaginationPanel={true}
-            animateRows={true}
-            defaultColDef={{
-              sortable: true,
-              resizable: true,
-              filter: true,
-            }}
           />
         </div>
       </div>
-      <CustomAlert
-        isOpen={isOpenAlert}
-        message={alertMessage}
-        severity={alertSeverity}
-        handleCloseAlert={() => handleCloseAlert()}
-      />
     </>
   );
 };

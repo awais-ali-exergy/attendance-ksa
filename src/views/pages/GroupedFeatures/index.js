@@ -98,18 +98,6 @@ const Production = () => {
   const href = window.location.href;
   return true ? (
     <>
-      {/* <div
-        style={{
-          backgroundColor: "white",
-          padding: 10,
-          paddingTop: 20,
-          borderTopLeftRadius: 5,
-          borderTopRightRadius: 5,
-          marginBottom: 20,
-        }}
-      >
-        <h5>{groupFeature[0] ? groupFeature[0].featureGroupLabel : ""}</h5>
-      </div> */}
       <Row>
         {groupFeature.map((obj, index2) => {
           return (
@@ -137,6 +125,19 @@ const Production = () => {
             </>
           );
         })}
+        {/* <div
+          style={{
+            backgroundColor: "white",
+            padding: 10,
+            paddingTop: 20,
+            borderTopLeftRadius: 5,
+            borderTopRightRadius: 5,
+            marginBottom: 20,
+            boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <h5>{groupFeature[0] ? groupFeature[0].featureGroupLabel : ""}</h5>
+        </div> */}
       </Row>
       {/* <CustomAlert
         isOpen={isOpenAlert}

@@ -21,7 +21,6 @@ const AddDepartment = () => {
       navigationTitle: "Add Department",
     };
     dispatch(navigation(obj));
-
     if (id !== 0) {
       getDepartmentToEdit(id);
     }
@@ -31,10 +30,30 @@ const AddDepartment = () => {
   const [state, setState] = useState({
     label: "",
   });
+  const [error, setError] = useState({
+    label: "",
+  });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const saveDepartment = async () => {
+  const saveDepartment = async (e) => {
+    e.preventDefault();
+    let isValid = true;
+    const newErrors = { ...error };
+
+    if (!state.label) {
+      newErrors.label = "Department label is required";
+      isValid = false;
+    } else {
+      newErrors.label = "";
+    }
+
+    setError(newErrors);
+
+    if (!isValid) {
+      return;
+    }
+
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -43,9 +62,7 @@ const AddDepartment = () => {
 
     var formdata = new FormData(document.getElementById("AddDepartment"));
 
-    if (id !== 0) {
-      formdata.append("userId", id);
-    }
+    formdata.append("id", id);
 
     var requestOptions = {
       method: "POST",
@@ -161,6 +178,14 @@ const AddDepartment = () => {
               onChange={handleChange}
               placeholder="Add New Department"
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.label}
+            </div>
           </Col>
         </Row>
 

@@ -20,7 +20,6 @@ import {
 
 // const getFeaturesGroups = async () => {
 
-
 // try {
 //   const response = await fetch(
 //     "http://192.168.24.201:8081/AMS/UsersFeatures/GetAllGroupedFeaturesByUser",
@@ -39,7 +38,6 @@ import {
 //   }
 
 //   const result = await response.json();
-
 
 //     if (result.SUCCESS === 1) {
 //       let data = result.DATA;

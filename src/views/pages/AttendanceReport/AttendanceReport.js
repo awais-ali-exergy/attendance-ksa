@@ -7,8 +7,8 @@ import { navigation } from "../../../redux/navigationSlice";
 const columns = [
   { field: "EmpID", headerName: "Employee ID" },
   { field: "Name", headerName: "Employee Name" },
-  { field: "CheckIN", headerName: "Check IN" },
-  { field: "CheckOUT", headerName: "Check OUT" },
+  { field: "CheckIN", headerName: "Check In" },
+  { field: "CheckOUT", headerName: "Check Out" },
   { field: "Workinghours", headerName: "Working Hours" },
 ];
 
@@ -52,6 +52,7 @@ export default function AttendanceReport() {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       })),
     []
   );
@@ -60,7 +61,7 @@ export default function AttendanceReport() {
     <div
       className="ag-theme-quartz"
       style={{
-        height: "500px",
+        height: "570px",
         width: "100%",
         display: "flex",
         justifyContent: "space-evenly",
@@ -72,8 +73,6 @@ export default function AttendanceReport() {
         rowData={rows}
         pagination={true}
         paginationPageSize={10}
-        suppressPaginationPanel={true}
-        animateRows={true}
       />
     </div>
   );

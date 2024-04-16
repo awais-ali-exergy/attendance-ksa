@@ -105,6 +105,7 @@ const AddDesignationViewList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Designation Id",
@@ -112,6 +113,7 @@ const AddDesignationViewList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Description",
@@ -119,9 +121,11 @@ const AddDesignationViewList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Action",
+        flex: 1,
         cellRenderer: (params) => (
           <button
             onClick={() => navigateToEdit(params.data)}
@@ -150,7 +154,7 @@ const AddDesignationViewList = () => {
       <div
         className="ag-theme-quartz"
         style={{
-          height: "500px",
+          height: "570px",
           width: "100%",
         }}
       >
@@ -159,14 +163,6 @@ const AddDesignationViewList = () => {
           rowData={departmentList}
           pagination={true}
           paginationPageSize={10}
-          paginationAutoPageSize={true}
-          suppressPaginationPanel={true}
-          animateRows={true}
-          defaultColDef={{
-            sortable: true,
-            resizable: true,
-            filter: true,
-          }}
         />
       </div>
     </div>

@@ -39,19 +39,14 @@ const ViewAllEmployeesData = () => {
           redirect: "follow",
         }
       );
-      if (response.status === 401) {
-        // Handle unauthorized access
-      }
+
       const result = await response.json();
       if (result.SUCCESS === 1) {
         setEmployees(result.DATA);
         console.log(result.DATA);
-      } else {
-        // Handle error
       }
     } catch (error) {
       console.error("Failed to fetch:", error);
-      // Handle error
     }
   };
 
@@ -73,6 +68,7 @@ const ViewAllEmployeesData = () => {
         floatingFilter: true,
         valueGetter: (params) =>
           `${params.data.firstName} ${params.data.lastName}`,
+        flex: 1,
       },
       {
         headerName: "National ID",
@@ -80,6 +76,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Email",
@@ -87,13 +84,22 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Branch",
-        field: "branchLabel",
+        field: "branches",
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
+        valueGetter: (params) => {
+          const { branches } = params.data;
+          if (branches && branches.length > 0) {
+            return branches.map((branch) => branch.label).join(", ");
+          }
+          return "N/A";
+        },
       },
       {
         headerName: "Department",
@@ -101,6 +107,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Designation",
@@ -108,6 +115,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Contact No.",
@@ -115,6 +123,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Is Active",
@@ -124,6 +133,7 @@ const ViewAllEmployeesData = () => {
         floatingFilter: true,
         valueFormatter: (params) =>
           params.value === "1" ? "Active" : "Blocked",
+        flex: 1,
       },
       {
         headerName: "Is Verified",
@@ -133,9 +143,11 @@ const ViewAllEmployeesData = () => {
         floatingFilter: true,
         valueFormatter: (params) =>
           params.value === "1" ? "Verified" : "Non-Verified",
+        flex: 1,
       },
       {
         headerName: "Action",
+        flex: 1,
         cellRenderer: (params) => (
           <button
             onClick={() => navigateToEdit(params.data)}
@@ -157,7 +169,7 @@ const ViewAllEmployeesData = () => {
   );
 
   return (
-    <div className="ag-theme-quartz" style={{ height: "600px", width: "100%" }}>
+    <div className="ag-theme-quartz" style={{ height: "570px", width: "100%" }}>
       <AgGridReact
         columnDefs={columns}
         rowData={employees}

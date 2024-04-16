@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { navigation } from "../../../redux/navigationSlice";
+import { start } from "@popperjs/core";
 const AddEmployee = () => {
   const dispatch = useDispatch();
   const [isOpenAlert, setIsOpenAlert] = useState(false);
@@ -39,14 +40,19 @@ const AddEmployee = () => {
   const [startPicker, setStartPicker] = useState(new Date());
   const [endPicker, setEndPicker] = useState(new Date());
 
-
   const [userId, setUserId] = useState("");
-
+  const [userDate, setUserDate] = useState();
   const [state, setState] = useState({
     userdate: "",
     usertime: "",
     leaveTypeId: "",
     userId: "",
+    startOnDate: "",
+    startOnTime: "",
+    endOnDate: "",
+    endOnTime: "",
+    leaveTypeId: "",
+    leaveReason: "",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -79,19 +85,11 @@ const AddEmployee = () => {
           if (data) {
             setUserByFrim(data);
           }
-          // toast(result.USER_MESSAGE);
         } else {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
+            type: "error",
           });
         }
       })
@@ -103,13 +101,6 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           }
         );
@@ -130,7 +121,7 @@ const AddEmployee = () => {
       method: "POST",
       headers: myHeaders,
       redirect: "follow",
-      body:formdata,
+      body: formdata,
     };
 
     await fetch(
@@ -140,12 +131,26 @@ const AddEmployee = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
+          setState({
+            userdate: "",
+            usertime: "",
+            leaveTypeId: "",
+            userId: "",
+            startOnDate: "",
+            startOnTime: "",
+            endOnDate: "",
+            endOnTime: "",
+            leaveTypeId: "",
+            leaveReason: "",
+          });
+
+          setStartPicker(new Date());
+          setEndPicker(new Date());
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
             type: "success",
           });
-        
         }
       })
       .catch((error) => {
@@ -193,14 +198,7 @@ const AddEmployee = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
+            type: "error",
           });
         }
       })
@@ -212,14 +210,7 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
+            type: "error",
           }
         );
       });
@@ -265,13 +256,6 @@ const AddEmployee = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           });
         }
@@ -284,24 +268,10 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           }
         );
-
-        // console.log("error", error);
-        // handleOpenAlert(
-        //   <span>Failed to fetch ! Please try Again later.</span>,
-        //   "danger"
-        // );
       });
-    // setIsLoading(false);
   };
   useEffect(() => {
     let obj = {
@@ -320,11 +290,29 @@ const AddEmployee = () => {
     navigate("/ViewAllLeavesData");
   };
 
-  const handleDateFormat = (selectedDates) => {
+  const handleStartDateFormat = (selectedDates) => {
     const selectedDate = selectedDates[0];
     const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
+    setState({
+      ...state,
+      startOnDate: formattedDate,
+    });
+    const startDate = moment(selectedDate).toDate();
+    setUserDate(startDate);
+    const endDatePicker = document.getElementById("endOnDate");
+    if (endDatePicker) {
+      endDatePicker._flatpickr.set("minDate", startDate);
+    }
   };
 
+  const handleEndDateFormat = (selectedDates) => {
+    const selectedDate = selectedDates[0];
+    const formattedDate = moment(selectedDate).format("DD/MM/YYYY");
+    setState({
+      ...state,
+      endOnDate: formattedDate,
+    });
+  };
   const handleTimeFormat1 = (event) => {
     const selectedDate = event.target.value;
     const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
@@ -338,9 +326,7 @@ const AddEmployee = () => {
 
   return (
     <Fragment>
-      <ToastContainer
-      // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
-      />
+      <ToastContainer />
       <Form id="leaveForm">
         <Row>
           <Col md="6" className="mb-1">
@@ -390,11 +376,12 @@ const AddEmployee = () => {
               Leave Start Date
             </Label>
             <Flatpickr
-              id="date-time-picker"
-              className="form-control"
+              value={userDate}
+              dateFormat="Y-m-d"
+              id="startOnDate"
               name="startOnDate"
-              // value={}
-              onChange={(event) => handleDateFormat(event)}
+              className="form-control"
+              onChange={(event) => handleStartDateFormat(event)}
             />
           </Col>
           <Col md="3" className="mb-1">
@@ -402,12 +389,17 @@ const AddEmployee = () => {
               Leave End Date
             </Label>
             <Flatpickr
-              id="date-time-picker"
-              className="form-control"
-              name="endOnDate"
+              value={userDate}
+              // altInput= {true}
+              //   dateFormat= "YYYY-MM-DD"
+              //   altFormat= "DD-MM-YYYY"
+              //   allowInput= {true}
 
-              // value={}
-              onChange={(event) => handleDateFormat(event)}
+              dateFormat="Y-m-d"
+              id="endOnDate"
+              name="endOnDate"
+              className="form-control"
+              onChange={(event) => handleEndDateFormat(event)}
             />
           </Col>
           <Col md="3" className="mb-1">
@@ -444,7 +436,7 @@ const AddEmployee = () => {
               id="leaveReason"
               name="leaveReason"
               autoComplete="family-name"
-              value={state.lastName}
+              value={state.leaveReason}
               onChange={handleChange}
               placeholder="Leave Reason"
             />

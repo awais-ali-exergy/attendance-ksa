@@ -1,14 +1,13 @@
 // ** React Imports
-import { useState, useEffect, useRef, Fragment } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Alert } from "reactstrap";
+import { useState, useEffect, Fragment } from "react";
+import { useDispatch } from "react-redux";
 import "@styles/react/apps/app-users.scss";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { navigation } from "../../../../redux/navigationSlice";
 import {
   Accordion,
   AccordionBody,
@@ -49,8 +48,6 @@ const ManagerRights = () => {
     getFeaturesDataBySelect(e.target.value);
   };
   const getUsers = async () => {
-    // setIsLoading(true);
-
     await fetch(
       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Users/GetUsersDropDownByFirm`,
       {
@@ -71,14 +68,7 @@ const ManagerRights = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
+            type: "error",
           });
         }
       })
@@ -86,17 +76,9 @@ const ManagerRights = () => {
         toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
           position: "top-right",
           autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
-          type: "success",
+          type: "error",
         });
       });
-    // setIsLoading(false);
   };
   const getFeaturesDataBySelect = async (empid) => {
     if (empid == 0) {
@@ -134,76 +116,87 @@ const ManagerRights = () => {
             setFeatures(result.DATA);
             setIsUserSelect(true);
           }
-        } else {
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "error");
         }
       })
       .catch((error) => {
-        console.log("error", error);
-        // handleOpenSnackbar(
-        //   "Failed to fetch ! Please try Again later.",
-        //   "error"
-        // );
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch! Please try again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   };
   const savefeatures = () => {
     // debugger;
-    if(userId===0){
-    //   handleOpenSnackbar(
-    //     " Please seclet a user and try Again later.",
-    //     "error"
-    //   );
+    if (userId === 0) {
       return;
     }
-  
-      var myHeaders = new Headers();
-      myHeaders.append(
-        "Authorization",
-        "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-      );
 
-      const formdata = new FormData();
-      formdata.append("userId", userId);
-      let featureIds_ele =  document.getElementsByName("featureId");
-      for(let i=0; i<featureIds_ele.length; i++){
-        console.log("featureIds_ele"+i, featureIds_ele[i].value);
-        if(featureIds_ele[i].checked){
-          formdata.append("featureId", featureIds_ele[i].value);
-        }
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
+
+    const formdata = new FormData();
+    formdata.append("userId", userId);
+    let featureIds_ele = document.getElementsByName("featureId");
+    for (let i = 0; i < featureIds_ele.length; i++) {
+      console.log("featureIds_ele" + i, featureIds_ele[i].value);
+      if (featureIds_ele[i].checked) {
+        formdata.append("featureId", featureIds_ele[i].value);
       }
-      console.log("formdata", formdata);
-         
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: formdata,
-        redirect: "follow",
-      };
-      
-      fetch(
-        `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/UsersFeatures/Save`,  requestOptions )
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.SUCCESS === 1) {
-            toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-              position: "top-right",
-              autoClose: 3000,
-              type: "success",
-            });
-          } else {
-          }
-        })
-        .catch((error) => {
-          console.log("error", error);
+    }
+    console.log("formdata", formdata);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/UsersFeatures/Save`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.SUCCESS === 1) {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            type: "error",
+            type: "success",
           });
-        });
-   
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch! Please try again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
+      });
   };
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    let obj = {
+      navigationURL: "/Module/102",
+      navigationTitle: "User Rights",
+    };
+    dispatch(navigation(obj));
     getUsers();
   }, []);
 
@@ -219,7 +212,7 @@ const ManagerRights = () => {
               name="managerId"
               id="managerId"
               value={state.managerId}
-              onChange={(e) =>getFeaturesDataBySelect(e.target.value)}
+              onChange={(e) => getFeaturesDataBySelect(e.target.value)}
               // onChange={(e) =>
               //     getFeaturesDataBySelect(state.managerId)
               //   }
@@ -244,29 +237,28 @@ const ManagerRights = () => {
                     {features.map((obj, index) => {
                       return (
                         <AccordionItem key={obj.id + " " + obj.label}>
-                          <AccordionHeader  targetId={obj.id}>
-                           <b> {obj.label}</b>
+                          <AccordionHeader targetId={obj.id}>
+                            <b> {obj.label}</b>
                           </AccordionHeader>
                           <AccordionBody accordionId={obj.id}>
                             {obj.features.map((obj2, index2) => {
                               return (
                                 <>
-                                <Row className="d-flex justify-content-between">
-                                  <Col md="11">
-                                    <b>{obj2.id + " - " + obj2.label}</b>
-                                  </Col>
-                                  <Col md="1">
-                                    <Input
-                                      defaultChecked={obj2.isChecked == 1}
-                                      id="exampleCheck"
-                                      name="featureId"
-                                      value={obj2.id}
-                                      type="checkbox"
-                                    />
-                                  </Col>
-                                  
-                                </Row>
-                                <hr/>
+                                  <Row className="d-flex justify-content-between">
+                                    <Col md="11">
+                                      <b>{obj2.id + " - " + obj2.label}</b>
+                                    </Col>
+                                    <Col md="1">
+                                      <Input
+                                        defaultChecked={obj2.isChecked == 1}
+                                        id="exampleCheck"
+                                        name="featureId"
+                                        value={obj2.id}
+                                        type="checkbox"
+                                      />
+                                    </Col>
+                                  </Row>
+                                  <hr />
                                 </>
                               );
                             })}
@@ -316,7 +308,7 @@ const ManagerRights = () => {
           <Button
             color="primary"
             className="btn-next"
-              onClick={() => savefeatures()}
+            onClick={() => savefeatures()}
           >
             <span className="align-middle d-sm-inline-block d-none">Save</span>
           </Button>
