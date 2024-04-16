@@ -29,10 +29,29 @@ const AddDesignation = () => {
     label: "",
     description: "",
   });
+  const [error, setError] = useState({
+    label: "",
+  });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const saveDesignation = async () => {
+  const saveDesignation = async (e) => {
+    e.preventDefault();
+    let isValid = true;
+    const newErrors = { ...error };
+
+    if (!state.label) {
+      newErrors.label = "Designation label is required";
+      isValid = false;
+    } else {
+      newErrors.label = "";
+    }
+
+    setError(newErrors);
+
+    if (!isValid) {
+      return;
+    }
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -40,9 +59,7 @@ const AddDesignation = () => {
     );
 
     var formdata = new FormData(document.getElementById("AddDesignation"));
-    if (id !== 0) {
-      formdata.append("id ", id);
-    }
+    formdata.append("id ", id);
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -150,6 +167,14 @@ const AddDesignation = () => {
               onChange={handleChange}
               placeholder="Add New Designation"
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.label}
+            </div>
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label">{t("Add Description")}</Label>
@@ -175,7 +200,7 @@ const AddDesignation = () => {
           <Button
             color="primary"
             className="btn-next"
-            onClick={() => saveDesignation()}
+            onClick={(e) => saveDesignation(e)}
           >
             <span className="align-middle d-sm-inline-block d-none">
               {id !== 0 ? "Updated" : "Save"}

@@ -131,6 +131,7 @@ const BasicLeaveDataList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Leave Type",
@@ -138,6 +139,7 @@ const BasicLeaveDataList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Start Date",
@@ -145,6 +147,7 @@ const BasicLeaveDataList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "End Date",
@@ -152,6 +155,7 @@ const BasicLeaveDataList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Leave Reason",
@@ -159,9 +163,11 @@ const BasicLeaveDataList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Action",
+        flex: 1,
         cellRenderer: (params) => (
           <div style={styles.btnSpacing}>
             <button
@@ -192,7 +198,7 @@ const BasicLeaveDataList = () => {
       <div
         className="ag-theme-quartz"
         style={{
-          height: "500px",
+          height: "570px",
           width: "100%",
           display: "flex",
           justifyContent: "space-evenly",

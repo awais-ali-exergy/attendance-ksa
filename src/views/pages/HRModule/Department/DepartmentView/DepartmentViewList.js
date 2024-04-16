@@ -139,6 +139,7 @@ const AddDepartmentViewList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 2,
       },
       {
         headerName: "Department Id",
@@ -146,6 +147,7 @@ const AddDepartmentViewList = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 2,
       },
       {
         headerName: "Action",
@@ -169,24 +171,19 @@ const AddDepartmentViewList = () => {
     []
   );
   return (
-    <div className="table-responsive">
-      <div
-        className="ag-theme-quartz"
-        style={{
-          height: "500px",
-          width: "auto",
-          display: "flex",
-          justifyContent: "space-evenly",
-          flexDirection: "column",
-        }}
-      >
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={departmentList}
-          pagination={true}
-          paginationPageSize={10}
-        />
-      </div>
+    <div
+      className="ag-theme-quartz"
+      style={{
+        width: "100%",
+        height: "570px",
+      }}
+    >
+      <AgGridReact
+        columnDefs={columnDefs}
+        rowData={departmentList}
+        pagination={true}
+        paginationPageSize={10}
+      />
     </div>
   );
 };

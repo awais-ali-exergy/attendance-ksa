@@ -108,62 +108,62 @@ const ViewAllEmployeesData = () => {
         console.log("error", error);
       });
   };
-//   const getAttendaceMarker = async () => {
-//     // setIsLoading(true);
-// // debugger;
-//     await fetch(
-//       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Firms/GetIsManualAttendanceVisibleByFirm`,
-//       {
-//         method: "POST",
-//         headers: {
-//           Authorization:
-//             "Bearer " + window.localStorage.getItem("AtouBeatXToken"),
-//         },
-//         redirect: "follow",
-//       }
-//     )
-//       .then((response) => response.json())
-//       .then((result) => {
-//         console.log(result);
-//         if (result.SUCCESS === 1) {
-//             if(result.DATA.isActive===1){
-//                     setIsActive(true);
-//                     alert("true");
-//                 }else{
-//                     setIsActive(false);
-//                     alert("false");
-//                 }
-//         } else {
-//           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-//             position: "top-right",
-//             autoClose: 3000,
-//             hideProgressBar: false,
-//             newestOnTop: false,
-//             closeOnClick: true,
-//             rtl: false,
-//             pauseOnFocusLoss: true,
-//             draggable: true,
-//             pauseOnHover: true,
-//             type: "success",
-//           });
-//         }
-//       })
-//       .catch((error) => {
-//         toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
-//           position: "top-right",
-//           autoClose: 3000,
-//           hideProgressBar: false,
-//           newestOnTop: false,
-//           closeOnClick: true,
-//           rtl: false,
-//           pauseOnFocusLoss: true,
-//           draggable: true,
-//           pauseOnHover: true,
-//           type: "success",
-//         });
-//       });
-//     // setIsLoading(false);
-//   };
+  //   const getAttendaceMarker = async () => {
+  //     // setIsLoading(true);
+  // // debugger;
+  //     await fetch(
+  //       `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}/Firms/GetIsManualAttendanceVisibleByFirm`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization:
+  //             "Bearer " + window.localStorage.getItem("AtouBeatXToken"),
+  //         },
+  //         redirect: "follow",
+  //       }
+  //     )
+  //       .then((response) => response.json())
+  //       .then((result) => {
+  //         console.log(result);
+  //         if (result.SUCCESS === 1) {
+  //             if(result.DATA.isActive===1){
+  //                     setIsActive(true);
+  //                     alert("true");
+  //                 }else{
+  //                     setIsActive(false);
+  //                     alert("false");
+  //                 }
+  //         } else {
+  //           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+  //             position: "top-right",
+  //             autoClose: 3000,
+  //             hideProgressBar: false,
+  //             newestOnTop: false,
+  //             closeOnClick: true,
+  //             rtl: false,
+  //             pauseOnFocusLoss: true,
+  //             draggable: true,
+  //             pauseOnHover: true,
+  //             type: "success",
+  //           });
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //           hideProgressBar: false,
+  //           newestOnTop: false,
+  //           closeOnClick: true,
+  //           rtl: false,
+  //           pauseOnFocusLoss: true,
+  //           draggable: true,
+  //           pauseOnHover: true,
+  //           type: "success",
+  //         });
+  //       });
+  //     // setIsLoading(false);
+  //   };
   useEffect(() => {
     let obj = {
       navigationURL: "/AdminManualAttendance",
@@ -181,6 +181,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Branch Name",
@@ -188,6 +189,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Attendance Type",
@@ -195,6 +197,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       // isActive &&
       {
@@ -202,6 +205,7 @@ const ViewAllEmployeesData = () => {
         field: "isManualAttendance",
         sortable: true,
         filter: true,
+        flex: 1,
         floatingFilter: true,
         cellRenderer: (params) => {
           return (
@@ -217,6 +221,7 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Time",
@@ -224,10 +229,12 @@ const ViewAllEmployeesData = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
 
       {
         headerName: "Action",
+        flex: 1,
         cellRenderer: (params) => (
           <div style={styles.btnSpacing}>
             <button
@@ -259,7 +266,7 @@ const ViewAllEmployeesData = () => {
       <div
         className="ag-theme-quartz"
         style={{
-          height: "500px",
+          height: "570px",
           width: "100%",
           display: "flex",
           justifyContent: "space-evenly",
@@ -273,56 +280,6 @@ const ViewAllEmployeesData = () => {
           paginationPageSize={10}
         />
       </div>
-      {/* <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col" style={styles.bgHeading}>
-              Employee Name
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Attendance Type
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Date
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Time
-            </th>
-            <th scope="col" style={styles.bgHeading}>
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {attendance.length !== 0 &&
-            attendance.map((item) => (
-              <tr key={item.id}>
-                <td style={styles.pad_Col}>{item.userLabel}</td>
-                <td style={styles.pad_Col}>{item.attendanceTypeLabel}</td>
-                <td style={styles.pad_Col}>
-                  {item.createdOnByUserDateDisplay}
-                </td>
-                <td style={styles.pad_Col}>
-                  {item.createdOnByUserTimeDisplay}
-                </td>
-                <td style={styles.btnSpacing}>
-                  <button
-                    style={styles.btnStyle}
-                    onClick={() => handleNavigation(item.id)}
-                  >
-                    <MdModeEdit size={25} />
-                  </button>
-                  <button
-                    style={styles.btnStyle}
-                    onClick={() => delAttendance(row.id)}
-                  >
-                    <MdDelete size={25} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table> */}
     </div>
   );
 };

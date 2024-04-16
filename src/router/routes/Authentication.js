@@ -1,9 +1,11 @@
 // ** React Imports
 import { lazy } from "react";
 import Login from "../../views/AuthScreens/Login";
-import Singup from "../../views/AuthScreens/Singup";
+import Signup from "../../views/AuthScreens/Signup";
 import LinkVerfication from "../../views/AuthScreens/EmailVerification";
+import ForgotPassword from "../../views/ForgotPassword";
 const Page404 = lazy(() => import("../../views/pages/Other/Page404"));
+import ResetPassword from "../../views/ResetPassword";
 
 const AuthenticationRoutes = [
   {
@@ -39,9 +41,32 @@ const AuthenticationRoutes = [
   //   },
   //   isAuth: true,
   // },
+
   {
     path: "/Signup",
-    element: <Singup />,
+    element: <Signup />,
+    route: "",
+    meta: {
+      layout: "blank",
+      publicRoute: true,
+      restricted: true,
+    },
+    isAuth: true,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+    route: "",
+    meta: {
+      layout: "blank",
+      publicRoute: true,
+      restricted: true,
+    },
+    isAuth: true,
+  },
+  {
+    path: "/Users/ResetPassword/:u/:o",
+    element: <ResetPassword />,
     route: "",
     meta: {
       layout: "blank",

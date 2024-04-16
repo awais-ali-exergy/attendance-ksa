@@ -3,7 +3,7 @@
 //Template config options
 const themeConfig = {
   app: {
-    appName: "Theia",
+    appName: "AutoBeatX",
     appLogoImage: require("@src/assets/images/logo/logo.svg").default,
   },
   layout: {

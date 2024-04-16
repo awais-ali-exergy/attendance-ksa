@@ -112,18 +112,16 @@ const AddEmployee = () => {
         }
       })
       .catch((error) => {
-        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
-          type: "error",
-        });
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch! Please try again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   };
   const getUsers = async () => {
@@ -157,31 +155,21 @@ const AddEmployee = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           });
-          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "danger");
         }
       })
       .catch((error) => {
-        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
-          type: "error",
-        });
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch! Please try again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   };
   const saveAtt = async () => {
@@ -191,7 +179,6 @@ const AddEmployee = () => {
       "Bearer " + window.localStorage.getItem("AtouBeatXToken")
     );
 
-    // var formdata = new FormData(document.getElementById("attForm"));
     var formdata = new FormData();
     formdata.append("userId", finalData.userId);
     formdata.append("userId", finalData.branchId);
@@ -221,9 +208,6 @@ const AddEmployee = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
-          // handleOpenAlert(<span>{result.USER_MESSAGE}.</span>, "primary");
-
-          //   handleOpenSnackbar(<span>{result.USER_MESSAGE}</span>, "success");
           setFinalData({
             userId: "",
             data: [],
@@ -232,49 +216,31 @@ const AddEmployee = () => {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "success",
           });
         } else {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           });
         }
       })
       .catch((error) => {
-        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
-          type: "error",
-        });
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch! Please try again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   };
   const getattendanceById = async (id) => {
-    // setIsLoading(true);
     if (id === 0) {
-      //   setIsLoading(false);
       return;
     }
     var myHeaders = new Headers();
@@ -314,35 +280,25 @@ const AddEmployee = () => {
             );
             setUserDate(new Date(data.createdOnDateByUser));
           }
-          // toast(result.USER_MESSAGE);
         } else {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           });
         }
       })
       .catch((error) => {
-        toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
-          type: "error",
-        });
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch! please try again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   };
 
@@ -418,17 +374,6 @@ const AddEmployee = () => {
     });
   };
 
-  // const handleTimeFormat = (event) => {
-  //   const selectedDate = event.target.value;
-  //   setUserTime(selectedDate);
-  //   setPicker(selectedDate);
-  //   const formattedTime = moment(selectedDate, "HH:mm:ss").format("hh:mm a");
-  //   setState({
-  //     ...state,
-  //     usertime: formattedTime,
-  //   });
-  // };
-
   const columnDefs = useMemo(
     () => [
       {
@@ -437,6 +382,7 @@ const AddEmployee = () => {
         // sortable: true,
         // filter: true,
         // floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Attendance Date",
@@ -444,6 +390,7 @@ const AddEmployee = () => {
         // sortable: true,
         // filter: true,
         // floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Clock In Time",
@@ -451,16 +398,19 @@ const AddEmployee = () => {
         // sortable: true,
         // filter: true,
         // floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Clock Out Time",
         field: "createdOnTimeByUser2",
         // sortable: true,
         // filter: true,
+        flex: 1,
         // floatingFilter: true,
       },
       // {
       //   headerName: "Action",
+      // flex: 1,
       //   cellRenderer: (params) => (
       //     <button
       //       onClick={() => navigateToEdit(params.data)}
@@ -561,9 +511,7 @@ const AddEmployee = () => {
 
   return (
     <Fragment>
-      <ToastContainer
-      // toastStyle={{ backgroundColor: "#10a945", color: "white" }}
-      />
+      <ToastContainer />
       <Form id="attForm">
         <Row>
           <Col md="12" className="mb-1">
@@ -622,7 +570,7 @@ const AddEmployee = () => {
               onChange={(event) => handleDateFormat(event)}
             />
           </Col>
-        
+
           <Col md="3" className="mb-1">
             <Label className="form-label" for="date-time-picker">
               Clock In Time

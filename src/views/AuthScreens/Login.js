@@ -40,6 +40,10 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
   const { skin } = useSkin();
   const windowWidth = React.useRef(window.innerWidth);
   const windowHeight = React.useRef(window.innerHeight);
@@ -67,19 +71,19 @@ const Login = () => {
 
   const itemsMob = [
     {
-      src: require(`@src/assets/images/pages/banner-s-1.png`).default,
+      src: require(`@src/assets/images/pages/log.png`).default,
       altText: "Slide 1",
       caption: "Slide 1",
       key: 1,
     },
     {
-      src: require(`@src/assets/images/pages/banner-s-3.jpeg`).default,
+      src: require(`@src/assets/images/pages/Login-bg.jpg`).default,
       altText: "Slide 2",
       caption: "Slide 2",
       key: 2,
     },
     {
-      src: require(`@src/assets/images/pages/banner-s-2.jpg`).default,
+      src: require(`@src/assets/images/pages/serg.jpg`).default,
       altText: "Slide 3",
       caption: "Slide 3",
       key: 3,
@@ -95,17 +99,28 @@ const Login = () => {
   // start function login form submit
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    var validRegex =
-      /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
-    if (state.email.match(validRegex)) {
-    } else {
-      // handleOpenAlert(<span>Please enter a valid email.</span>, "danger");
+    // Validate form fields
+    let isValid = true;
+    const newErrors = { ...errors };
 
-      return;
+    if (!state.email) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else {
+      newErrors.email = "";
     }
 
+    if (!state.password) {
+      newErrors.password = "Password is required";
+      isValid = false;
+    } else {
+      newErrors.password = "";
+    }
+    setErrors(newErrors);
+    if (!isValid) {
+      return;
+    }
     const data = new FormData(e.target);
-    // setIsLoading(true);
 
     var object = {};
     data.forEach(function (value, key) {
@@ -121,35 +136,46 @@ const Login = () => {
         if (result.SUCCESS === 1) {
           window.localStorage.setItem("AtouBeatXData", JSON.stringify(result));
           window.localStorage.setItem("AtouBeatXToken", result.DATA.jwtToken);
-          // window.location.replace("#/MainDashboard");
           localStorage.setItem("userData", JSON.stringify(Math.random()));
-          // window.location.reload(false);
-          navigate("/");
+          if (
+            result.DATA.isAdmin === 0 &&
+            result.DATA.isUserProfileReviewed === 0
+          ) {
+            navigate("/account-setting");
+          } else if (
+            result.DATA.isAdmin === 0 &&
+            result.DATA.isUserProfileReviewed === 1
+          ) {
+            navigate("/");
+          } else if (
+            result.DATA.isAdmin === 1 &&
+            result.DATA.isUserProfileReviewed === 0
+          ) {
+            navigate("/account-setting");
+          } else if (
+            result.DATA.isAdmin === 1 &&
+            result.DATA.isFirmProfileReviewed === 0
+          ) {
+            navigate("/AddCompanies");
+          } else if (
+            result.DATA.isAdmin === 1 &&
+            result.DATA.isFirmProfileReviewed === 1
+          ) {
+            navigate("/");
+          } else {
+            navigate("/");
+          }
 
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "success",
           });
         } else {
           toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
-            type: "success",
+            type: "error",
           });
         }
       })
@@ -157,28 +183,14 @@ const Login = () => {
         toast(<p style={{ fontSize: 16 }}>{error.USER_MESSAGE}</p>, {
           position: "top-right",
           autoClose: 3000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnFocusLoss: true,
-          draggable: true,
-          pauseOnHover: true,
           type: "error",
         });
-
-        console.log("error", error);
       });
-
-    // setIsLoading(false);
   };
-  // End function login form submit
 
   return (
     <>
-      <ToastContainer
-        toastStyle={{ backgroundColor: "#10a945", color: "white" }}
-      />
+      <ToastContainer />
       <div className="auth-wrapper auth-cover">
         <Row className="auth-inner m-0">
           <Col
@@ -201,7 +213,7 @@ const Login = () => {
                 Welcome! 👋
               </CardTitle>
               <CardText className="mb-2">
-                Please sign-in to your account.
+                <b>Please sign-in to your account.</b>
               </CardText>
               <Form
                 className="auth-login-form mt-2"
@@ -221,6 +233,14 @@ const Login = () => {
                     }
                     autoFocus
                   />
+                  <div
+                    className="text-danger"
+                    style={{
+                      fontSize: "10px",
+                    }}
+                  >
+                    {errors.email}
+                  </div>
                 </div>
                 <div className="mb-1">
                   <div className="d-flex justify-content-between">
@@ -239,6 +259,14 @@ const Login = () => {
                       setState({ ...state, password: e.target.value })
                     }
                   />
+                  <div
+                    className="text-danger"
+                    style={{
+                      fontSize: "10px",
+                    }}
+                  >
+                    {errors.password}
+                  </div>
                 </div>
                 <div className="form-check mb-1">
                   <Input type="checkbox" id="remember-me" />
@@ -254,8 +282,8 @@ const Login = () => {
                 >
                   Sign in
                 </Button>
-                <Link to="/Singup">
-                  <small>Get New Account/SingUp</small>
+                <Link to="/Signup">
+                  <small>Get New Account/SignUp</small>
                 </Link>
                 <div
                   className="d-block"

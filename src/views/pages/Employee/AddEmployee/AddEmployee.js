@@ -19,20 +19,7 @@ import { Label, Row, Col, Form, Input, Button } from "reactstrap";
 
 const AddEmployee = () => {
   const dispatch = useDispatch();
-  const [isOpenAlert, setIsOpenAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("");
-  const handleOpenAlert = (msg, severity) => {
-    setIsOpenAlert(true);
-    setAlertMessage(msg);
-    setAlertSeverity(severity);
-  };
-  const handleCloseAlert = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setIsOpenAlert(false);
-  };
+
   let params = useParams();
   let id = parseInt(params.id);
   if (isNaN(id)) id = 0;
@@ -41,27 +28,26 @@ const AddEmployee = () => {
   const [employees, setEmployees] = useState([]);
   const [department, setDepartment] = useState([]);
   const [branches, setbranches] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [stepper, setStepper] = useState(null);
-  const ref = useRef(null);
-
-  const steps = [
-    {
-      id: "requester_detail",
-      title: t("Requester Detail"),
-      content: <AccountDetails stepper={stepper} type="wizard-vertical" />,
-    },
-    {
-      id: "outlet_detail",
-      title: t("Outlet Detail"),
-      content: <OutletDetails stepper={stepper} type="wizard-vertical" />,
-    },
-    {
-      id: "area_detail",
-      title: t("Area Detail"),
-      content: <SocialLinks stepper={stepper} type="wizard-vertical" />,
-    },
-  ];
+  const [selectedOption, setSelectedOption] = useState([]);
+  // const [stepper, setStepper] = useState(null);
+  // const ref = useRef(null);
+  // const steps = [
+  //   {
+  //     id: "requester_detail",
+  //     title: t("Requester Detail"),
+  //     content: <AccountDetails stepper={stepper} type="wizard-vertical" />,
+  //   },
+  //   {
+  //     id: "outlet_detail",
+  //     title: t("Outlet Detail"),
+  //     content: <OutletDetails stepper={stepper} type="wizard-vertical" />,
+  //   },
+  //   {
+  //     id: "area_detail",
+  //     title: t("Area Detail"),
+  //     content: <SocialLinks stepper={stepper} type="wizard-vertical" />,
+  //   },
+  // ];
 
   const [state, setState] = useState({
     firstName: "",
@@ -72,6 +58,7 @@ const AddEmployee = () => {
     userId: 0,
     departmentId: "",
     designationId: "",
+    confirmPassword: "",
     customFieldLabel: "",
     customFieldValue: "",
     contactNo: "",
@@ -83,6 +70,17 @@ const AddEmployee = () => {
     reportingToUserId: "",
     editEmployeeId: "",
     isBranchManager: 0,
+  });
+
+  const [error, setError] = useState({
+    firstName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    contactNo: "",
+    branchId: "",
+    cnicNo: "",
+    bankAccountNo: "",
   });
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -118,13 +116,6 @@ const AddEmployee = () => {
             {
               position: "top-right",
               autoClose: 3000,
-              hideProgressBar: false,
-              newestOnTop: false,
-              closeOnClick: true,
-              rtl: false,
-              pauseOnFocusLoss: true,
-              draggable: true,
-              pauseOnHover: true,
               type: "error",
             }
           );
@@ -139,13 +130,6 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           }
         );
@@ -187,13 +171,6 @@ const AddEmployee = () => {
             {
               position: "top-right",
               autoClose: 3000,
-              hideProgressBar: false,
-              newestOnTop: false,
-              closeOnClick: true,
-              rtl: false,
-              pauseOnFocusLoss: true,
-              draggable: true,
-              pauseOnHover: true,
               type: "error",
             }
           );
@@ -207,13 +184,6 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           }
         );
@@ -253,13 +223,6 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           }
         );
@@ -299,13 +262,6 @@ const AddEmployee = () => {
           {
             position: "top-right",
             autoClose: 3000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnFocusLoss: true,
-            draggable: true,
-            pauseOnHover: true,
             type: "error",
           }
         );
@@ -335,9 +291,16 @@ const AddEmployee = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.SUCCESS === 1) {
+          toast(
+            <p style={{ fontSize: 16 }}>{"Data Retrieved Successfully"}</p>,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              type: "success",
+            }
+          );
           let data = result.DATA;
           if (data) {
-            // debugger;
             setState({
               userId: data.id,
               firstName: data.firstName,
@@ -362,146 +325,189 @@ const AddEmployee = () => {
             }));
 
             setSelectedOption([...updatedBranches]);
-
-            setCustomFields([...data.customFields]);
           }
         }
       })
       .catch((error) => {
-        // toast(
-        //   <p style={{ fontSize: 16 }}>
-        //     {"Failed to fetch ! Please try Again later"}
-        //   </p>,
-        //   {
-        //     position: "top-right",
-        //     autoClose: 3000,
-        //     hideProgressBar: false,
-        //     newestOnTop: false,
-        //     closeOnClick: true,
-        //     rtl: false,
-        //     pauseOnFocusLoss: true,
-        //     draggable: true,
-        //     pauseOnHover: true,
-        //     type: "error",
-        //   }
-        // );
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later"}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   };
-  const saveEmployee = async () => {
-    var pass = document.getElementById("password").value;
-    var confirmpass = document.getElementById("confirmPassword").value;
+  const saveEmployee = async (e) => {
+    e.preventDefault();
+    let isValid = true;
+    const newErrors = { ...error };
 
-    if (pass === confirmpass) {
-      var myHeaders = new Headers();
-      myHeaders.append(
-        "Authorization",
-        "Bearer " + window.localStorage.getItem("AtouBeatXToken")
-      );
+    if (!state.firstName) {
+      newErrors.firstName = "Employee name is required";
+      isValid = false;
+    } else {
+      newErrors.firstName = "";
+    }
 
-      var formdata = new FormData(document.getElementById("employeedata"));
-      formdata.append("id", state.userId);
-      formdata.append("typeId", state.typeId);
-      formdata.append("isBranchManager", state.isBranchManager);
-      for (let i = 0; i < selectedOption.length; i++) {
-        formdata.append("branchId", selectedOption[i].id);
-      }
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: formdata,
-        redirect: "follow",
-      };
-      var url = "";
-      if (state.userId) {
-        url = "/Users/Save";
+    if (!state.email) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else {
+      newErrors.email = "";
+    }
+
+    if (id === 0) {
+      if (!state.password) {
+        newErrors.password = "Password is required";
+        isValid = false;
       } else {
-        url = "/Users/SaveInActiveUser";
+        newErrors.password = "";
       }
-      await fetch(
-        `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}` +
-          url,
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.SUCCESS === 1) {
-            setSelectedOption([]);
-            setState({
-              firstName: "",
-              lastName: "",
-              email: "",
-              password: "",
-              firmId: null,
-              userId: 0,
-              departmentId: "",
-              designationId: "",
-              customFieldLabel: "",
-              customFieldValue: "",
-              contactNo: "",
-              isAccountNonLocked: "",
-              branchId: "",
-              cnicNo: "",
-              bankAccountNo: "",
-              typeId: 0,
-              reportingToUserId: "",
-              isBranchManager: 0,
-            });
-            if (id !== 0) {
-              toast(<p style={{ fontSize: 16 }}>{"User Updated"}</p>, {
-                position: "top-right",
-                autoClose: 3000,
-                type: "success",
-              });
-            }
-            if (id === 0) {
-              toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
-                position: "top-right",
-                autoClose: 3000,
-                type: "success",
-              });
-            }
+      if (state.confirmPassword !== state.password) {
+        newErrors.confirmPassword = "Password does not match";
+        isValid = false;
+      } else {
+        newErrors.confirmPassword = "";
+      }
+    }
 
-            setTimeout(function () {
-              if (id != 0) {
-                navigate("/AddEmployee");
-              }
-            }, 2000);
+    if (!state.contactNo) {
+      newErrors.contactNo = "Contact number is required";
+      isValid = false;
+    } else {
+      newErrors.contactNo = "";
+    }
+    if (selectedOption.length === 0) {
+      newErrors.branchId = "Branch is required";
+      isValid = false;
+    } else {
+      newErrors.branchId = "";
+    }
+
+    if (!state.cnicNo) {
+      newErrors.cnicNo = "National Id number is required";
+      isValid = false;
+    } else {
+      newErrors.cnicNo = "";
+    }
+
+    if (!state.bankAccountNo) {
+      newErrors.bankAccountNo = "Bank Details are required";
+      isValid = false;
+    } else {
+      newErrors.bankAccountNo = "";
+    }
+
+    setError(newErrors);
+
+    if (!isValid) {
+      return;
+    }
+    // var pass = document.getElementById("password").value;
+    // var confirmpass = document.getElementById("confirmPassword").value;
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + window.localStorage.getItem("AtouBeatXToken")
+    );
+
+    var formdata = new FormData(document.getElementById("employeedata"));
+    formdata.append("id", state.userId);
+    formdata.append("typeId", state.typeId);
+    formdata.append("isBranchManager", state.isBranchManager);
+    for (let i = 0; i < selectedOption.length; i++) {
+      formdata.append("branchId", selectedOption[i].id);
+    }
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+    var url = "";
+    if (state.userId) {
+      url = "/Users/Save";
+    } else {
+      url = "/Users/SaveInActiveUser";
+    }
+    await fetch(
+      `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_SUB_API_NAME}` +
+        url,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.SUCCESS === 1) {
+          setSelectedOption([]);
+          setState({
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            firmId: null,
+            userId: 0,
+            departmentId: "",
+            designationId: "",
+            customFieldLabel: "",
+            customFieldValue: "",
+            contactNo: "",
+            isAccountNonLocked: "",
+            branchId: "",
+            cnicNo: "",
+            bankAccountNo: "",
+            typeId: 0,
+            reportingToUserId: "",
+            isBranchManager: 0,
+            password: "",
+            confirmPassword: "",
+          });
+          if (id !== 0) {
+            toast(<p style={{ fontSize: 16 }}>{"User Updated"}</p>, {
+              position: "top-right",
+              autoClose: 3000,
+              type: "success",
+            });
           }
-          if (result.SUCCESS === 0) {
+          if (id === 0) {
             toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
               position: "top-right",
               autoClose: 3000,
-              type: "error",
+              type: "success",
             });
           }
-        })
-        .catch((error) => {
-          console.log("error", error);
-          toast(
-            <p style={{ fontSize: 16 }}>
-              {"Failed to fetch ! Please try Again later."}
-            </p>,
-            {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              newestOnTop: false,
-              closeOnClick: true,
-              rtl: false,
-              pauseOnFocusLoss: true,
-              draggable: true,
-              pauseOnHover: true,
-              type: "error",
+
+          setTimeout(function () {
+            if (id != 0) {
+              navigate("/AddEmployee");
             }
-          );
-          // handleOpenAlert(
-          //   <span>Failed to fetch ! Please try Again later.</span>,
-          //   "danger"
-          // );
-        });
-    } else {
-      toast("New password & confirm password doesn't match");
-    }
+          }, 2000);
+        }
+        if (result.SUCCESS === 0) {
+          toast(<p style={{ fontSize: 16 }}>{result.USER_MESSAGE}</p>, {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        toast(
+          <p style={{ fontSize: 16 }}>
+            {"Failed to fetch ! Please try Again later."}
+          </p>,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
+      });
   };
   useEffect(() => {
     getemployeeData();
@@ -546,7 +552,10 @@ const AddEmployee = () => {
       <Form id="employeedata">
         <Row>
           <Col md="4" className="mb-1">
-            <Label className="form-label">{t("First Name")}</Label>
+            <Label className="form-label d-flex">
+              {t("First Name")}
+              <span style={{ color: "red", fontSize: "15px" }}>*</span>
+            </Label>
             <Input
               name="firstName"
               id="firstName"
@@ -554,6 +563,14 @@ const AddEmployee = () => {
               onChange={handleChange}
               placeholder="First Name"
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.firstName}
+            </div>
           </Col>
 
           <Col md="4" className="mb-1">
@@ -568,7 +585,10 @@ const AddEmployee = () => {
             />
           </Col>
           <Col md="4" className="mb-1">
-            <Label className="form-label">{t("Contact No")}</Label>
+            <Label className="form-label d-flex">
+              {t("Contact No")}{" "}
+              <span style={{ color: "red", fontSize: "15px" }}>*</span>
+            </Label>
             <Input
               id="contactNo"
               name="contactNo"
@@ -576,11 +596,22 @@ const AddEmployee = () => {
               onChange={handleChange}
               placeholder="Contact No"
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.contactNo}
+            </div>
           </Col>
         </Row>
         <Row>
           <Col md="4" className="mb-1">
-            <Label className="form-label">{t("National ID")}</Label>
+            <Label className="form-label d-flex">
+              {t("National ID")}{" "}
+              <span style={{ color: "red", fontSize: "15px" }}>*</span>
+            </Label>
             <Input
               value={state.cnicNo}
               onChange={handleChange}
@@ -588,10 +619,21 @@ const AddEmployee = () => {
               id="cnicNo"
               placeholder="National ID"
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.cnicNo}
+            </div>
           </Col>
 
           <Col md="4" className="mb-1">
-            <Label className="form-label">{t("Email Address")}</Label>
+            <Label className="form-label d-flex">
+              {t("Email Address")}{" "}
+              <span style={{ color: "red", fontSize: "15px" }}>*</span>
+            </Label>
             <Input
               id="email"
               label="Email Address"
@@ -600,9 +642,20 @@ const AddEmployee = () => {
               onChange={handleChange}
               placeholder="Email Address"
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.email}
+            </div>
           </Col>
           <Col md="4" className="mb-1">
-            <Label className="form-label">{t("Bank Account")}</Label>
+            <Label className="form-label d-flex">
+              {t("Bank Account")}{" "}
+              <span style={{ color: "red", fontSize: "15px" }}>*</span>
+            </Label>
             <Input
               id="bankAccountNo"
               type="textarea"
@@ -611,6 +664,14 @@ const AddEmployee = () => {
               onChange={handleChange}
               placeholder="Bank Account"
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.bankAccountNo}
+            </div>
           </Col>
         </Row>
         <Row>
@@ -656,7 +717,10 @@ const AddEmployee = () => {
             </Input>
           </Col>
           <Col md="4" className="mb-1">
-            <Label className="form-label">{t("Branch")}</Label>
+            <Label className="form-label d-flex">
+              {t("Branch")}{" "}
+              <span style={{ color: "red", fontSize: "15px" }}>*</span>
+            </Label>
             <Select
               closeMenuOnSelect={false}
               isMulti
@@ -664,6 +728,14 @@ const AddEmployee = () => {
               onChange={setSelectedOption}
               options={branches}
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.branchId}
+            </div>
             {/* <Input
               type="select"
               name="branchId"
@@ -686,24 +758,51 @@ const AddEmployee = () => {
         </Row>
         <Row>
           <Col md="6" className="mb-1">
-            <Label className="form-label">{t("Password")}</Label>
+            <Label className="form-label d-flex">
+              {t("Password")}{" "}
+              {id === 0 ? (
+                <span style={{ color: "red", fontSize: "15px" }}>*</span>
+              ) : null}
+            </Label>
             <Input
               name="password"
               label="Password"
               type="password"
               id="password"
               placeholder="Password"
+              value={state.password}
+              onChange={handleChange}
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.password}
+            </div>
           </Col>
           <Col md="6" className="mb-1">
-            <Label className="form-label">{t("Confirm Password")}</Label>
+            <Label className="form-label d-flex">
+              {t("Confirm Password")}{" "}
+            </Label>
             <Input
               name="confirmPassword"
               label="Confirm Password"
               type="password"
               id="confirmPassword"
               placeholder="Confirm Password"
+              value={state.confirmPassword}
+              onChange={handleChange}
             />
+            <div
+              className="text-danger"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              {error.confirmPassword}
+            </div>
           </Col>
         </Row>
         <Row>
@@ -772,7 +871,7 @@ const AddEmployee = () => {
           <Button
             color="primary"
             className="btn-next"
-            onClick={() => saveEmployee()}
+            onClick={(e) => saveEmployee(e)}
           >
             <span className="align-middle d-sm-inline-block d-none">
               {id !== 0 ? "Update" : "Save"}
@@ -780,13 +879,6 @@ const AddEmployee = () => {
           </Button>
         </div>
       </Form>
-
-      <CustomAlert
-        isOpen={isOpenAlert}
-        message={alertMessage}
-        severity={alertSeverity}
-        handleCloseAlert={() => handleCloseAlert()}
-      />
     </Fragment>
   );
 };

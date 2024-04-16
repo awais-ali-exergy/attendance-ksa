@@ -21,17 +21,14 @@ const EmployeeReport = () => {
         }
       );
       if (response.status === 401) {
-        // Handle unauthorized access
       }
       const result = await response.json();
       if (result.SUCCESS === 1) {
         setEmployees(result.DATA);
       } else {
-        // Handle error
       }
     } catch (error) {
       console.error("Failed to fetch:", error);
-      // Handle error
     }
   };
   const dispatch = useDispatch();
@@ -52,6 +49,7 @@ const EmployeeReport = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Last Name",
@@ -59,6 +57,7 @@ const EmployeeReport = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "National ID",
@@ -66,6 +65,7 @@ const EmployeeReport = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Email",
@@ -73,6 +73,7 @@ const EmployeeReport = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
       {
         headerName: "Contact No.",
@@ -80,22 +81,17 @@ const EmployeeReport = () => {
         sortable: true,
         filter: true,
         floatingFilter: true,
+        flex: 1,
       },
     ],
     []
   );
 
-  const defaultColDef = useMemo(() => {
-    return {
-      filter: "agTextColumnFilter",
-      floatingFilter: true,
-    };
-  }, []);
   return (
     <div
       className="ag-theme-quartz"
       style={{
-        height: "700px",
+        height: "570px",
         width: "100%",
         display: "flex",
         justifyContent: "space-evenly",
@@ -106,10 +102,7 @@ const EmployeeReport = () => {
         columnDefs={columnDefs}
         rowData={employees}
         pagination={true}
-        defaultColDef={defaultColDef}
-        paginationPageSize={19}
-        suppressPaginationPanel={true}
-        animateRows={true}
+        paginationPageSize={10}
       />
     </div>
   );
